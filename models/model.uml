@@ -6,10 +6,6 @@
         <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_zLJz0b9VEeSEfJjTZXN9hw" value="1"/>
         <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_zLJz0r9VEeSEfJjTZXN9hw" value="1"/>
       </ownedAttribute>
-      <ownedAttribute xmi:type="uml:Property" xmi:id="_yCvIUL9XEeSEfJjTZXN9hw" name="entities" type="_ZBZKwL9XEeSEfJjTZXN9hw" aggregation="shared" association="_yCvvYL9XEeSEfJjTZXN9hw">
-        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_yCvIUb9XEeSEfJjTZXN9hw" value="1"/>
-        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_yCvIUr9XEeSEfJjTZXN9hw" value="1"/>
-      </ownedAttribute>
       <ownedAttribute xmi:type="uml:Property" xmi:id="_8jMkoL9-EeSEfJjTZXN9hw" name="turnCount">
         <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Integer"/>
       </ownedAttribute>
@@ -26,6 +22,7 @@
       <ownedAttribute xmi:type="uml:Property" xmi:id="_GUQ2EL9_EeSEfJjTZXN9hw" name="maxTurns">
         <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Integer"/>
       </ownedAttribute>
+      <interfaceRealization xmi:type="uml:InterfaceRealization" xmi:id="_VaOmAMA3EeSQBIVLTMmeuQ" client="_bOGk0L9VEeSEfJjTZXN9hw" supplier="_ZBZKwL9XEeSEfJjTZXN9hw" contract="_ZBZKwL9XEeSEfJjTZXN9hw"/>
     </packagedElement>
     <packagedElement xmi:type="uml:Class" xmi:id="_dvQ6AL9VEeSEfJjTZXN9hw" name="Cell">
       <ownedAttribute xmi:type="uml:Property" xmi:id="_vYYyML9oEeSEfJjTZXN9hw" name="type" type="_nQNKIL9oEeSEfJjTZXN9hw"/>
@@ -34,9 +31,10 @@
         <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_RjVzEr9-EeSEfJjTZXN9hw" value="*"/>
       </ownedAttribute>
       <ownedAttribute xmi:type="uml:Property" xmi:id="_ex_lsL9-EeSEfJjTZXN9hw" name="player" type="_LcHLYL9YEeSEfJjTZXN9hw" association="_ex_ls79-EeSEfJjTZXN9hw">
-        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_ex_lsb9-EeSEfJjTZXN9hw" value="1"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_ex_lsb9-EeSEfJjTZXN9hw"/>
         <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_ex_lsr9-EeSEfJjTZXN9hw" value="1"/>
       </ownedAttribute>
+      <interfaceRealization xmi:type="uml:InterfaceRealization" xmi:id="_LcACUMA3EeSQBIVLTMmeuQ" client="_dvQ6AL9VEeSEfJjTZXN9hw" supplier="_ZBZKwL9XEeSEfJjTZXN9hw" contract="_ZBZKwL9XEeSEfJjTZXN9hw"/>
       <ownedOperation xmi:type="uml:Operation" xmi:id="_RXPfgL94EeSEfJjTZXN9hw" name="interact"/>
     </packagedElement>
     <packagedElement xmi:type="uml:Association" xmi:id="_jeREML9VEeSEfJjTZXN9hw" visibility="protected" memberEnd="_jeREMb9VEeSEfJjTZXN9hw _jeP2EL9VEeSEfJjTZXN9hw" navigableOwnedEnd="_jeREMb9VEeSEfJjTZXN9hw">
@@ -56,16 +54,10 @@
         <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_zLLB879VEeSEfJjTZXN9hw" value="1"/>
       </ownedEnd>
     </packagedElement>
-    <packagedElement xmi:type="uml:Interface" xmi:id="_ZBZKwL9XEeSEfJjTZXN9hw" name="Entity">
+    <packagedElement xmi:type="uml:Interface" xmi:id="_ZBZKwL9XEeSEfJjTZXN9hw" name="EventSubscriber">
       <ownedOperation xmi:type="uml:Operation" xmi:id="_pz5eoL9XEeSEfJjTZXN9hw" name="onTurnStart"/>
       <ownedOperation xmi:type="uml:Operation" xmi:id="_sBCroL9XEeSEfJjTZXN9hw" name="onTurnEnd"/>
-      <ownedOperation xmi:type="uml:Operation" xmi:id="_vGgAsL9XEeSEfJjTZXN9hw" name="draw"/>
-    </packagedElement>
-    <packagedElement xmi:type="uml:Association" xmi:id="_yCvvYL9XEeSEfJjTZXN9hw" memberEnd="_yCvvYb9XEeSEfJjTZXN9hw _yCvIUL9XEeSEfJjTZXN9hw">
-      <ownedEnd xmi:type="uml:Property" xmi:id="_yCvvYb9XEeSEfJjTZXN9hw" name="game" type="_DOe_cL9UEeSEfJjTZXN9hw" association="_yCvvYL9XEeSEfJjTZXN9hw">
-        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_yCvvYr9XEeSEfJjTZXN9hw" value="1"/>
-        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_yCvvY79XEeSEfJjTZXN9hw" value="1"/>
-      </ownedEnd>
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_vGgAsL9XEeSEfJjTZXN9hw" name="onDraw"/>
     </packagedElement>
     <packagedElement xmi:type="uml:Class" xmi:id="_LcHLYL9YEeSEfJjTZXN9hw" name="Player">
       <ownedOperation xmi:type="uml:Operation" xmi:id="_4Bk2kL9dEeSEfJjTZXN9hw" name="move">
@@ -96,9 +88,11 @@
       <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="_tQIFML9oEeSEfJjTZXN9hw" name="CELL_INVALID"/>
     </packagedElement>
     <packagedElement xmi:type="uml:Dependency" xmi:id="_pCeZAL9oEeSEfJjTZXN9hw" client="_dvQ6AL9VEeSEfJjTZXN9hw" supplier="_nQNKIL9oEeSEfJjTZXN9hw"/>
-    <packagedElement xmi:type="uml:Class" xmi:id="_mHdmIL94EeSEfJjTZXN9hw" name="Object">
-      <generalization xmi:type="uml:Generalization" xmi:id="_pD4T8L94EeSEfJjTZXN9hw" general="_ZBZKwL9XEeSEfJjTZXN9hw"/>
-      <ownedOperation xmi:type="uml:Operation" xmi:id="_XXACgL94EeSEfJjTZXN9hw" name="interact"/>
+    <packagedElement xmi:type="uml:Class" xmi:id="_mHdmIL94EeSEfJjTZXN9hw" name="Object" isAbstract="true">
+      <interfaceRealization xmi:type="uml:InterfaceRealization" xmi:id="_PvHdUMA3EeSQBIVLTMmeuQ" client="_mHdmIL94EeSEfJjTZXN9hw" supplier="_ZBZKwL9XEeSEfJjTZXN9hw" contract="_ZBZKwL9XEeSEfJjTZXN9hw"/>
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_XXACgL94EeSEfJjTZXN9hw" name="interact">
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_8GbKAMA3EeSQBIVLTMmeuQ" name="player" type="_LcHLYL9YEeSEfJjTZXN9hw" effect="update"/>
+      </ownedOperation>
     </packagedElement>
     <packagedElement xmi:type="uml:Realization" xmi:id="_odFHwL96EeSEfJjTZXN9hw" client="_LcHLYL9YEeSEfJjTZXN9hw" supplier="_ZBZKwL9XEeSEfJjTZXN9hw"/>
     <packagedElement xmi:type="uml:Dependency" xmi:id="_I0ksIL9-EeSEfJjTZXN9hw" client="_LcHLYL9YEeSEfJjTZXN9hw" supplier="_I90xwL9dEeSEfJjTZXN9hw"/>
