@@ -18,10 +18,12 @@ public class Cell {
 	 * @param j Oszlopkoordináta
 	 * @param cellType Cellának a típusa
 	 */
-	public Cell(int i, int j, CellType cellType) {
+	public Cell(int i, int j, CellType cellType, Player player, GameObject gameObject) {
 		this.i = i;
 		this.j = j;
 		this.cellType = cellType;
+		this.player = player;
+		this.gameObject = gameObject;
 	}
 	
 	/**

@@ -1,10 +1,5 @@
 package phoebe;
 
-/**
- * Az összes játékban szereplõ játékobjektum által implementált interfész.
- * @author Graics Bence
- *
- */
 public interface GameObject {
 
 	/**

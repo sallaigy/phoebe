@@ -15,7 +15,7 @@ public class Map {
     public Map(int k, int n) {
     	for (int i = 0; i < k; ++i) {
     		for (int j = 0; j < n; ++j) {
-    			cells[i][j] = new Cell(i, j, CellType.CELL_VALID);
+    			cells[i][j] = new Cell(i, j, CellType.CELL_VALID, null, null);
     		}
     	}
     }
@@ -28,12 +28,16 @@ public class Map {
 	 * @return Egy lista az adott távolságban lévõ cellákkal
 	 */
 	public List<Cell> getNeighbours(int i, int j, int distance) {
-	    List<Cell> results = new ArrayList<Cell>();
+	    if (distance < 0 || distance > 2) {
+	    	throw new IllegalArgumentException();
+	    }
+		List<Cell> results = new ArrayList<Cell>();
 	    for (int k = -distance; k <= distance; ++k) {
 	    	for (int l = -distance; l <= distance; ++l) {
+	    		if (k == 0 || l == 0 || k == l || k + l == 0) 
 	    		results.add(cells[i + k][j + l]);
 	    	}
-	    }
+	    }		
 	    results.remove(cells[i][j]);
 		return results;
 	}
