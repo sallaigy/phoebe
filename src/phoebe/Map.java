@@ -7,6 +7,10 @@ public class Map {
 
     private Cell[][] cells;
 	
+    public Map(int n, int m) {
+    	cells = new Cell[n][m];
+    }
+    
 	public List<Cell> getNeighbours(int i, int j, int distance) {
 	    ArrayList<Cell> results = new ArrayList<Cell>();
 
@@ -20,7 +24,11 @@ public class Map {
 	}
 	
 	public Cell getCell(int i, int j) {
-		return this.cells[0][0];
+		return this.cells[i][j];
+	}
+	
+	public void setCell(Cell cell) {
+		cells[cell.getI()][cell.getJ()] = cell;
 	}
 	
 }

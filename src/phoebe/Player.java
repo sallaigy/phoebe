@@ -75,4 +75,12 @@ public class Player {
         this.speed = speed;
     }
     
+    public Cell getCurrentCell() {
+    	return currentCell;
+    }
+    
+    public void setCurrentCell(Cell cell) {
+    	currentCell = cell;
+    }
+    
 }
