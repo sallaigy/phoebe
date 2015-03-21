@@ -12,9 +12,25 @@ public class Cell {
 	
 	private GameObject gameObject;
 	
+	/**
+	 * A Cella osztály konstruktora.
+ 	 * @param i Sorkoordináta
+	 * @param j Oszlopkoordináta
+	 * @param cellType Cellának a típusa
+	 */
+	public Cell(int i, int j, CellType cellType) {
+		this.i = i;
+		this.j = j;
+		this.cellType = cellType;
+	}
+	
+	/**
+	 * A cella interakcióját végzõ metódus. Meghívja a rajta elhelyezkedõ GameObject metódusát a rajta lévõ
+	 * Player paraméterrel.
+	 */
 	public void interact() {
         Logger.methodEntry(this);
-        
+        gameObject.interact(player);
         Logger.methodExit(this);
 	}
 
@@ -40,6 +56,14 @@ public class Cell {
 
     public void setGameObject(GameObject gameObject) {
         this.gameObject = gameObject;
+    }
+    
+    public int getI() {
+    	return i;
+    }
+    
+    public int getJ() {
+    	return j;
     }
 
 }
