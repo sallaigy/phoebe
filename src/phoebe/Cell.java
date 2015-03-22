@@ -1,5 +1,9 @@
 package phoebe;
 
+/**
+ * A négyzetrácsos pálya egy-egy négyzetét jelenti egy Cell.
+ * Egy cellán tartózkodhat legfeljebb egy játékos, illetve legfeljebb egy folt.
+ */
 public class Cell {
 	
 	private int x;
@@ -13,10 +17,10 @@ public class Cell {
 	private GameObject gameObject;
 	
 	/**
-	 * A Cella oszt�ly konstruktora.
- 	 * @param x Sorkoordin�ta
-	 * @param y Oszlopkoordin�ta
-	 * @param cellType Cell�nak a t�pusa
+	 * A Cella osztály konstruktora.
+ 	 * @param x Sorkoordináta
+	 * @param y Oszlopkoordináta
+	 * @param cellType Cellának a típusa
 	 */
 	public Cell(int x, int y, CellType cellType, Player player, GameObject gameObject) {
 		this.x = x;
@@ -26,13 +30,17 @@ public class Cell {
 		this.gameObject = gameObject;
 	}
 	
+	/**
+	 * Tartalék Cell konstruktor, amely paraméter nélkül hívható.
+	 */
 	public Cell() {
 	    // nop
     }
 
     /**
-	 * A cella interakci�j�t v�gz� met�dus. Megh�vja a rajta elhelyezked� GameObject met�dus�t a rajta l�v�
-	 * Player param�terrel.
+	 * Ha a játékos az adott cellára lépett, ezen metódus hívódik meg.
+	 * A metódus pedig a cellán elhelyezkedő gameObjectnek hívja meg a megfelelő metódusát, amely a paraméterként átvett Player objektumra kifejti a hatását.
+	 * Ha a cellán nincsen folt, természetesen nem történik semmi.
 	 */
 	public void interact() {
         Logger.methodEntry(this);

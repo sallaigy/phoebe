@@ -8,6 +8,10 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A játék logikáját tartalmazó osztály.
+ * Itt tartjuk számon a játékosokat, a térképet, itt kezeljük a kapott bemeneteket.
+ */
 public class Game {
 
 	private int turnCount = 0;
@@ -22,6 +26,10 @@ public class Game {
 	
 	private boolean shouldQuit = false;
 	
+	/**
+	 * Jelzi a játék indulását, hatására felépül a pálya és megkezdődik az első kör.
+	 * A játék ebben az állapotban marad újraindításig és kilépésig.
+	 */
 	public void start() {
 		Logger.methodEntry(this);
 		
@@ -56,10 +64,9 @@ public class Game {
 		Logger.methodExit(this);
 	}
 	/**
-	 * - Start again the game
-	 * 		-- setting the turns count to 0
-	 * 		-- reloading the map
-	 * 		-- reset player attributes.
+	 * Újraindítja az aktuális játékot.
+	 * Minden játékos visszakerül a kezdőpozícióba, foltkészleteik feltöltődnek.
+	 * A turnCount nulla értéket kap.
 	 */
 	public void reset() {
 		Logger.methodEntry(this);
@@ -79,7 +86,7 @@ public class Game {
 	}
 
 	/**
-	 * - Close the game
+	 * Befejezi a játékot és kilép a programból.
 	 */
 	public void quit() {
 		Logger.methodEntry(this);
@@ -88,9 +95,9 @@ public class Game {
 	}
 
 	/**
-	 * - Loading the map from file
-	 * - Based on the single string values(0,1,2,etc..), we create the corresponding cells
-	 * - Size of the map is hard coded
+	 * Ez a metódus tölti be a térképet.
+	 * Létrehoz egy Map objektumot, majd betölti a pályát a map.txt fájlból.
+	 * Az egyes számok egyes cellatípusoknak felelnek meg.
 	 * @throws IOException
 	 */
 	public void loadMap() throws IOException {
@@ -148,10 +155,8 @@ public class Game {
 	}
 
 	/**
-	 * - Calling players' onTurnEnd() method
-	 * - Check if they're on an invalid cell
-	 * - Check if the turns reached maxTurns
-	 * 		-- yes: get the distances, and declare a winner
+	 * Jelzi a kör végét az összes feliratkozott játékosnak.
+	 * Tehát meghívja a játékosok onTurnEnd() metódusát.
 	 */
 	public void endTurn() {
 		Logger.methodEntry(this);
@@ -178,8 +183,8 @@ public class Game {
 	}
 
 	/**
-	 * - Calling players' onTurnStart() method
-	 * - Increment number of turns 
+	 * Jelzi a kör elejét az összes feliratkozott játékosnak.
+	 * Tehát meghívja a játékosok onTurnStart() metódusát.
 	 */
 	public void beginTurn() {
 		Logger.methodEntry(this);
@@ -192,7 +197,10 @@ public class Game {
 		
 		Logger.methodExit(this);
 	}
-
+	
+	/**
+	 * Kezeli a konzolról kapott bemenetet.
+	 */
 	public void handleInput() {
 
         Logger.methodEntry(this);
@@ -282,6 +290,10 @@ public class Game {
         Logger.methodExit(this);
 	}
 
+	/**
+	 * Beállítja az eltelt körök számát.
+	 * @param turnCount Az érték, amelyre be szeretnénk állítani az eltelt körök számát.
+	 */
 	public void setTurnCount(int turnCount) {
 		Logger.methodEntry(this);
 		this.turnCount = turnCount;

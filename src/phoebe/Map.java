@@ -3,6 +3,10 @@ package phoebe;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Itt tárolunk minden olyan információt, amely a térképpel kapcsolatos, azaz itt tároljuk a Cellekből álló kétdimenziós tömbünket is, illetve az adott pályára vonatkozó maximális játékidőt.
+ *
+ */
 public class Map {
 
     private Cell[][] cells;
@@ -22,8 +26,8 @@ public class Map {
 	 * Megadja egy adott cellának a szomszédait adott távolságban.
 	 * @param i Cella sorkoordinátája
 	 * @param j Cella oszlopkoordinátája
-	 * @param distance A cell�t�l val� t�vols�g
-	 * @return Egy lista az adott t�vols�gban l�v� cell�kkal
+	 * @param distance A cellától való  távolság
+	 * @return Egy lista az adott távolságban lévő cellákkal
 	 */
 	public List<Cell> getNeighbours(int i, int j, int distance) {
         Logger.methodEntry(this, Integer.toString(i), Integer.toString(j), Integer.toString(distance));
@@ -45,10 +49,10 @@ public class Map {
 	}
 	
 	/**
-	 * Megadja egy adott cell�nak a szomsz�dait adott t�vols�gban.
-	 * @param cell A cella, amelynek a szomsz�dait szeretn�nk lek�rni
-	 * @param distance A cell�t�l val� t�vols�g
-	 * @return Egy lista az adott t�vols�gban l�v� cell�kkal
+	 * Megadja egy adott cellának a szomszédait adott távolságban.
+	 * @param cell A cella, amelynek a szomszédait szeretnénk lekérni
+	 * @param distance A cellától való távolság
+	 * @return Egy lista az adott távolságban lévő cellákkal
 	 */
 	public List<Cell> getNeighbours(Cell cell, int distance) {
 	    Logger.methodEntry(this, cell.toString(), Integer.toString(distance));
@@ -61,15 +65,19 @@ public class Map {
 	}
 	
 	/**
-	 * Visszaadja a megadott koordin�t�kkal rendelkez� cell�t
-	 * @param i Sorkoordin�ta
-	 * @param j Oszlopkoordin�ta
-	 * @return A megadott koordin�t�kkal rendelkez� cella
+	 * Visszaadja a megadott koordinátákkal rendelkező cellát
+	 * @param i Sorkoordináta
+	 * @param j Oszlopkoordináta
+	 * @return A megadott koordinátákkal rendelkező cella
 	 */
 	public Cell getCell(int i, int j) {
 		return this.cells[i][j];
 	}
 	
+	/**
+	 * Beállítja az adott cellát.
+	 * @param cell Erre a cellára változtatjuk az adott cellák.
+	 */
 	public void setCell(Cell cell) {
 		cells[cell.getX()][cell.getY()] = cell;
 	}

@@ -2,6 +2,10 @@ package phoebe;
 
 import java.util.HashMap;
 
+/**
+ * A játékosokat megtestesítő objektum. Minden játékos egy-egy Playernek feleltethető meg.
+ * Minden játékos pontosan egy cellán tartózkodik.
+ */
 public class Player {
 
     private int idx = -1;
@@ -16,10 +20,11 @@ public class Player {
     
     private Cell currentCell = new Cell();
         
-    /*
-     * Player konstruktora, amely egy cell�t kap.
-     * Az aktu�lis cell�t �t�ll�tja a kapott cell�ra.
-     * L�trehozza a HashMap-et, amiben t�roljuk, hogy melyik foltb�l mennyi van.
+    /**
+     * Player konstruktora, amely egy cellát kap.
+     * Az aktuális cellát átállítja a kapott cellára.
+     * Létrehozza a HashMapet, amelyben tároljuk, hogy melyik foltból mennyi van.
+     * @param cell A játékos kezdőpoziciója.
      */
     public Player(Cell cell) {
     	currentCell = cell;
@@ -28,8 +33,9 @@ public class Player {
     	storedStains.put(GlueStain.class.getName(), 3);
     }
     
-    /*
-     * Visszaadja a kezd�poz�ci�t.
+    /**
+     * Visszaadja a kezdőpoziciót.
+     * @return A kezdőpozició.
      */
     public Cell getInitialPosition() {
     	Logger.methodEntry(this);
@@ -39,8 +45,9 @@ public class Player {
     	return initialPosition;
     }
     
-    /*
-     * Kezd�poz�ci� be�ll�t�sa.
+    /**
+     * Beállítja a játékos kezdőpozicióját.
+     * @param init A játékos kezdőcellája.
      */
     public void setInitialPosition(Cell init) {
     	Logger.methodEntry(this, init.toString());
@@ -50,8 +57,9 @@ public class Player {
     	Logger.methodExit(this);
     }
     
-    /*
-     * Visszat�r azzal a cell�val, amin �ppen �ll a j�t�kos.
+    /**
+     * Visszaadja a cellát, amelyen a játékos tartózkodik.
+     * @return A játékos alatt lévő cella.
      */
     public Cell getCurrentCell() {
     	Logger.methodEntry(this);
@@ -61,16 +69,20 @@ public class Player {
     	return currentCell;
     }
     
-    /*
-     * �tl�pteti a j�t�kost a param�terk�nt �tvett cell�ra.
+    /**
+     * Egy Player konstruktor. 
+     * @param idx A játékos azonosítója.
      */
-
     public Player(int idx) {
         Logger.methodEntry(this, Integer.toString(idx));
         this.idx = idx;        
         Logger.methodExit(this);
     }
     
+    /**
+     * Átlépteti a játékost a paraméterként átvett cellára. Tehát átállítja a referenciát (currentCell).
+     * @param cell Ezen a cellán fog tartózkodni a játékos.
+     */
     public void move(Cell cell) {
         Logger.methodEntry(this, cell.toString());
         
@@ -81,8 +93,11 @@ public class Player {
         Logger.methodExit(this);
     }
     
-    /*
-     * Olaj- vagy ragacsfolt lerak�sa.
+    /**
+     * Elhelyez egy foltot az aktuális cellán, ha a foltkészlete megengedi.
+     * Mindig tehet le foltot, ha valid cellán tartózkodik, hiszen ha egy cellán elhelyezkedő foltra rálép, akkor az megszűnik.
+     * (Természetesen a cella nem lehet invalid.)
+     * @param stainType A lerakandó folt típusa. Lehet "glue" vagy "stain".
      */
     public void putStain(String stainType) {
         Logger.methodEntry(this, stainType);        
@@ -102,8 +117,8 @@ public class Player {
         Logger.methodExit(this);        
     }
     
-    /*
-     * Alaphelyzetbe �ll�tja a foltk�szletet.
+    /**
+     * A player foltkészletének alapértelmezettre állítása. 
      */
     public void resetStainCount() {
         Logger.methodEntry(this);
@@ -114,8 +129,9 @@ public class Player {
         Logger.methodExit(this);        
     }
     
-    /*
-     * Megh�vja annak a cell�nak az interact() met�dus�t, amelyiken tart�zkodik.
+    /**
+     * Reagál a kör eleje eseményre.
+     * Meghívja annak a cellának az interact() metódusát, amelyiken tartózkodik.
      */
     public void onTurnStart() {
         Logger.methodEntry(this);
@@ -125,24 +141,26 @@ public class Player {
         Logger.methodExit(this);        
     }
     
-    /*
-     * A k�r v�g�n vissza�ll�tja a mozgathat�s�got, �s a sebess�get.
-     * (Elt�vol�tja az el�z� k�rben felvett foltok hat�s�t.)
+    /**
+     * Reagál a kör vége eseményre.
+     * A player megfelelő attribútumait alaphelyzetbe állítja (például: sebesség).
      */
     public void onTurnEnd() {
         Logger.methodEntry(this);
         
-        //alaphelyzetbe �ll�tja a sebess�get
+        //alaphelyzetbe állítja a sebességét
         this.setSpeed(2);
         
-        //alaphelyzetbe �ll�tja a mozgathat�s�g�t
+        //alaphelyzetbe állítja a mozgathatóságágt
         this.setCanChangeDirection(true);
                 
         Logger.methodExit(this);        
     }
     
-    /*
-     * Megadja a kezd�pontt�l megtett t�vols�got.
+    /**
+     * Visszaadja a currentCell és initialPosition közti távot.
+     * A játék megnyerése esetén a játékosok megtett távját hasonlítjuk össze.
+     * @return A currentCell és initialPosition közti táv.
      */
     public int getDistance() {
     	Logger.methodEntry(this);
@@ -152,11 +170,9 @@ public class Player {
         return 0;
     }
     
-    /*
-     * A j�t�k �jraind�t�sa.
-     * Alaphelyzetbe �ll�tja a foltk�szletet.
-     * Enged�lyezi az ir�nyv�ltoztat�s�t.
-     * Alap�rt�kre �ll�tja a sebess�get.
+    /**
+     * A játékos egyes attribútumainak alapértékre állítása a játék újraindítása esetén.
+     * Itt állítjuk vissza a sebességét, a foltkészletét illetve hogy tud-e irányt váltani.
      */
     public void reset() {
         Logger.methodEntry(this);
@@ -175,8 +191,9 @@ public class Player {
         return super.toString();
     }
 
-    /*
-     * Visszat�r azzal, hogy a j�t�kos mozgathatja-e a robot.
+    /**
+     * Megadja, hogy a játékos tud-e irányt váltani. Azaz, hogy olajba lépett-e.
+     * @return Tud-e irányt váltani vagy nem.
      */
     public boolean isCanChangeDirection() {
     	Logger.methodEntry(this);
@@ -186,8 +203,9 @@ public class Player {
         return canChangeDirection;
     }
 
-    /*
-     * Azt �ll�tja be, hogy az adott j�t�kos tudja-e ir�ny�tani a robotot.
+    /**
+     * Beállítja, hogy a játékos tudjon-e irányt váltani.
+     * @param canChangeDirection Tudjon-e irányt váltani vagy nem.
      */
     public void setCanChangeDirection(boolean canChangeDirection) {
     	Logger.methodEntry(this);
@@ -197,8 +215,9 @@ public class Player {
         Logger.methodExit(this);
     }
 
-    /*
-     * Visszat�r a j�t�kos sebess�g�vel.
+    /**
+     * Visszatér a játékos sebességével.
+     * @return A játékos sebessége.
      */
     public int getSpeed() {
     	Logger.methodEntry(this);
@@ -208,8 +227,9 @@ public class Player {
         return speed;
     }
 
-    /*
-     * A param�terk�nt kapott �rt�ket be�ll�tja a j�t�kos sebess�g�re.
+    /**
+     * Beállítja a játékos sebességét.
+     * @param speed A játékos következő sebessége.
      */
     public void setSpeed(int speed) {
        Logger.methodEntry(this);
@@ -219,6 +239,10 @@ public class Player {
        Logger.methodExit(this);    	
     }
 
+    /**
+     * Beállítja a játékos celláját.
+     * @param cell A cella, amelyen a játékos tartózkodni fog.
+     */
     public void setCurrentCell(Cell cell) {
     	currentCell = cell;
     }

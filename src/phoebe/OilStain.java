@@ -3,8 +3,8 @@ package phoebe;
 public class OilStain extends Stain {
 
 	/**
-	 * Az OilStain interakcióját megvalósító metódus. 
-	 * A paraméterként átadott Playernek letiltja a cellaválasztó-képességét.
+	 * Az OilStain interakciÃ³jÃ¡t megvalÃ³sÃ­tÃ³ metÃ³dus. 
+	 * A paramÃ©terkÃ©nt Ã¡tadott Playernek letiltja a cellavÃ¡lasztÃ³-kÃ©pessÃ©gÃ©t.
 	 * @param player A Player, amelyre a cella hat.
 	 */
 	@Override
