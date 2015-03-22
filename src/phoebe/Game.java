@@ -109,7 +109,7 @@ public class Game {
 
 		Map tempMap = new Map(25, 19);
 
-		FileReader fileReader = new FileReader(new File("src/mapSource/map.txt"));
+		FileReader fileReader = new FileReader(new File("phoebe/map.txt"));
 		BufferedReader buffReader = new BufferedReader(fileReader);
 
 		String line = new String();
