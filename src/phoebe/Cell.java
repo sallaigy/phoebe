@@ -12,23 +12,11 @@ public class Cell {
 
 	private GameObject gameObject;
 
-	public Cell(int i, int j, CellType cellType) {
+	public Cell(int i, int j, CellType cellType, Player player, GameObject gameObject) {
 		this.i = i;
 		this.j = j;
 		this.cellType = cellType;
-	}
-
-	public Cell(int i, int j, Player player) {
-		this.i = i;
-		this.j = j;
-		this.cellType = CellType.CELL_VALID;
 		this.player = player;
-	}
-
-	public Cell(int i, int j, GameObject gameObject) {
-		this.i = i;
-		this.j = j;
-		this.cellType = CellType.CELL_VALID;
 		this.gameObject = gameObject;
 	}
 
