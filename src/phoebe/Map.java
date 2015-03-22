@@ -74,6 +74,10 @@ public class Map {
 		return this.cells[i][j];
 	}
 	
+	public void setCell(Cell cell) {
+		cells[cell.getI()][cell.getJ()] = cell;
+	}
+	
 	
 	
 }
