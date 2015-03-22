@@ -4,17 +4,17 @@ import java.util.HashMap;
 
 public class Player {
 
-    private int idx;
+    private int idx = -1;
     
-    private Cell initialPosition;
+    private Cell initialPosition = new Cell();
     
     private boolean canChangeDirection = true;
     
-    private int speed;
+    private int speed = 2;
     
     private HashMap<String, Integer> storedStains = new HashMap<String, Integer>();
     
-    private Cell currentCell;
+    private Cell currentCell = new Cell();
         
     /*
      * Player konstruktora, amely egy cell�t kap.
@@ -66,7 +66,7 @@ public class Player {
      */
 
     public Player(int idx) {
-        Logger.methodEntry(this, Integer.toString(idx), initialPosition.toString());
+        Logger.methodEntry(this, Integer.toString(idx));
         this.idx = idx;        
         Logger.methodExit(this);
     }
@@ -120,7 +120,7 @@ public class Player {
     public void onTurnStart() {
         Logger.methodEntry(this);
         
-        getCurrentCell().interact();
+        this.getCurrentCell().interact();
                 
         Logger.methodExit(this);        
     }

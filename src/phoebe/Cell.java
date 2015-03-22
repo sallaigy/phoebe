@@ -2,9 +2,9 @@ package phoebe;
 
 public class Cell {
 	
-	private int i;
+	private int x;
 	
-	private int j;
+	private int y;
 	
 	private CellType cellType;
 	
@@ -14,25 +14,32 @@ public class Cell {
 	
 	/**
 	 * A Cella oszt�ly konstruktora.
- 	 * @param i Sorkoordin�ta
-	 * @param j Oszlopkoordin�ta
+ 	 * @param x Sorkoordin�ta
+	 * @param y Oszlopkoordin�ta
 	 * @param cellType Cell�nak a t�pusa
 	 */
-	public Cell(int i, int j, CellType cellType, Player player, GameObject gameObject) {
-		this.i = i;
-		this.j = j;
+	public Cell(int x, int y, CellType cellType, Player player, GameObject gameObject) {
+		this.x = x;
+		this.y = y;
 		this.cellType = cellType;
 		this.player = player;
 		this.gameObject = gameObject;
 	}
 	
-	/**
+	public Cell() {
+	    // nop
+    }
+
+    /**
 	 * A cella interakci�j�t v�gz� met�dus. Megh�vja a rajta elhelyezked� GameObject met�dus�t a rajta l�v�
 	 * Player param�terrel.
 	 */
 	public void interact() {
         Logger.methodEntry(this);
-        gameObject.interact(player);
+        
+        if (null != this.gameObject) {
+            this.gameObject.interact(player);
+        }
         Logger.methodExit(this);
 	}
 
@@ -60,12 +67,17 @@ public class Cell {
         this.gameObject = gameObject;
     }
     
-    public int getI() {
-    	return i;
+    public int getX() {
+    	return x;
     }
     
-    public int getJ() {
-    	return j;
+    public int getY() {
+    	return y;
+    }
+    
+    @Override
+    public String toString() {
+        return "[" + this.getClass().getName() + "](i=" + this.x + ",j=" + this.y + ")";
     }
 
 }

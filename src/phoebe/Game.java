@@ -45,6 +45,12 @@ public class Game {
 		    this.beginTurn();
 		    this.handleInput();
 		    this.endTurn();
+		    
+		    if (this.currentPlayerIdx == this.players.size() - 1) {
+		        this.currentPlayerIdx = 0;
+		    } else {
+		        this.currentPlayerIdx++;
+		    }
 		}
 		
 		Logger.methodExit(this);
@@ -90,39 +96,50 @@ public class Game {
 	public void loadMap() throws IOException {
 		Logger.methodEntry(this);
 
-		Map tempMap = new Map(24, 19);
+		Map tempMap = new Map(25, 19);
 
 		FileReader fileReader = new FileReader(new File("src/mapSource/map.txt"));
 		BufferedReader buffReader = new BufferedReader(fileReader);
 
 		String line = new String();
-		for(int i = 0; i<24; i++) {
-			if ((line = buffReader.readLine()) != null) {
-				
-				String[] splitLine = line.split("\t");
-				
-				for(int j = 0; j<splitLine.length; j++) {
-					
-					int cellProperty = Integer.parseInt(splitLine[j]);
-								
-					switch(cellProperty) {
-						case 0: tempMap.setCell(new Cell(i, j, CellType.CELL_INVALID, null, null)); break;
-						case 1: tempMap.setCell(new Cell(i, j, CellType.CELL_VALID, null, null)); break;
-						case 2: tempMap.setCell(new Cell(i, j, CellType.CELL_VALID, null, new OilStain())); break;
-						case 3: tempMap.setCell(new Cell(i, j, CellType.CELL_VALID, null, new GlueStain())); break;
-						case 4: Cell cell = new Cell(i, j, CellType.CELL_VALID, players.get(0), null);
-								tempMap.setCell(cell);
-								players.get(0).setInitialPosition(cell);
-								break;
-						case 5: cell = new Cell(i, j, CellType.CELL_VALID, players.get(1), null);
-								tempMap.setCell(cell);
-								players.get(1).setInitialPosition(cell);
-								break;
-					default: tempMap.setCell(new Cell(i, j, CellType.CELL_VALID, null, null));
-					
-					}
-				}
-			}
+		int i = 0;
+		while ((line = buffReader.readLine()) != null) {
+		    String[] splitLine = line.split("\t");
+            
+            for (int j = 0; j < splitLine.length; j++) {                
+                int cellProperty = Integer.parseInt(splitLine[j]);
+                            
+                switch(cellProperty) {
+                    case 0:
+                        tempMap.setCell(new Cell(i, j, CellType.CELL_INVALID, null, null));
+                        break;
+                    case 1:
+                        tempMap.setCell(new Cell(i, j, CellType.CELL_VALID, null, null));
+                        break;
+                    case 2:
+                        tempMap.setCell(new Cell(i, j, CellType.CELL_VALID, null, new OilStain()));
+                        break;
+                    case 3:
+                        tempMap.setCell(new Cell(i, j, CellType.CELL_VALID, null, new GlueStain()));
+                        break;
+                    case 4:
+                        Cell cell = new Cell(i, j, CellType.CELL_VALID, players.get(0), null);
+                        tempMap.setCell(cell);
+                        players.get(0).setInitialPosition(cell);
+                        players.get(0).setCurrentCell(cell);
+                        break;
+                    case 5: cell = new Cell(i, j, CellType.CELL_VALID, players.get(1), null);
+                        tempMap.setCell(cell);
+                        players.get(1).setInitialPosition(cell);
+                        players.get(1).setCurrentCell(cell);
+                        break;
+                    default:
+                        tempMap.setCell(new Cell(i, j, CellType.CELL_VALID, null, null));
+                        break;
+                }
+            }
+            
+            i++;
 		}
 
 		buffReader.close();
@@ -140,19 +157,21 @@ public class Game {
 		Logger.methodEntry(this);
 
 		for (Player player : players) {
-			
 			player.onTurnEnd();
 			
 			Cell currCell = player.getCurrentCell();
-			if(currCell.getCellType() == CellType.CELL_INVALID) {
+			if (currCell.getCellType() == CellType.CELL_INVALID || currCell.getX() < 0 || currCell.getY() < 0) {
 				System.out.println(player + " lost the game.");
+				System.exit(0);
 			}
 		}
 		
-		if(turnCount == maxTurns) {
-			if(players.get(0).getDistance() > players.get(1).getDistance()) {
+		if (turnCount == maxTurns) {
+			if (players.get(0).getDistance() > players.get(1).getDistance()) {
 				System.out.println("Player1 won the game.");
-			} else System.out.println("Player2 won the game.");
+			} else {
+			    System.out.println("Player2 won the game.");
+			}
 		}
 		
 		Logger.methodExit(this);        
@@ -187,38 +206,38 @@ public class Game {
         
         List<Cell> neighbours = this.map.getNeighbours(current.getCurrentCell(), current.getSpeed());
         
-        int i = 0, j = 0, distance = 0;
+        int y = 0, x = 0, distance = 0;
         
-        i = current.getCurrentCell().getI();
-        j = current.getCurrentCell().getJ();
+        y = current.getCurrentCell().getY();
+        x = current.getCurrentCell().getX();
         distance = current.getSpeed();
         
         while (!next) {            
             try {
+                System.out.println(String.format("Jelenleg a (%d, %d) cellán állsz.", x, y));
                 System.out.println("Hova lép? (W/NW/N/NE/E/SE/S/SW)");
                 res = reader.readLine();
-                next = true;
                 
                 if (res.equals("W")) {
-                    i -= distance;
+                    y += distance;
                 } else if (res.equals("NW")) {
-                    i -= distance;
-                    j += distance;
+                    y += distance;
+                    x -= distance;
                 } else if (res.equals("N")) {
-                    j += distance;
+                    x -= distance;
                 } else if (res.equals("NE")) {
-                    i += distance;
-                    j += distance;
+                    y -= distance;
+                    x -= distance;
                 } else if (res.equals("E")) {
-                    i += distance;
+                    y -= distance;
                 } else if (res.equals("SE")) {
-                    i += distance;
-                    j -= distance;
+                    y -= distance;
+                    x += distance;
                 } else if (res.equals("S")) {
-                    j -= distance;
+                    x += distance;
                 } else if (res.equals("SW")) {
-                    i -= distance;
-                    j -= distance;
+                    y += distance;
+                    x += distance;
                 } else {
                     System.out.println("Érvénytelen irány");
                 }                
@@ -228,7 +247,7 @@ public class Game {
             }
             
             for (Cell cell : neighbours) {
-                if (cell.getI() == i && cell.getJ() == j && cell.getPlayer() == null) {
+                if (cell.getX() == x && cell.getY() == y && cell.getPlayer() == null) {
                     current.move(cell);
                     next = true;
                 }

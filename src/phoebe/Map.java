@@ -14,12 +14,7 @@ public class Map {
      */
     public Map(int k, int n) {
         Logger.methodEntry(this, Integer.toString(k), Integer.toString(n));
-    	for (int i = 0; i < k; ++i) {
-    		for (int j = 0; j < n; ++j) {
-    			cells[i][j] = new Cell(i, j, CellType.CELL_VALID, null, null);
-    		}
-    	}
-    	
+    	cells = new Cell[k][n];    	
     	Logger.methodExit(this);
     }
     
@@ -38,8 +33,9 @@ public class Map {
 		List<Cell> results = new ArrayList<Cell>();
 	    for (int k = -distance; k <= distance; ++k) {
 	    	for (int l = -distance; l <= distance; ++l) {
-	    		if (k == 0 || l == 0 || k == l || k + l == 0) 
-	    		results.add(cells[i + k][j + l]);
+	    		if (k == 0 || l == 0 || k == l || k + l == 0) {
+	    		    results.add(cells[i + k][j + l]);
+	    		}
 	    	}
 	    }		
 	    results.remove(cells[i][j]);
@@ -58,7 +54,7 @@ public class Map {
 	    Logger.methodEntry(this, cell.toString(), Integer.toString(distance));
 
 		List<Cell> results = new ArrayList<Cell>();
-		results = getNeighbours(cell.getI(), cell.getJ(), distance);
+		results = getNeighbours(cell.getX(), cell.getY(), distance);
 		
 		Logger.methodExit(this);
 		return results;
@@ -75,7 +71,7 @@ public class Map {
 	}
 	
 	public void setCell(Cell cell) {
-		cells[cell.getI()][cell.getJ()] = cell;
+		cells[cell.getX()][cell.getY()] = cell;
 	}
 	
 }
