@@ -3,8 +3,8 @@ package phoebe;
 public class GlueStain extends Stain {
 
 	/**
-	 * A GlueStain interakcióját megvalósító metódus. 
-	 * A paraméterként átadott Player sebességét beállítja 1-re.
+	 * A GlueStain interakciï¿½jï¿½t megvalï¿½sï¿½tï¿½ metï¿½dus. 
+	 * A paramï¿½terkï¿½nt ï¿½tadott Player sebessï¿½gï¿½t beï¿½llï¿½tja 1-re.
 	 * @param player A Player, amelyre a cella hat.
 	 */
 	@Override
