@@ -3,14 +3,16 @@ package phoebe;
 public class OilStain extends Stain {
 
 	/**
-	 * Az OilStain interakcióját megvalósító metódus. 
-	 * A paraméterként átadott Playernek letiltja a cellaválasztó-képességét.
+	 * Az OilStain interakciï¿½jï¿½t megvalï¿½sï¿½tï¿½ metï¿½dus. 
+	 * A paramï¿½terkï¿½nt ï¿½tadott Playernek letiltja a cellavï¿½lasztï¿½-kï¿½pessï¿½gï¿½t.
 	 * @param player A Player, amelyre a cella hat.
 	 */
 	@Override
 	public void interact(Player player) {
         Logger.methodEntry(this, player.toString());
+
         player.setCanChangeDirection(false);
+
         Logger.methodExit(this);
 	}
 

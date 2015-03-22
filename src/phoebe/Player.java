@@ -31,11 +31,7 @@ public class Player {
     /*
      * Visszaadja a kezd�poz�ci�t.
      */
-    public Cell getInitialPosition() {
-    	Logger.methodEntry(this);
-    	
-    	Logger.methodExit(this);
-    	
+    public Cell getInitialPosition() {    	
     	return initialPosition;
     }
     
@@ -53,11 +49,7 @@ public class Player {
     /*
      * Visszat�r azzal a cell�val, amin �ppen �ll a j�t�kos.
      */
-    public Cell getCurrentCell() {
-    	Logger.methodEntry(this);
-    	
-    	Logger.methodExit(this);
-    	
+    public Cell getCurrentCell() {    	
     	return currentCell;
     }
     
@@ -74,9 +66,10 @@ public class Player {
     public void move(Cell cell) {
         Logger.methodEntry(this, cell.toString());
         
-        currentCell = cell;
+        this.currentCell.setPlayer(null);
         
-        currentCell.setPlayer(this);
+        this.currentCell = cell;
+        this.currentCell.setPlayer(this);
                 
         Logger.methodExit(this);
     }
@@ -87,13 +80,13 @@ public class Player {
     public void putStain(String stainType) {
         Logger.methodEntry(this, stainType);        
         
-        if(stainType.equals("glue")) {
+        if(stainType.equals(GlueStain.class.getName())) {
         	GlueStain glueStain = new GlueStain();
         	
         	getCurrentCell().setGameObject(glueStain);
         }
         
-        if(stainType.equals("oil")) {
+        if(stainType.equals(OilStain.class.getName())) {
         	OilStain oilStain = new OilStain();
         	
         	getCurrentCell().setGameObject(oilStain);
@@ -145,11 +138,10 @@ public class Player {
      * Megadja a kezd�pontt�l megtett t�vols�got.
      */
     public int getDistance() {
-    	Logger.methodEntry(this);
-    	
-    	Logger.methodExit(this); 
-    	
-        return 0;
+        return 
+                Math.abs(this.initialPosition.getX() - this.currentCell.getX())
+                    +
+                Math.abs(this.initialPosition.getY() - this.currentCell.getY());
     }
     
     /*
@@ -172,17 +164,13 @@ public class Player {
     
     @Override
     public String toString() {
-        return super.toString();
+        return "[" + this.getClass().getName() + "](id=" + this.idx + ")";
     }
 
     /*
      * Visszat�r azzal, hogy a j�t�kos mozgathatja-e a robot.
      */
-    public boolean isCanChangeDirection() {
-    	Logger.methodEntry(this);
-    	
-    	Logger.methodExit(this);
-    	
+    public boolean isCanChangeDirection() {    	
         return canChangeDirection;
     }
 
@@ -190,7 +178,7 @@ public class Player {
      * Azt �ll�tja be, hogy az adott j�t�kos tudja-e ir�ny�tani a robotot.
      */
     public void setCanChangeDirection(boolean canChangeDirection) {
-    	Logger.methodEntry(this);
+    	Logger.methodEntry(this, Boolean.toString(canChangeDirection));
     	
     	this.canChangeDirection = canChangeDirection;
         
@@ -200,19 +188,15 @@ public class Player {
     /*
      * Visszat�r a j�t�kos sebess�g�vel.
      */
-    public int getSpeed() {
-    	Logger.methodEntry(this);
-    	
-    	Logger.methodExit(this);
-    	
-        return speed;
+    public int getSpeed() {    	
+        return this.speed;
     }
 
     /*
      * A param�terk�nt kapott �rt�ket be�ll�tja a j�t�kos sebess�g�re.
      */
     public void setSpeed(int speed) {
-       Logger.methodEntry(this);
+       Logger.methodEntry(this, Integer.toString(speed));
        
        this.speed = speed;
        
@@ -221,5 +205,9 @@ public class Player {
 
     public void setCurrentCell(Cell cell) {
     	currentCell = cell;
+    }
+    
+    public int getIdx() {
+        return this.idx;
     }
 }

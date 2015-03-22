@@ -77,7 +77,7 @@ public class Cell {
     
     @Override
     public String toString() {
-        return "[" + this.getClass().getName() + "](i=" + this.x + ",j=" + this.y + ")";
+        return "[" + this.getClass().getName() + "](x=" + this.x + "," + "y=" + this.y + ")";
     }
 
 }
