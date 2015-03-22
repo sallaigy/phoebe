@@ -8,26 +8,30 @@ public class Map {
     private Cell[][] cells;
     
     /**
-     * A Map osztály konstruktora
-     * @param k A mátrix sorainak a száma
-     * @param n A mátrix oszlopainak a száma
+     * A Map osztÃ¡ly konstruktora
+     * @param k A mÃ¡trix sorainak a szÃ¡ma
+     * @param n A mÃ¡trix oszlopainak a szÃ¡ma
      */
     public Map(int k, int n) {
+        Logger.methodEntry(this, Integer.toString(k), Integer.toString(n));
     	for (int i = 0; i < k; ++i) {
     		for (int j = 0; j < n; ++j) {
     			cells[i][j] = new Cell(i, j, CellType.CELL_VALID, null, null);
     		}
     	}
+    	
+    	Logger.methodExit(this);
     }
     
 	/**
-	 * Megadja egy adott cellának a szomszédait adott távolságban.
-	 * @param i Cella sorkoordinátája
-	 * @param j Cella oszlopkoordinátája
-	 * @param distance A cellától való távolság
-	 * @return Egy lista az adott távolságban lévõ cellákkal
+	 * Megadja egy adott cellÃ¡nak a szomszÃ©dait adott tÃ¡volsÃ¡gban.
+	 * @param i Cella sorkoordinÃ¡tÃ¡ja
+	 * @param j Cella oszlopkoordinÃ¡tÃ¡ja
+	 * @param distance A cellï¿½tï¿½l valï¿½ tï¿½volsï¿½g
+	 * @return Egy lista az adott tï¿½volsï¿½gban lï¿½vï¿½ cellï¿½kkal
 	 */
 	public List<Cell> getNeighbours(int i, int j, int distance) {
+        Logger.methodEntry(this, Integer.toString(i), Integer.toString(j), Integer.toString(distance));
 	    if (distance < 0 || distance > 2) {
 	    	throw new IllegalArgumentException();
 	    }
@@ -39,29 +43,36 @@ public class Map {
 	    	}
 	    }		
 	    results.remove(cells[i][j]);
+	    
+        Logger.methodExit(this);
 		return results;
 	}
 	
 	/**
-	 * Megadja egy adott cellának a szomszédait adott távolságban.
-	 * @param cell A cella, amelynek a szomszédait szeretnénk lekérni
-	 * @param distance A cellától való távolság
-	 * @return Egy lista az adott távolságban lévõ cellákkal
+	 * Megadja egy adott cellï¿½nak a szomszï¿½dait adott tï¿½volsï¿½gban.
+	 * @param cell A cella, amelynek a szomszï¿½dait szeretnï¿½nk lekï¿½rni
+	 * @param distance A cellï¿½tï¿½l valï¿½ tï¿½volsï¿½g
+	 * @return Egy lista az adott tï¿½volsï¿½gban lï¿½vï¿½ cellï¿½kkal
 	 */
 	public List<Cell> getNeighbours(Cell cell, int distance) {
+	    Logger.methodEntry(this, cell.toString(), Integer.toString(distance));
+
 		List<Cell> results = new ArrayList<Cell>();
 		results = getNeighbours(cell.getI(), cell.getJ(), distance);
+		
+		Logger.methodExit(this);
 		return results;
 	}
 	
 	/**
-	 * Visszaadja a megadott koordinátákkal rendelkezõ cellát
-	 * @param i Sorkoordináta
-	 * @param j Oszlopkoordináta
-	 * @return A megadott koordinátákkal rendelkezõ cella
+	 * Visszaadja a megadott koordinï¿½tï¿½kkal rendelkezï¿½ cellï¿½t
+	 * @param i Sorkoordinï¿½ta
+	 * @param j Oszlopkoordinï¿½ta
+	 * @return A megadott koordinï¿½tï¿½kkal rendelkezï¿½ cella
 	 */
 	public Cell getCell(int i, int j) {
 		return this.cells[i][j];
 	}
+	
 	
 }
