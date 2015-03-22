@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * A játék logikáját tartalmazó osztály.
@@ -26,10 +27,13 @@ public class Game {
 	
 	private boolean shouldQuit = false;
 	
+	private Random rand = new Random();
+	
 	/**
 	 * Jelzi a játék indulását, hatására felépül a pálya és megkezdődik az első kör.
 	 * A játék ebben az állapotban marad újraindításig és kilépésig.
 	 */
+
 	public void start() {
 		Logger.methodEntry(this);
 		
@@ -100,7 +104,7 @@ public class Game {
 	 * Az egyes számok egyes cellatípusoknak felelnek meg.
 	 * @throws IOException
 	 */
-	public void loadMap() throws IOException {
+	protected void loadMap() throws IOException {
 		Logger.methodEntry(this);
 
 		Map tempMap = new Map(25, 19);
@@ -179,6 +183,18 @@ public class Game {
 			}
 		}
 		
+		System.out.println("Újraindítja a játékot?(Y/N)");
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		try {
+            String s = br.readLine();
+            if (s.equals("Y")) {
+                reset();
+            }
+        } catch (IOException e) {
+            
+            e.printStackTrace();
+        }
+		
 		Logger.methodExit(this);        
 	}
 
@@ -211,18 +227,29 @@ public class Game {
         String res;        
 
         Player current = this.players.get(this.currentPlayerIdx);
-        
         List<Cell> neighbours = this.map.getNeighbours(current.getCurrentCell(), current.getSpeed());
         
+        Cell nextCell = new Cell();
         int y = 0, x = 0, distance = 0;
         
+        if (!current.isCanChangeDirection()) { // Nem léphet
+            int index = this.rand.nextInt(neighbours.size());
+            Cell cell = neighbours.get(index);
+            
+            System.out.println(String.format("Olajfolt, az új pozíciód: (%d, %d)", cell.getX(), cell.getY()));
+            
+            current.move(cell);
+            
+            return;
+        }
+       
         y = current.getCurrentCell().getY();
         x = current.getCurrentCell().getX();
         distance = current.getSpeed();
         
-        while (!next) {            
+        while (!next) {
             try {
-                System.out.println(String.format("Jelenleg a (%d, %d) cellán állsz.", x, y));
+                System.out.println(String.format("%d: Jelenleg a (%d, %d) cellán állsz. Sebességed: %d", current.getIdx(), x, y, current.getSpeed()));
                 System.out.println("Hova lép? (W/NW/N/NE/E/SE/S/SW)");
                 res = reader.readLine();
                 
@@ -256,12 +283,13 @@ public class Game {
             
             for (Cell cell : neighbours) {
                 if (cell.getX() == x && cell.getY() == y && cell.getPlayer() == null) {
-                    current.move(cell);
                     next = true;
+                    nextCell = cell;
                 }
             }
-
-        }
+       }
+        
+        System.out.println(String.format("Az új pozíció: (%d, %d) lesz.", nextCell.getX(), nextCell.getY()));
         
         next = false;
         
@@ -272,11 +300,11 @@ public class Game {
                 
                 next = true;
                 if (res.equals("O")) {
-                    this.players.get(this.currentPlayerIdx).putStain("O");
+                    this.players.get(this.currentPlayerIdx).putStain(OilStain.class.getName());
                 } else if (res.equals("G")) {
-                    this.players.get(this.currentPlayerIdx).putStain("G");                    
+                    this.players.get(this.currentPlayerIdx).putStain(GlueStain.class.getName());                    
                 } else if (res.equals("N")) {
-                    this.players.get(this.currentPlayerIdx).putStain("N");                    
+                    // nope
                 } else {
                     System.out.println("Érvénytelen folt");
                     next = false;
@@ -286,6 +314,8 @@ public class Game {
                 next = false;
             }
         }
+        
+        current.move(nextCell);
         
         Logger.methodExit(this);
 	}
