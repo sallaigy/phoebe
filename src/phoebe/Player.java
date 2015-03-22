@@ -82,5 +82,13 @@ public class Player {
     public void setCurrentCell(Cell cell) {
     	currentCell = cell;
     }
+
+	public Cell getInitialPosition() {
+		return initialPosition;
+	}
+
+	public void setInitialPosition(Cell initialPosition) {
+		this.initialPosition = initialPosition;
+	}
     
 }

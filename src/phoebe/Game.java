@@ -21,14 +21,17 @@ public class Game {
 		Logger.methodExit(this);
 	}
 	/**
-	 * Start again the game: setting the played turns to 0, reloading the map, and reset player attributes.
+	 * - Start again the game
+	 * 		-- setting the turns count to 0
+	 * 		-- reloading the map
+	 * 		-- reset player attributes.
 	 */
 	public void reset() {
 		Logger.methodEntry(this);
 		
 		setTurnCount(0);
 		try {
-			loadMap();
+			this.loadMap();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -40,17 +43,25 @@ public class Game {
 		Logger.methodExit(this);		
 	}
 
+	/**
+	 * - Close the game
+	 */
 	public void quit() {
 		Logger.methodEntry(this);
 		Logger.methodExit(this);
 		System.exit(0);
 	}
-
+	/**
+	 * - Loading the map from file
+	 * - Based on the single string values(0,1,2,etc..), we create the corresponding cells
+	 * - Size of the map is hard coded
+	 * @throws IOException
+	 */
 	public void loadMap() throws IOException {
 		Logger.methodEntry(this);
 
 		Map tempMap = new Map(24, 19);
-		//24 * 19
+
 		FileReader fileReader = new FileReader(new File("src/mapSource/map.txt"));
 		BufferedReader buffReader = new BufferedReader(fileReader);
 
@@ -69,8 +80,14 @@ public class Game {
 						case 1: tempMap.setCell(new Cell(i, j, CellType.CELL_VALID, null, null)); break;
 						case 2: tempMap.setCell(new Cell(i, j, CellType.CELL_VALID, null, new OilStain())); break;
 						case 3: tempMap.setCell(new Cell(i, j, CellType.CELL_VALID, null, new GlueStain())); break;
-						case 4: tempMap.setCell(new Cell(i, j, CellType.CELL_VALID, players.get(0), null)); break;
-						case 5: tempMap.setCell(new Cell(i, j, CellType.CELL_VALID, players.get(0), null)); break;
+						case 4: Cell cell = new Cell(i, j, CellType.CELL_VALID, players.get(0), null);
+								tempMap.setCell(cell);
+								players.get(0).setInitialPosition(cell);
+								break;
+						case 5: cell = new Cell(i, j, CellType.CELL_VALID, players.get(1), null);
+								tempMap.setCell(cell);
+								players.get(1).setInitialPosition(cell);
+								break;
 					default: tempMap.setCell(new Cell(i, j, CellType.CELL_VALID, null, null));
 					
 					}
@@ -101,15 +118,13 @@ public class Game {
 				System.out.println(player + " lost the game.");
 			}
 		}
-
+		
 		if(turnCount == maxTurns) {
 			if(players.get(0).getDistance() > players.get(1).getDistance()) {
 				System.out.println("Player1 won the game.");
 			} else System.out.println("Player2 won the game.");
 		}
 		
-		
-
 		Logger.methodExit(this);        
 	}
 
