@@ -13,10 +13,10 @@ public class Cell {
 	private GameObject gameObject;
 	
 	/**
-	 * A Cella osztály konstruktora.
- 	 * @param i Sorkoordináta
-	 * @param j Oszlopkoordináta
-	 * @param cellType Cellának a típusa
+	 * A Cella osztï¿½ly konstruktora.
+ 	 * @param i Sorkoordinï¿½ta
+	 * @param j Oszlopkoordinï¿½ta
+	 * @param cellType Cellï¿½nak a tï¿½pusa
 	 */
 	public Cell(int i, int j, CellType cellType, Player player, GameObject gameObject) {
 		this.i = i;
@@ -27,8 +27,8 @@ public class Cell {
 	}
 	
 	/**
-	 * A cella interakcióját végzõ metódus. Meghívja a rajta elhelyezkedõ GameObject metódusát a rajta lévõ
-	 * Player paraméterrel.
+	 * A cella interakciï¿½jï¿½t vï¿½gzï¿½ metï¿½dus. Meghï¿½vja a rajta elhelyezkedï¿½ GameObject metï¿½dusï¿½t a rajta lï¿½vï¿½
+	 * Player paramï¿½terrel.
 	 */
 	public void interact() {
         Logger.methodEntry(this);

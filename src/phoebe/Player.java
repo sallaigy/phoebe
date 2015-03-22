@@ -209,5 +209,8 @@ public class Player {
        
        Logger.methodExit(this);    	
     }
-    
+
+    public void setCurrentCell(Cell cell) {
+    	currentCell = cell;
+    }
 }
