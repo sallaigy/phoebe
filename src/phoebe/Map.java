@@ -78,6 +78,4 @@ public class Map {
 		cells[cell.getI()][cell.getJ()] = cell;
 	}
 	
-	
-	
 }

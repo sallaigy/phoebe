@@ -4,6 +4,8 @@ import java.util.HashMap;
 
 public class Player {
 
+    private int idx;
+    
     private Cell initialPosition;
     
     private boolean canChangeDirection = true;
@@ -62,6 +64,13 @@ public class Player {
     /*
      * �tl�pteti a j�t�kost a param�terk�nt �tvett cell�ra.
      */
+
+    public Player(int idx) {
+        Logger.methodEntry(this, Integer.toString(idx), initialPosition.toString());
+        this.idx = idx;        
+        Logger.methodExit(this);
+    }
+    
     public void move(Cell cell) {
         Logger.methodEntry(this, cell.toString());
         
