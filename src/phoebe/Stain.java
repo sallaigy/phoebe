@@ -6,12 +6,16 @@ package phoebe;
  */
 public abstract class Stain implements GameObject {
 
+	private boolean visible = false;
+	protected int eventCount;
+		
 	/**
 	 * Absztrakt metódus az egyes Stain-ek interakcióira.
 	 * @param A Player, amelyre a cella hat.
 	 */
 	public abstract void interact(Player player);
-
-	public abstract String ToString();
+	public abstract void onTurnStart();
+	public abstract void onTurnEnd();
+	public abstract String toString();
 
 }

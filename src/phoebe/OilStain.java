@@ -16,8 +16,20 @@ public class OilStain extends Stain {
 	}
 
 	@Override
-	public String ToString() {
+	public String toString() {
 		return "OilStain";
+	}
+
+	@Override
+	public void onTurnStart() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onTurnEnd() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

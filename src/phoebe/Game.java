@@ -64,7 +64,6 @@ public class Game {
 		        this.currentPlayerIdx++;
 		    }
 		}
-		
 		Logger.methodExit(this);
 	}
 	/**
@@ -109,7 +108,7 @@ public class Game {
 
 		Map tempMap = new Map(25, 19);
 
-		FileReader fileReader = new FileReader(new File("phoebe/map.txt"));
+		FileReader fileReader = new FileReader(new File("src/phoebe/map.txt"));
 		BufferedReader buffReader = new BufferedReader(fileReader);
 
 		String line = new String();
@@ -152,7 +151,6 @@ public class Game {
             
             i++;
 		}
-
 		buffReader.close();
 		map = tempMap;
 		Logger.methodExit(this);
@@ -170,16 +168,24 @@ public class Game {
 			
 			Cell currCell = player.getCurrentCell();
 			if (currCell.getCellType() == CellType.CELL_INVALID || currCell.getX() < 0 || currCell.getY() < 0) {
-				System.out.println(player + " lost the game.");
+				if (player == players.get(0)) 
+					printOutcome(players.get(1).getClass().getSimpleName() + " " + players.get(1).getIdx());
+				else printOutcome(players.get(0).getClass().getSimpleName() + " " + players.get(0).getIdx());
 				System.exit(0);
 			}
 		}
 		
 		if (turnCount == maxTurns) {
+			Player winner = null;
 			if (players.get(0).getDistance() > players.get(1).getDistance()) {
-				System.out.println("Player1 won the game.");
+				winner = players.get(0);
 			} else {
-			    System.out.println("Player2 won the game.");
+			    winner = players.get(1);  
+			} 
+			if(winner == null)
+				printOutcome("Draw");
+			else {
+				printOutcome(winner.getClass().getSimpleName() + " "+ winner.getIdx());
 			}
 		}
 		
@@ -191,7 +197,6 @@ public class Game {
                 reset();
             }
         } catch (IOException e) {
-            
             e.printStackTrace();
         }
 		
@@ -251,6 +256,7 @@ public class Game {
             try {
                 System.out.println(String.format("%d: Jelenleg a (%d, %d) cellán állsz. Sebességed: %d", current.getIdx(), x, y, current.getSpeed()));
                 System.out.println("Hova lép? (W/NW/N/NE/E/SE/S/SW)");
+                
                 res = reader.readLine();
                 
                 if (res.equals("W")) {
@@ -328,6 +334,16 @@ public class Game {
 		Logger.methodEntry(this);
 		this.turnCount = turnCount;
 		Logger.methodExit(this);
+	}
+	
+	public void printOutcome(String outcome) {
+		String output = String.format("%s %d: Distance - %d; %s %d: Distance - %d; Winner: %s",
+				players.get(0).getClass().getSimpleName(), players.get(0).getIdx(),
+				players.get(0).getDistance(),
+				players.get(1).getClass().getSimpleName(), players.get(1).getIdx(),
+				players.get(1).getDistance(),
+				outcome);
+		System.out.println(output);
 	}
 
 

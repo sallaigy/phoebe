@@ -11,12 +11,28 @@ public class GlueStain extends Stain {
 	public void interact(Player player) {
         Logger.methodEntry(this);
         player.setSpeed(1);
+        eventCount--;
+        if (eventCount == 0) {
+        	//Leszedjük
+        }
         Logger.methodExit(this);
 	}
 	
 	@Override
-	public String ToString() {
+	public String toString() {
 		return "GlueStain";
+	}
+
+	@Override
+	public void onTurnStart() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onTurnEnd() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

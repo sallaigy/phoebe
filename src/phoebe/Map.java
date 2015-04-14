@@ -65,6 +65,19 @@ public class Map {
 	}
 	
 	/**
+	 * Térkép kirajzolása
+	 * Cella printCell() metódusa visszaadja a megfelelő Stringet
+	 */
+	public void printMap() {
+		for (int i = 0; i < cells.length; i++) {
+			for (int j = 0; j < cells[i].length; j++) {
+				System.out.print(cells[i][j].printCell() + "\t");
+			}
+			System.out.print("\n");
+		}
+	}
+	
+	/**
 	 * Visszaadja a megadott koordinátákkal rendelkező cellát
 	 * @param i Sorkoordináta
 	 * @param j Oszlopkoordináta
