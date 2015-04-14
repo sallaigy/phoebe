@@ -12,5 +12,6 @@ public interface GameObject {
 	 * @param player A Player, amelyre a játékobjektum hat.
 	 */
 	public void interact(Player player);
+	public String toString();
 	
 }

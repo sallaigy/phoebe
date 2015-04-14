@@ -13,5 +13,10 @@ public class GlueStain extends Stain {
         player.setSpeed(1);
         Logger.methodExit(this);
 	}
+	
+	@Override
+	public String ToString() {
+		return "GlueStain";
+	}
 
 }

@@ -15,4 +15,9 @@ public class OilStain extends Stain {
         Logger.methodExit(this);
 	}
 
+	@Override
+	public String ToString() {
+		return "OilStain";
+	}
+
 }

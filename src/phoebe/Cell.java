@@ -84,8 +84,11 @@ public class Cell {
     }
     
     @Override
-    public String toString() {
-        return "[" + this.getClass().getName() + "](x=" + this.x + "," + "y=" + this.y + ")";
+    public String toString() { 
+    	String gameObjectString = new String();
+    	gameObjectString = gameObject == null ? "NULL": gameObject.toString();
+        //return this.getClass().getName() + "(" + this.x + ", "+ this.y + ")" + " GameObject:" + gameObjectString;
+        return String.format("%s (%d, %d) GameObject: %s", this.getClass().getName(), this.x, this.y, gameObjectString);
     }
 
 }

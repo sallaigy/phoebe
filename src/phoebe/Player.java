@@ -180,7 +180,9 @@ public class Player {
     
     @Override
     public String toString() {
-        return "[" + this.getClass().getName() + "](id=" + this.idx + ")";
+        return String.format("%s %d: %s (%d, %d) Speed: %d CanChangeDirection: %b", 
+        		this.getClass().getName(), this.idx, this.getCurrentCell().getClass().getName(),
+        		this .currentCell.getX(), this.currentCell.getY(), this.speed, this.canChangeDirection);
     }
 
     /**

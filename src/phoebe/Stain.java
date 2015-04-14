@@ -12,4 +12,6 @@ public abstract class Stain implements GameObject {
 	 */
 	public abstract void interact(Player player);
 
+	public abstract String ToString();
+
 }
