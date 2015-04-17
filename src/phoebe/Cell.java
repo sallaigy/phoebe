@@ -87,20 +87,26 @@ public class Cell {
      * @return: Cella típusa
      */
     public String printCell() {
-    	if (player != null && player.getIdx() == 0) 
+    	if (player != null && player.getIdx() == 0) {
     		return "4";
-    	else if (player != null && player.getIdx() == 1)
+    	} else if (player != null && player.getIdx() == 1) {
     		return "5";
+    	}
+    	
     	if (gameObject != null) {
-    		if(gameObject.toString().equals("OilStain"))
+    		if (gameObject.toString().equals("OilStain")) {
     			return "2";
-    		else if (gameObject.toString().equals("GlueStain"))
+    		} else if (gameObject.toString().equals("GlueStain")) {
     			return "3";
-    		else if (gameObject.toString().equals("Robot"))
+    		} else if (gameObject.toString().equals("Robot")) {
     			return "6";
-    	} else if (this.cellType == CellType.CELL_INVALID) 
-    		return "0";
-    		else return "1";
+    		}
+    	} else if (this.cellType == CellType.CELL_INVALID) {
+    	    return "0";
+    	} else {
+    	    return "1";
+    	}
+    	
     	return "X";
     	 
     }
@@ -109,7 +115,8 @@ public class Cell {
     public String toString() { 
     	String gameObjectString = new String();
     	gameObjectString = gameObject == null ? "NULL": gameObject.toString();
-        return String.format("%s (%d, %d) GameObject: %s", this.getClass().getSimpleName(), this.x, this.y, gameObjectString);
+        
+    	return String.format("%s (%d, %d) GameObject: %s", this.getClass().getSimpleName(), this.x, this.y, gameObjectString);
     }
 
 }
