@@ -130,7 +130,7 @@ public class Robot implements GameObject {
     public void move(Cell cell) {
         GameObject currentObj = cell.getGameObject();
 
-        if ((currentCell.containsRobot() && !currentObj.equals(this)) || cell.getPlayer() != null) {
+        if ((cell.containsRobot() && !currentObj.equals(this)) || cell.getPlayer() != null) {
             // Ütközés!
             cell = this.initialPosition;
             System.out
@@ -140,7 +140,7 @@ public class Robot implements GameObject {
                                     this.currentCell.getY()));
         }        
         
-        if (currentCell.containsStain()) {
+        if (cell.containsStain()) {
             // Takarítás, csak a kiírás miatt...
             currentCell.setGameObject(null);
             System.out.println(currentCell.toString());

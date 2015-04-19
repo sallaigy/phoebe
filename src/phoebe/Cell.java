@@ -110,13 +110,21 @@ public class Cell {
 	public void setGameObject(GameObject gameObject) {
 		this.gameObject = gameObject;
 	}
-	
+
 	public boolean containsRobot() {
-		return gameObject.toString().equals("Hardworking-little-robot");
+		if (gameObject == null) {
+			return false;
+		} else {
+			return gameObject.toString().equals("Hardworking-little-robot");
+		}
 	}
-	
+
 	public boolean containsStain() {
-		return (gameObject.toString().equals("OilStain") || gameObject.toString().equals("GlueStain"));
+		if (gameObject == null) {
+			return false;
+		} else {
+			return (gameObject.toString().equals("OilStain") || gameObject.toString().equals("GlueStain"));
+		}
 	}
 
 	/**
