@@ -1,0 +1,4 @@
+reset
+hardworking-little-robot-random off
+move-robot 0 10 10
+move-robot 1 10 10
