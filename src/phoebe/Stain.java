@@ -2,7 +2,8 @@ package phoebe;
 
 /**
  * A foltokat megvalósító osztályok. Minden folt szerepelhet pontosan egy cellán.
- * Ha egy játékos olyan cellára lép, amelyen folt is van, a folt valamilyen negatív hatást fejt ki a játékosra.
+ * Ha egy játékos olyan cellára lép, amelyen folt is van, a folt 
+ * valamilyen negatív hatást fejt ki a játékosra.
  */
 public abstract class Stain implements GameObject {
 
@@ -17,9 +18,21 @@ public abstract class Stain implements GameObject {
 	 * @param A Player, amelyre a cella hat.
 	 */
 	public abstract void interact(Player player);
+	/**
+	 * Absztrakt metódus, a kör eleje történésre.
+	 */
 	public abstract void onTurnStart();
+	/**
+	 * Absztrakt metódus, a kör vége történésre.
+	 */
 	public abstract void onTurnEnd();
+	/**
+	 * Absztrakt metódus, Stringgé alakítás.
+	 */
 	public abstract String toString();
+	/**
+	 * Jelenlegi cella beállítása.
+	 */
 	public void setCell(Cell cell) {
 		this.currentCell = cell;
 	}

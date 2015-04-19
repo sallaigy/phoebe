@@ -9,8 +9,11 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * A játék logikáját tartalmazó osztály. Itt tartjuk számon a játékosokat, a
- * térképet, itt kezeljük a kapott bemeneteket.
+ * A rendszer központi osztálya. Nyilvántartja a játékosokat, 
+ * a térképet,  és a további játékelemeket. Ő felelős a 
+ * játék vezérléséért (játék indítás, újraindítás, kilépés). 
+ * Továbbá felelős a játék mechanikájáért, tehát vezérli a körök 
+ * lejátszását (kör indítása, befejezése, input kezelése).
  */
 public class Game {
 
@@ -59,6 +62,8 @@ public class Game {
 		} catch (IOException e) {
 			throw new GameException();
 		}
+		
+		//Robotok létrehozása
 		Robot robot0 = new Robot(this.map, this.map.getCell(0 + 2, 0 + 2), 0);
 		Robot robot1 = new Robot(this.map, this.map.getCell(1 + 2, 1 + 2), 1);
 		
@@ -67,14 +72,22 @@ public class Game {
 		
 		this.currentPlayerIdx = 0;
 
+		//Ameddig nem kéne kilépni
 		while (!this.shouldQuit) {
+			//Kör kezdés
 			this.beginTurn();
+			//Input kezelés
 			this.handleInput();
+			//Kör vége
 			this.endTurn();
 			
+			//Kiválasztja a következő játékost
+			//Legelső játékos
 			if (this.currentPlayerIdx == this.players.size() - 1) {
 				this.currentPlayerIdx = 0;
-			} else {
+			} 
+			//Következő játékos
+			else {
 				this.currentPlayerIdx++;
 			}
 		}
@@ -85,18 +98,22 @@ public class Game {
 	 * A turnCount nulla értéket kap.
 	 */
 	public void reset() {		
+		//Körök száma 0-ba állítása
 		setTurnCount(0);
 		
+		//Pálya betöltése
 		try {
 			this.loadMap();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
+		//Játékosok resetelése
 		for (Player player : players) {
 			player.reset();
 		}
 		
+		//Aktuális játékos a legelső
 		this.currentPlayerIdx = 0;
 	}
 
@@ -114,8 +131,10 @@ public class Game {
 	 * @throws IOException
 	 */
 	protected void loadMap() throws IOException {
+		//Létrehoz egy 25 sorból és 19 oszlopból álló pályát
 		Map tempMap = new Map(25, 19);
 
+		//Beolvassa a pályát
 		FileReader fileReader = new FileReader(new File(this.mapFile));
 		BufferedReader buffReader = new BufferedReader(fileReader);
 
@@ -128,29 +147,36 @@ public class Game {
 				int cellProperty = Integer.parseInt(splitLine[j]);
 
 				switch(cellProperty) {
+				//0 - Invalid cella
 				case 0:
 					tempMap.setCell(new Cell(i, j, CellType.CELL_INVALID, null, null));
 					break;
+				//1 - Valid cella, ami üres	
 				case 1:
 					tempMap.setCell(new Cell(i, j, CellType.CELL_VALID, null, null));
 					break;
+				//2 - Valid cella, olajfolttal	
 				case 2:
 					tempMap.setCell(new Cell(i, j, CellType.CELL_VALID, null, new OilStain()));
 					break;
+				//3 - Valid cella, ragacsfolttal
 				case 3:
 					tempMap.setCell(new Cell(i, j, CellType.CELL_VALID, null, new GlueStain()));
 					break;
+				//4 - Valid cella, első játékos	
 				case 4:
 					Cell cell = new Cell(i, j, CellType.CELL_VALID, players.get(0), null);
 					tempMap.setCell(cell);
 					players.get(0).setInitialPosition(cell);
 					players.get(0).setCurrentCell(cell);
 					break;
+				//5 - Valid cella, második játékos	
 				case 5: cell = new Cell(i, j, CellType.CELL_VALID, players.get(1), null);
-				tempMap.setCell(cell);
-				players.get(1).setInitialPosition(cell);
-				players.get(1).setCurrentCell(cell);
-				break;
+					tempMap.setCell(cell);
+					players.get(1).setInitialPosition(cell);
+					players.get(1).setCurrentCell(cell);
+					break;
+				//Alapértelmezett: Valid, üres cella.	
 				default:
 					tempMap.setCell(new Cell(i, j, CellType.CELL_VALID, null, null));
 					break;
@@ -171,6 +197,8 @@ public class Game {
 		for (Player player : players) {
 			player.onTurnEnd();
 
+			//Megvizsgálja, hogy vége-e a játéknak.
+			//És ha igen, akkor ki nyert.
 			Cell currCell = player.getCurrentCell();
 			if (currCell.getCellType() == CellType.CELL_INVALID || currCell.getX() < 0 || currCell.getY() < 0) {
 				if (player == players.get(0)) 
@@ -180,15 +208,21 @@ public class Game {
 			}
 		}
 
+		//Ha letelt a játékidő, győztest hirdet.
 		if (turnCount == maxTurns) {
 			Player winner = null;
+			//Első játékos nyert
 			if (players.get(0).getDistance() > players.get(1).getDistance()) {
 				winner = players.get(0);
-			} else {
-				winner = players.get(1);  
 			} 
+			//Második játékos nyert
+			else {
+				winner = players.get(1);  
+			}
+			//Döntetlen
 			if(winner == null)
 				printOutcome("Draw");
+			//Győztes kiírása
 			else {
 				printOutcome(winner.getClass().getSimpleName() + " "+ winner.getIdx());
 			}
@@ -231,19 +265,27 @@ public class Game {
 
 	        while (!next) {
 	            try {
+	            	//Tesztben kapott parancsok kezelése
 	                if (null != (line = this.reader.readLine())) {
 	                    String[] input = line.split(" ");
 	                    String cmd = input[0];
 
+	                    //Újraindítás
 	                    if (cmd.equals("reset")) {
 	                        this.reset();
 	                        next = true;
-	                    } else if (cmd.equals("quit")) {
+	                    } 
+	                    //Kilépés
+	                    else if (cmd.equals("quit")) {
 	                        this.quit();
 	                        next = true;
-	                    } else if (cmd.equals("showmap")) {
+	                    } 
+	                    //Pálya mutatása
+	                    else if (cmd.equals("showmap")) {
 	                        map.printMap();
-	                    } else if (cmd.equals("move")) {
+	                    } 
+	                    //Mozgás
+	                    else if (cmd.equals("move")) {
 	                        if (nextCell == null) {
 	                            // Ha még nem léptünk
 	                            List<Cell> neighbours = this.map.getNeighbours(
@@ -254,27 +296,44 @@ public class Game {
 
 	                            if (input.length >= 2) {
 	                                String res = input[1];
+	                                //Balra
 	                                if (res.equals("W")) {
 	                                    y -= distance;
-	                                } else if (res.equals("NW")) {
+	                                }
+	                                //Balra-fel
+	                                else if (res.equals("NW")) {
 	                                    y -= distance;
 	                                    x -= distance;
-	                                } else if (res.equals("N")) {
+	                                } 
+	                                //Fel
+	                                else if (res.equals("N")) {
 	                                    x -= distance;
-	                                } else if (res.equals("NE")) {
+	                                } 
+	                                //Jobbra-fel
+	                                else if (res.equals("NE")) {
 	                                    y += distance;
 	                                    x -= distance;
-	                                } else if (res.equals("E")) {
+	                                } 
+	                                //Jobbra
+	                                else if (res.equals("E")) {
 	                                    y += distance;
-	                                } else if (res.equals("SE")) {
+	                                } 
+	                                //Jobbra-le
+	                                else if (res.equals("SE")) {
 	                                    y += distance;
 	                                    x += distance;
-	                                } else if (res.equals("S")) {
+	                                } 
+	                                //Le
+	                                else if (res.equals("S")) {
 	                                    x += distance;
-	                                } else if (res.equals("SW")) {
+	                                } 
+	                                //Balra-le
+	                                else if (res.equals("SW")) {
 	                                    y -= distance;
 	                                    x += distance;
-	                                } else {
+	                                } 
+	                                //Érvénytelen irány
+	                                else {
 	                                    System.out.println("Invalid direction");
 	                                }
 
@@ -294,22 +353,33 @@ public class Game {
 	                                    }
 	                                }
 	                            }
-	                        } else {
+	                        } 
+	                        //Ha többször akarna mozogni egy körben
+	                        else {
 	                            System.out
 	                                    .println("Only one move is allowed per turn.");
 	                        }
 
-	                    } else if (cmd.equals("put-stain")) {
+	                    } 
+	                    //Folt lerakása
+	                    else if (cmd.equals("put-stain")) {
 
-	                        if (input[1].equals("G")) {
+	                        //Ragacs
+	                    	if (input[1].equals("G")) {
 	                            current.putStain(GlueStain.class.getName());
-	                        } else if (input[1].equals("O")) {
+	                        } 
+	                    	//Olaj
+	                    	else if (input[1].equals("O")) {
 	                            current.putStain(OilStain.class.getName());
-	                        } else {
+	                        } 
+	                    	//Érvénytelen folt
+	                    	else {
 	                            System.out.println("Invalid stain");
 	                        }
 
-	                    } else if (cmd.equals("end-turn")) {
+	                    } 
+	                    //Kör vége
+	                    else if (cmd.equals("end-turn")) {
 	                        if (nextCell != null) {
 	                            if (nextCell.getPlayer() != null) {
 	                                this.printOutcome(current.getClass().getSimpleName() + " " + current.getIdx());
@@ -320,38 +390,59 @@ public class Game {
 	                        }
 	                        next = true;
 
-	                    } else if (cmd.equals("oil-random")) {
+	                    } 
+	                    //Olajfolt hatás
+	                    else if (cmd.equals("oil-random")) {
 	                        if (input.length >= 2) {
 	                            String setting = input[1];
 
+	                            //Random engedélyezése
 	                            if (setting.equals("on")) {
 	                                this.oilRandom = true;
-	                            } else if (setting.equals("off")) {
+	                            } 
+	                            //Random tiltása
+	                            else if (setting.equals("off")) {
 	                                this.oilRandom = false;
-	                            } else {
+	                            } 
+	                            //Érvénytelen beállítás
+	                            else {
 	                                System.out.println("Invalid setting.");
 	                            }
-	                        } else {
+	                        } 	                        
+	                        //Kisrobot használata
+	                        else {
 	                            System.out
 	                                    .println("USAGE: hardworking-little-robot-random <setting>");
 	                        }
-	                    } else if (cmd.equals("hardworking-little-robot-random")) {
+	                    } 
+	                    //Kisrobot
+	                    else if (cmd.equals("hardworking-little-robot-random")) {
 	                        if (input.length >= 2) {
 	                            String setting = input[1];
 
+	                            //Random engedélyezése
 	                            if (setting.equals("on")) {
 	                                Robot.randomStatus = true;
-	                            } else if (setting.equals("off")) {
+	                            } 
+	                            //Random tiltása
+	                            else if (setting.equals("off")) {
 	                                Robot.randomStatus = false;
-	                            } else {
+	                            } 
+	                            //Érvénytelen beállítás
+	                            else {
 	                                System.out.println("Invalid setting.");
 	                            }
-	                        } else {
+	                        } 
+	                        //Kisrobot használata
+	                        else {
 	                            System.out
 	                                    .println("USAGE: hardworking-little-robot-random <setting>");
 	                        }
-	                    } else if (cmd.equals("robot-move")) {
+	                    } 
+	                    //Robot mozgatása
+	                    else if (cmd.equals("robot-move")) {
 
+	                    	//Nem megfelelő bemenet
 	                    	if (input.length < 4) {
 	    						System.out.println("Invalid command, not enough arguments.");
 	    					} else {
@@ -359,9 +450,12 @@ public class Game {
 	    						int row = Integer.parseInt(input[2]);
 	    						int col = Integer.parseInt(input[3]);
 
+	    						//Nem megfelelő sor paraméter
 	    						if (row > map.getSize()[0] || row < 0) {
 	    							System.out.println("Invalid <row> parameter");
-	    						} else if (col > map.getSize()[1] || col < 0) {
+	    						} 
+	    						//Nem megfelelő oszlop paraméter
+	    						else if (col > map.getSize()[1] || col < 0) {
 	    							System.out.println("Invalid <col> parameter");
 	    						} else {
 	    							for (Robot robot: robots) {
@@ -374,7 +468,9 @@ public class Game {
 	    							}
 	    						}
 	                        }
-	                    } else if (cmd.equals("set-clock")) {
+	                    } 
+	                    //Megadható ezzel, hogy hányadik körnél tartunk
+	                    else if (cmd.equals("set-clock")) {
 	                        if (input.length >= 2) {
 	                            try {
 	                                int tc = Integer.parseInt(input[1]);
@@ -382,10 +478,14 @@ public class Game {
 	                            } catch (NumberFormatException e) {
 	                                System.out.println(e.getMessage());
 	                            }
-	                        } else {
+	                        } 
+	                        //Set-clock használata
+	                        else {
 	                            System.out.println("USAGE: set-clock <T>");
 	                        }
-	                    } else {
+	                    } 
+	                    //Ismeretlen parancs
+	                    else {
 	                        System.out.println("Unknown command.");
 	                    }
 
@@ -404,6 +504,16 @@ public class Game {
 		this.turnCount = turnCount;
 	}
 
+	/**
+	 * Kiírja a kimenetre, hogy
+	 * az első játékos
+	 * milyen messze jutott;
+	 * a második játékos
+	 * milyen messze jutott.
+	 * Győztes:
+	 * melyik játékos.
+	 * @param outcome: Játék kimenetele
+	 */
 	public void printOutcome(String outcome) {
 		String output = String.format("%s %d: Distance - %d; %s %d: Distance - %d; Winner: %s",
 				players.get(0).getClass().getSimpleName(), players.get(0).getIdx(),
@@ -414,6 +524,9 @@ public class Game {
 		System.out.println(output);
 	}
 	
+	/**
+	 * Kimenti, hogy milyen GameObjectek vannak a cellákon.
+	 */
 	public void proccessGameObjectsFromMap() {
 		List<GameObject> temp = new ArrayList<GameObject>();
 		List<Cell> cells = map.getCellsWithStain();

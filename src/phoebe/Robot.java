@@ -144,6 +144,10 @@ public class Robot implements GameObject {
          */
     }
 
+    /**
+     * Mozgatás
+     * @param cell: Cella ahova menjen
+     */
     public void move(Cell cell) {
         GameObject currentObj = cell.getGameObject();
 
@@ -169,6 +173,12 @@ public class Robot implements GameObject {
         currentCell.setGameObject(this);
     }
 
+    /**
+     * A jelenlegi cella és a paraméterben
+     * átvett cella távolságát adja vissza.
+     * @param cell: Cella
+     * @return: Távolság
+     */
     public int getDistance(Cell cell) {
         return Math.abs(this.currentCell.getX() - cell.getX())
                 + Math.abs(this.currentCell.getY() - cell.getY());
@@ -178,11 +188,17 @@ public class Robot implements GameObject {
     public void onTurnEnd() {
     }
 
+    /**
+     * Visszatér azzal, hogy "Hardworking-little-robot"
+     */
     @Override
     public String toString() {
         return "Hardworking-little-robot";
     }
 
+    /**
+     * A jelenlegi cellát átállítja a paraméterben átvett cellára.
+     */
     @Override
     public void setCell(Cell cell) {
         this.currentCell = cell;

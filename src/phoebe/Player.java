@@ -3,7 +3,11 @@ package phoebe;
 import java.util.HashMap;
 
 /**
- * A játékosokat megtestesítő objektum. Minden játékos egy-egy Playernek feleltethető meg.
+ * Játékosokat megtestesítő osztály. 
+ * Minden körben az éppen aktuális játékost tudjuk a bemenetek segítségével 
+ * manipulálni, illetve rá jellemző információkat lekérdezni. Például, 
+ * hogy melyik cellán tartózkodik, vagy hogy mekkora a sebessége.
+ * Minden játékos egy-egy Playernek feleltethető meg.
  * Minden játékos pontosan egy cellán tartózkodik.
  */
 public class Player {
