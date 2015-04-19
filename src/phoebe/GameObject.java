@@ -1,9 +1,9 @@
 package phoebe;
 
 /**
- * Egy nem játékos objektum, amely interakcióba léphet egy játékossal.
- * Ezek lehetnek például a játékosra ható effektek.
- * A bővíthetőség kedvéért alkalmazzuk, arra az esetre, ha esetleg a foltokon kívül egyéb nem játékos objektum is szükséges lenne.
+ * Egy interfész, azon osztályok valósítják meg, amelyek nem játékosok, 
+ * és interakcióba léphetnek egy játékossal. 
+ * Ezek a foltok, és a kisrobotok. 
  */
 public interface GameObject {
 
@@ -12,9 +12,23 @@ public interface GameObject {
 	 * @param player A Player, amelyre a játékobjektum hat.
 	 */
 	public void interact(Player player);
+	/**
+	 * Kör elején történő események megvalósításához.
+	 */
 	public void onTurnStart();
+	/**
+	 * Kör végén történő események megvalósításához.
+	 */
 	public void onTurnEnd();
+	/**
+	 * Stringgé alakítás.
+	 * @return: Egy string
+	 */
 	public String toString();
+	/**
+	 * Cella beállítása.
+	 * @param cell: Cella
+	 */
 	public void setCell(Cell cell);
 	
 }

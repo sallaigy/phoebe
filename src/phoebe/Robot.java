@@ -123,7 +123,8 @@ public class Robot implements GameObject {
 
     /**
      * A kisrobot mozgását megvalósító metódus.
-     * Ebben a metódusban történik a kisrobotok ütközésének, és a foltok feltakarításának az implementációja.
+     * Ebben a metódusban történik a kisrobotok ütközésének, és a foltok
+     *  feltakarításának az implementációja.
      * @param cell A cella, amelyre a kisrobot rálép.
      */
     public void move(Cell cell) {
@@ -167,6 +168,9 @@ public class Robot implements GameObject {
     public void onTurnEnd() {
     }
 
+    /**
+     * Visszatér azzal, hogy "Hardworking-little-robot"
+     */
     @Override
     public String toString() {
         return "Hardworking-little-robot";

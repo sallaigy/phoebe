@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Itt tárolunk minden olyan információt, amely a térképpel kapcsolatos:
- * Itt tároljuk a Cellekből álló kétdimenziós tömbünket is, illetve az adott pályára vonatkozó maximális játékidőt.
- *
+ * A játékteret megtestesítő osztály. 
+ * Itt tárolunk minden olyan információt, amely a térképpel kapcsolatos, 
+ * azaz itt tároljuk a Cellekből álló kétdimenziós tömbünket is, illetve 
+ * az adott pályára vonatkozó maximális játékidőt.
+ * Innen kérhetők le egy-egy cella szomszédai, és azok a cellák, amelyeken van folt.
  */
 public class Map {
 

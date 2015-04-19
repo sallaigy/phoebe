@@ -1,8 +1,16 @@
 package phoebe;
 
 /**
- * A négyzetrácsos pálya egy-egy négyzetét jelenti egy Cell.
- * Egy cellán tartózkodhat legfeljebb egy játékos, illetve legfeljebb egy folt.
+ * A játéktér egy celláját megtestesítő osztály. 
+ * Egy cellán tartózkodhat egy játékos vagy egy kisrobot, továbbá egy folt is. 
+ * Amennyiben egy játékos olyan cellára ugrik, amelyen egy másik játékos 
+ * tartózkodik, akkor az veszít, amelyiknek kisebb a sebessége 
+ * (azonos sebesség esetén az győz aki ugrott). Ha olyan cellára ugrik, 
+ * amelyen kisrobot található, akkor a kisrobot megsemmisül, és olajfolt lesz a helyén. 
+ * Ha kisrobot ugrik olyan cellára, amelyen az egyik játékos, vagy egy másik 
+ * kisrobot tartózkodik, akkor a kisrobot (amelyik ugrott) megváltoztatja irányát. 
+ * Amennyiben egy játékos a cellára lép, a cellán tartózkodó folt interakcióba 
+ * lép a játékossal, tehát kifejti hatását a játékosra a következő kör elején.
  */
 public class Cell {
 
@@ -52,26 +60,53 @@ public class Cell {
 		}
 	}	
 
+	/**
+	 * Visszaadja a cella típusát.
+	 * @return: Cella típusa
+	 */
 	public CellType getCellType() {
 		return cellType;
 	}
 
+	/**
+	 * Beállítja a cella típusát, a paraméterben
+	 * átvett cellatípusra.
+	 * @param cellType: Cella típusa
+	 */
 	public void setCellType(CellType cellType) {
 		this.cellType = cellType;
 	}
 
+	/**
+	 * Visszatér egy játékossal
+	 * @return: Játékos
+	 */
 	public Player getPlayer() {
 		return player;
 	}
 
+	/**
+	 * Beállítja a játékost a paraméterben
+	 * átvett játékosra.
+	 * @param player: Játékos
+	 */
 	public void setPlayer(Player player) {
 		this.player = player;
 	}
 
+	/**
+	 * Visszatér a játékelem típusával.
+	 * @return: Játékelem típusa
+	 */
 	public GameObject getGameObject() {
 		return gameObject;
 	}
 
+	/**
+	 * Beállítja a játékelemet a paraméterben
+	 * átvett játékelemre.
+	 * @param gameObject: Játékelem
+	 */
 	public void setGameObject(GameObject gameObject) {
 		this.gameObject = gameObject;
 	}
@@ -84,10 +119,18 @@ public class Cell {
 		return (gameObject.toString().equals("OilStain") || gameObject.toString().equals("GlueStain"));
 	}
 
+	/**
+	 * Visszatér az x koordináta értékével.
+	 * @return: x
+	 */
 	public int getX() {
 		return x;
 	}
 
+	/**
+	 * Visszatér az y koordináta értékével.
+	 * @return: y
+	 */
 	public int getY() {
 		return y;
 	}
