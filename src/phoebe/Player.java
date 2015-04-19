@@ -164,7 +164,7 @@ public class Player {
     
    
     public String toString() {
-        return String.format("%s %d: %s (%d, %d) Speed: %d CanChangeDirection: %b", 
+        return String.format("%s %d: %s(%d,%d) Speed: %d CanChangeDirection: %b", 
         		this.getClass().getSimpleName(), this.idx, this.getCurrentCell().getClass().getSimpleName(),
         		this .currentCell.getX(), this.currentCell.getY(), this.speed, this.canChangeDirection);
     }

@@ -1,3 +1,3 @@
-Player 0: Cell(22,8) Speed: 2 CanChangeDirection: True
+Player 0: Cell(22,8) Speed: 2 CanChangeDirection: true
 Player 0: New Position: Cell(24, 8)
 Player 0: Distance - 2; Player 1: Distance - 0; Winner: Player 1
