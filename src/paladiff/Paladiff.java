@@ -12,6 +12,7 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Stack;
 
 
 public class Paladiff {
@@ -78,16 +79,51 @@ public class Paladiff {
                 
                 StringBuilder actualString = new StringBuilder();
                 StringBuilder expectedString = new StringBuilder();
+                                
+                String actualLine;
+                String expectedLine;
                 
-                //String line;
+                StringBuilder outputString = new StringBuilder();
                 
+                boolean failed = false;
+                
+                while (!failed) {                    
+                    if ((expectedLine = expectedReader.readLine()) != null) {
+                        outputString.append("+ " + expectedLine + "\n");
+                    }
+                    
+                    if ((actualLine = actualReader.readLine()) != null) {
+                        outputString.append("- " + actualLine + "\n");
+                    } else {
+                        if (null != expectedLine) {
+                            failed = true;
+                        }
+                        
+                        break;
+                    }
+                    
+                    if (actualLine.equals(expectedLine)) {
+                        failed = true;
+                    }
+                }
+                
+                if (failed) {
+                    failure++;
+                    System.out.println(" FAILURE");
+                    System.out.println(outputString.toString());
+                } else {
+                    success++;
+                    System.out.println(" SUCCESS");                    
+                }
+                
+                /*
                 while ((line = actualReader.readLine()) != null) {
                     actualString.append(line);
                 }
                 
                 while ((line = expectedReader.readLine()) != null) {
                     expectedString.append(line);
-                }
+                } 
                 
                 if (expectedString.equals(actualString)) {
                     success++;
@@ -97,7 +133,8 @@ public class Paladiff {
                     System.out.println(" FAILURE");
                     
                     System.out.println(String.format("\nExpected: %s\n----------\nActual:   %s\n", expectedString.toString(), actualString.toString()));
-                }
+                } */
+                
                 
             } catch (IOException e) {
                 // TODO Auto-generated catch block
