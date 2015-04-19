@@ -58,7 +58,7 @@ public class Cell {
 		if (null != this.gameObject) {
 			this.gameObject.interact(player);
 		}
-	}
+	}	
 
 	/**
 	 * Visszaadja a cella típusát.
@@ -109,6 +109,14 @@ public class Cell {
 	 */
 	public void setGameObject(GameObject gameObject) {
 		this.gameObject = gameObject;
+	}
+	
+	public boolean containsRobot() {
+		return gameObject.toString().equals("Hardworking-little-robot");
+	}
+	
+	public boolean containsStain() {
+		return (gameObject.toString().equals("OilStain") || gameObject.toString().equals("GlueStain"));
 	}
 
 	/**

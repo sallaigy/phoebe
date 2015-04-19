@@ -3,6 +3,10 @@ package phoebe;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * A kisrobotokat megtestesítő osztály.
+ * A kisrobotok egyik foltról (miután azt feltakarították) mennek a hozzájuk legközelebb található folthoz. *
+ */
 public class Robot implements GameObject {
 
     public static boolean randomStatus = true;
@@ -19,7 +23,13 @@ public class Robot implements GameObject {
 
     private Cell initialPosition;
 
-    public Robot(Map map, Cell initialPosition, int id) {
+    /**
+     * A keményen dolgozó kisrobot konstruktora.
+     * @param map A térkép, amelyre lehelyezzük.
+     * @param initialPosition A kisrobot kezdőpoziciója.
+     * @param id A kisrobot azonosítója.
+     */
+	public Robot(Map map, Cell initialPosition, int id) {
         this.idx = id;
         this.map = map;
         this.initialPosition = initialPosition;
@@ -27,6 +37,11 @@ public class Robot implements GameObject {
         this.currentCell.setGameObject(this);
     }
 
+	/**
+	 * A kisrobot játékossal történő interakcióját megvalósító metódus.
+	 * Ekkor a kisrobot megsemmisül, és olajfoltot hagy maga mögött.
+	 * @param Player A játékos, amellyel a kisrobot ütközik.
+	 */
     @Override
     public void interact(Player player) {
         Cell cell = currentCell;
@@ -43,6 +58,12 @@ public class Robot implements GameObject {
         currentCell = map.getCell(newPosX, newPosY);
     }
 
+    
+    /**
+     * A kisrobot kör eleji tevékenységét megvalósító metódus.
+     * Ha a robotnak nincs kiválasztott foltja, akkor kiválaszt egy foltot, amelyet feltakaríthat.
+     * Itt történik meg az útkeresés és a lépés implementációja is.
+     */
     @Override
     public void onTurnStart() {
 
@@ -70,8 +91,8 @@ public class Robot implements GameObject {
       
         Cell cell = this.currentCell;
 
-        if (this.randomStatus) { // Ha az automatikus mozgás be van kapcsolva,
-                                 // mozgunk
+        // Ha az automatikus mozgás be van kapcsolva, akkor mozgunk
+        if (this.randomStatus) { // 
             // Útkeresés
             int nextPosX = 0;
             int nextPosY = 0;
@@ -98,60 +119,18 @@ public class Robot implements GameObject {
             this.move(cell);
         }
 
-        
-        /*
-         * if (destinationCell == null) {
-         * 
-         * List<Cell> destinationCells = map.getCellsWithStain();
-         * 
-         * if (destinationCells.size() > 0) { destinationCell =
-         * destinationCells.get(0);
-         * 
-         * for (Cell cell : destinationCells) { if (getDistance(cell) <
-         * getDistance(destinationCell)) { destinationCell = cell; } } }
-         * 
-         * } else if (this.randomStatus) { int nextPosX = 0; int nextPosY = 0;
-         * Cell cell = new Cell();
-         * 
-         * if (destinationCell.equals(currentCell)) { destinationCell = null;
-         * System.out.println(currentCell.toString());
-         * 
-         * return; } else { if (destinationCell.getX() != currentCell.getX()) {
-         * 
-         * if (destinationCell.getX() > currentCell.getX()) { nextPosX =
-         * currentCell.getX() + 1; } else { nextPosX = currentCell.getX() - 1; }
-         * cell = map.getCell(nextPosX, currentCell.getY());
-         * 
-         * } else if (destinationCell.getY() != currentCell.getY()) {
-         * 
-         * if (destinationCell.getY() > currentCell.getY()) { nextPosY =
-         * currentCell.getY() + 1; } else { nextPosY = currentCell.getY() - 1; }
-         * cell = map.getCell(currentCell.getX(), nextPosY); } }
-         * 
-         * if ((cell.getGameObject()!=null &&
-         * cell.getGameObject().toString().equals("Hardworking-little-robot"))
-         * || (cell.getPlayer()!=null)) { List<Cell> neighbours =
-         * map.getNeighbours(currentCell, 1); currentCell.setGameObject(null);
-         * 
-         * if (this.randomStatus) { currentCell =
-         * neighbours.get(this.rand.nextInt(neighbours.size())); } else {
-         * currentCell = this.map.getCell(this.idx, this.idx);
-         * System.out.println(String.format(
-         * "Hardworking-little-robot %d: Collision; New Position: Cell(%d, %d)",
-         * this.idx, this.currentCell.getX(), this.currentCell.getY())); } }
-         * else { currentCell.setGameObject(null); currentCell = cell;
-         * currentCell.setGameObject(this); } }
-         */
     }
 
     /**
-     * Mozgatás
-     * @param cell: Cella ahova menjen
+     * A kisrobot mozgását megvalósító metódus.
+     * Ebben a metódusban történik a kisrobotok ütközésének, és a foltok
+     *  feltakarításának az implementációja.
+     * @param cell A cella, amelyre a kisrobot rálép.
      */
     public void move(Cell cell) {
         GameObject currentObj = cell.getGameObject();
 
-        if ((currentObj instanceof Robot && !currentObj.equals(this)) || cell.getPlayer() != null) {
+        if ((currentCell.containsRobot() && !currentObj.equals(this)) || cell.getPlayer() != null) {
             // Ütközés!
             cell = this.initialPosition;
             System.out
@@ -159,10 +138,9 @@ public class Robot implements GameObject {
                             .format("Hardworking-little-robot %d: Collision; New Position: Cell(%d, %d)",
                                     this.idx, this.currentCell.getX(),
                                     this.currentCell.getY()));
-        }
+        }        
         
-        
-        if (currentObj instanceof Stain) {
+        if (currentCell.containsStain()) {
             // Takarítás, csak a kiírás miatt...
             currentCell.setGameObject(null);
             System.out.println(currentCell.toString());
@@ -174,16 +152,18 @@ public class Robot implements GameObject {
     }
 
     /**
-     * A jelenlegi cella és a paraméterben
-     * átvett cella távolságát adja vissza.
-     * @param cell: Cella
-     * @return: Távolság
+     * Ez a metódus megadja a kisrobot távolságát a megadott cellától.
+     * @param cell A cella, amelytől a kisrobot távolságát vizsgáljuk.
+     * @return A kisrobot távolsága a cellától.
      */
     public int getDistance(Cell cell) {
         return Math.abs(this.currentCell.getX() - cell.getX())
                 + Math.abs(this.currentCell.getY() - cell.getY());
     }
 
+    /**
+     * Kisrobot a kör végén nem csinál semmit.
+     */
     @Override
     public void onTurnEnd() {
     }
@@ -197,7 +177,7 @@ public class Robot implements GameObject {
     }
 
     /**
-     * A jelenlegi cellát átállítja a paraméterben átvett cellára.
+     * Beállítja a kisrobot pozicióját.
      */
     @Override
     public void setCell(Cell cell) {

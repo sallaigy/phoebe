@@ -9,21 +9,20 @@ public abstract class Stain implements GameObject {
 
 	private boolean visible = false;
 	protected int eventCount;
-	protected Cell currentCell;
-	
-	
+	protected Cell currentCell;	
 		
 	/**
 	 * Absztrakt metódus az egyes Stain-ek interakcióira.
 	 * @param A Player, amelyre a cella hat.
 	 */
-	public abstract void interact(Player player);
+	public abstract void interact(Player player);	
 	/**
-	 * Absztrakt metódus, a kör eleje történésre.
+	 * Absztakt metódus a kör eleji interakcióra.
 	 */
 	public abstract void onTurnStart();
+	
 	/**
-	 * Absztrakt metódus, a kör vége történésre.
+	 * Absztakt metódus a kör végi interakcióra.
 	 */
 	public abstract void onTurnEnd();
 	/**

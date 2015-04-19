@@ -77,7 +77,7 @@ public class Map {
 	/**
 	 * Pályán található olyan cellák visszaadása egy listában, amelyeken folt van
 	 * 
-	 * @return: Egy lista a foltot tartalmazó cellákról
+	 * @return Egy lista a foltot tartalmazó cellákról
 	 */
 	public List<Cell> getCellsWithStain() {
 
@@ -114,6 +114,10 @@ public class Map {
 		cells[cell.getX()][cell.getY()] = cell;
 	}
 
+	/**
+	 * Visszaadja, hogy a térkép egy hányszor hányas mátrix.
+	 * @return A térkép mérete ((n * m)-es)
+	 */
 	public int[] getSize() {
 		int[] result = {cells.length, cells[0].length};
 		return result;
