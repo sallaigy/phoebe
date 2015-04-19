@@ -5,7 +5,7 @@ import java.util.Random;
 
 public class Robot implements GameObject {
 
-    public static boolean randomStatus;
+    public static boolean randomStatus = true;
 
     public int idx;
 
@@ -75,7 +75,7 @@ public class Robot implements GameObject {
             // Útkeresés
             int nextPosX = 0;
             int nextPosY = 0;
-
+            
             if (destinationCell.getX() != currentCell.getX()) {
 
                 if (destinationCell.getX() > currentCell.getX()) {
@@ -94,31 +94,11 @@ public class Robot implements GameObject {
                 }
                 cell = map.getCell(currentCell.getX(), nextPosY);
             }
+
+            this.move(cell);
         }
 
-        if ((cell.getGameObject() != null
-                && cell.getGameObject() instanceof Robot && !cell
-                .getGameObject().equals(this)) || (cell.getPlayer() != null)) {
-            currentCell.setGameObject(null);
-
-            if (this.randomStatus) {
-                List<Cell> neighbours = map.getNeighbours(currentCell, 1);
-                currentCell = neighbours.get(this.rand.nextInt(neighbours
-                        .size()));
-            } else {
-                currentCell = this.initialPosition;
-                System.out
-                        .println(String
-                                .format("Hardworking-little-robot %d: Collision; New Position: Cell(%d, %d)",
-                                        this.idx, this.currentCell.getX(),
-                                        this.currentCell.getY()));
-            }
-        } else {
-            currentCell.setGameObject(null);
-            currentCell = cell;
-            currentCell.setGameObject(this);
-        }
-
+        
         /*
          * if (destinationCell == null) {
          * 
@@ -179,10 +159,12 @@ public class Robot implements GameObject {
         
         
         if (currentObj instanceof Stain) {
+            // Takarítás, csak a kiírás miatt...
             currentCell.setGameObject(null);
             System.out.println(currentCell.toString());
         }
 
+        currentCell.setGameObject(null);
         currentCell = cell;
         currentCell.setGameObject(this);
     }
