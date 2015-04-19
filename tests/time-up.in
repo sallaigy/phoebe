@@ -1,0 +1,14 @@
+reset
+set-clock 9
+move N
+end-turn
+end-turn
+reset
+set-clock 9
+end-turn
+move N
+end-turn
+reset
+set-clock 9
+end-turn
+end-turn

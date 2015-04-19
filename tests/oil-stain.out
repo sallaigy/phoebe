@@ -1,0 +1,5 @@
+Player 0: Cell(22,8) Speed: 2 CanChangeDirection: True
+Player 1: Cell(22,10) Speed: 2 CanChangeDirection: True
+Player 1: New Position: Cell(20, 10)
+Player 0: Cell(22,8) Speed: 2 CanChangeDirection: True
+Player 1: Cell(20,10) Speed: 2 CanChangeDirection: False
