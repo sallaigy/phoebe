@@ -11,13 +11,18 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
-import java.util.Stack;
 
-
+/**
+ * Az ellenőrzés fő eszköze.
+ * Egy egyszerű, a UNIX rendszerekből jól ismert diff parancsra emlékeztető segédprogramot megvalósító osztály.
+ * A parancs két fájlt vár bemenetként, az egyik az elvárt kimenet, a másik pedig a főprogram fájlba irányított kimenete.
+ * Amennyiben a kapott és az elvárt kimenet ugyanaz, a tesztet sikeresnek tekintjük, különben a teszt sikertelen.
+ *
+ */
 public class Paladiff {
     
-    public static void main(String[] args) {
+    @SuppressWarnings("resource")
+	public static void main(String[] args) {
         System.out.println("paladiff v0.0.0.0.1");
         System.out.println("Current directory: " + System.getProperty("user.dir"));
         if (args.length == 0) {
@@ -26,6 +31,7 @@ public class Paladiff {
             return;
         }
         
+        // Megadjuk a mappát, amelyben a tesztesetek megtalálhatók.
         File directory = new File(args[0]);
         if (!directory.isDirectory()) {
             System.out.println("Invalid test directory.");
@@ -33,12 +39,14 @@ public class Paladiff {
             return;
         }
         
+        // Megkeressük a teszteseteket
         List<String> tests = Paladiff.findTests(directory);
         
         int total = 0;
         int success = 0;
         int failure = 0;
         
+        // Végigmegyünk az egyes teszteseteken
         for (String entry : tests) {
             total++;
             System.out.print("Running test: " + entry);
@@ -52,9 +60,10 @@ public class Paladiff {
                 continue;
             }
             
-            PrintStream ps = null;
+            PrintStream ps = null;            
             
             try {
+            	// Átirányítjuk a szabványos kimenetet és bemenetet fájlba
                 ps = new PrintStream(actual);
 
                 FileInputStream fis = new FileInputStream(input);
@@ -62,8 +71,7 @@ public class Paladiff {
                 System.setOut(ps);
                 System.setIn(fis);
 
-                Scanner scanner = new Scanner(System.in);
-                String line;
+                
                                 
                 // Futás
                 
@@ -72,14 +80,11 @@ public class Paladiff {
                 System.setIn(new FileInputStream(FileDescriptor.in));
                 System.setOut(new PrintStream(new FileOutputStream(FileDescriptor.out)));
                 
-                // Jöjjön a teszt
+                // Jöjjön a teszt: vizsgáljuk a teszteseteket.
                 
                 BufferedReader actualReader = new BufferedReader(new InputStreamReader(new FileInputStream(actual)));
                 BufferedReader expectedReader = new BufferedReader(new InputStreamReader(new FileInputStream(output)));
-                
-                StringBuilder actualString = new StringBuilder();
-                StringBuilder expectedString = new StringBuilder();
-                                
+                                                
                 String actualLine;
                 String expectedLine;
                 
@@ -103,8 +108,7 @@ public class Paladiff {
                         }
                         
                         break;
-                    }
-                    
+                    }                    
                     
                     if (!actualLine.equals(expectedLine)) {
                         failed = true;
@@ -117,34 +121,12 @@ public class Paladiff {
                     System.out.println(outputString.toString());
                 } else {
                     success++;
-                    System.out.println(" SUCCESS");      
-                    //System.out.println(outputString.toString());              
+                    System.out.println(" SUCCESS");           
                 }
                 
-                System.out.println();
-                
-                /*
-                while ((line = actualReader.readLine()) != null) {
-                    actualString.append(line);
-                }
-                
-                while ((line = expectedReader.readLine()) != null) {
-                    expectedString.append(line);
-                } 
-                
-                if (expectedString.equals(actualString)) {
-                    success++;
-                    System.out.println(" SUCCESS");
-                } else {
-                    failure++;
-                    System.out.println(" FAILURE");
-                    
-                    System.out.println(String.format("\nExpected: %s\n----------\nActual:   %s\n", expectedString.toString(), actualString.toString()));
-                } */
-                
+                System.out.println();                
                 
             } catch (IOException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             } finally {
                 if (ps != null) {
@@ -153,10 +135,16 @@ public class Paladiff {
             }
         }
         
+        // Eeredmény kiiratása
         System.out.println(String.format("TEST SUMMARY: %d tests, %d successful, %d failures.", total, success, failure));
         
     }
     
+    /**
+     * Ez a metódus visszaadja a paraméterként átadott mappában megtalálható teszteseteket.
+     * @param directory A könyvtár, amelyben meg kell keresni a teszteseteket.
+     * @return Egy lista az adott mappában található tesztesetek neveivel.
+     */
     private static List<String> findTests(File directory) {
         List<String> tests = new ArrayList<String>();
         File[] inputFiles = directory.listFiles(new FilenameFilter() {
@@ -176,6 +164,11 @@ public class Paladiff {
         return tests;
     }
     
+    /**
+     * Ez a metódus visszaadja a teszteset nevét.
+     * @param file Fájl, amelyből ki szeretnénk szedni a teszteset nevét.
+     * @return A lecsupaszított teszteset név.
+     */
     private static String trimExtension(File file) {
         String filename = file.getPath();
         

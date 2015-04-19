@@ -1,7 +1,14 @@
 package phoebe;
 
+/**
+ * Az olajfoltokat megtestesítő osztály. Erre lépve a játékos az adott körben nem képes irányítani a mozgását. 
+ *
+ */
 public class OilStain extends Stain {
 
+	/**
+	 * Az olajfolt köreinek a száma, mielőtt elhasználódik: 4.
+	 */
 	public OilStain() {
 		this.eventCount = 4;
 	}
@@ -19,7 +26,10 @@ public class OilStain extends Stain {
 	public String toString() {
 		return "OilStain";
 	}
-
+	
+	/**
+	 * Az olajfolt minden körben eggyel elhasználódik.
+	 */
 	@Override
 	public void onTurnStart() {
 		eventCount--;
@@ -28,7 +38,10 @@ public class OilStain extends Stain {
 			System.out.println(currentCell.toString());
 		}
 	}
-
+	
+	/**
+	 * Az olajfolt a kör végén nem csinál semmit.
+	 */
 	@Override
 	public void onTurnEnd() {}
 
