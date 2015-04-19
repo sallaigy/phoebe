@@ -3,6 +3,7 @@ package phoebe;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Scanner;
 
 
 public class Main {
@@ -13,10 +14,22 @@ public class Main {
 	    boolean next = false;
 	    
 	    BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+	    //Scanner scanner = new Scanner(System.in);
+	    //String c;
+	    //while (scanner.hasNextLine()) {
+	    //    c = scanner.nextLine();
+	   //     System.out.println(c);
+	    //}
 	    
 	    while (!next) {
 	        try {
-    	        String[] input = reader.readLine().split(" ");
+	            String line;
+	            
+	            while (null != (line = reader.readLine())) {
+	                System.err.println(line);
+	            }
+	            line = reader.readLine();
+	            String[] input = line.split(" ");
     	        String cmd = input[0];
     	        
     	        if (cmd.equals("start")) {
@@ -32,8 +45,9 @@ public class Main {
 	        } catch (GameException e) {
 	            System.out.println("Game error. Are you sure the map file is correct?");
 	        } catch (IOException e) {
-	            e.printStackTrace();
-	        }
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
 	    }
 	}
 

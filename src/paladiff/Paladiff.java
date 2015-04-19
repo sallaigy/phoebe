@@ -1,5 +1,6 @@
 package paladiff;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileDescriptor;
@@ -12,12 +13,14 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 
 public class Paladiff {
     
     public static void main(String[] args) {
         System.out.println("paladiff v0.0.0.0.1");
+        System.out.println("Current directory: " + System.getProperty("user.dir"));
         if (args.length == 0) {
             System.out.println("A test directory is required.");
             
@@ -41,18 +44,31 @@ public class Paladiff {
             File output = new File(entry.concat(".out"));
             File actual = new File("test.tmp");
             
-            if (!output.exists()) {
+            if (!output.exists() || !input.exists()) {
                 System.out.print("S");
+                continue;
             }
             
             PrintStream ps = null;
             
             try {
                 ps = new PrintStream(actual);
-                System.setIn(new FileInputStream(input));
-                System.setOut(ps);
+                System.out.println("Running test: " + entry);
+
+                FileInputStream fis = new FileInputStream(input);
                 
-                phoebe.Main.main(new String[] {});
+                System.setOut(ps);
+                System.setIn(fis);
+
+                Scanner scanner = new Scanner(System.in);
+                String line;
+                
+                
+                //System.err.println(scanner.nextLine());
+                
+                // Futás
+                
+                phoebe.Main.main(new String[] {entry});
                 
                 System.setIn(new FileInputStream(FileDescriptor.in));
                 System.setOut(new PrintStream(new FileOutputStream(FileDescriptor.out)));
@@ -65,7 +81,7 @@ public class Paladiff {
                 StringBuilder actualString = new StringBuilder();
                 StringBuilder expectedString = new StringBuilder();
                 
-                String line;
+                //String line;
                 
                 while ((line = actualReader.readLine()) != null) {
                     actualString.append(line);
@@ -115,7 +131,7 @@ public class Paladiff {
     }
     
     private static String trimExtension(File file) {
-        String filename = file.getName();
+        String filename = file.getPath();
         
         return filename.substring(0, filename.lastIndexOf('.'));        
     }

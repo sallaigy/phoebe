@@ -21,4 +21,7 @@ hs_err_pid*
 *.ipr 
 .project
 .classpath
+
 .settings
+
+test.tmp
