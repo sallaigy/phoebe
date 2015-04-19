@@ -1,23 +1,23 @@
 start map.txt
-move 20 8
+move N
 end-turn
 end-turn
-move 20 9
+move E
 end-turn
 end-turn
-move 20 8
+move W
 end-turn
 end-turn
-move 20 9
+move E
 end-turn
 end-turn
-move 20 8
+move W
 end-turn
 end-turn
-move 20 9
+move E
 end-turn
 end-turn
-move 20 8
+move W
 end-turn
 end-turn
 quit
