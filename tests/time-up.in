@@ -1,14 +1,15 @@
-reset
+start map.txt
 set-clock 9
 move N
 end-turn
 end-turn
-reset
+start map.txt
 set-clock 9
 end-turn
 move N
 end-turn
-reset
+start map.txt
 set-clock 9
 end-turn
 end-turn
+quit

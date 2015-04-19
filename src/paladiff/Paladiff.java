@@ -1,11 +1,9 @@
 package paladiff;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileDescriptor;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
@@ -36,16 +34,20 @@ public class Paladiff {
         
         List<String> tests = Paladiff.findTests(directory);
         
+        int total = 0;
         int success = 0;
         int failure = 0;
         
         for (String entry : tests) {
+            total++;
+            System.out.print("Running test: " + entry);
+
             File input = new File(entry.concat(".in"));
             File output = new File(entry.concat(".out"));
             File actual = new File("test.tmp");
             
             if (!output.exists() || !input.exists()) {
-                System.out.print("S");
+                System.out.println(" SKIPPED");
                 continue;
             }
             
@@ -53,7 +55,6 @@ public class Paladiff {
             
             try {
                 ps = new PrintStream(actual);
-                System.out.println("Running test: " + entry);
 
                 FileInputStream fis = new FileInputStream(input);
                 
@@ -62,10 +63,7 @@ public class Paladiff {
 
                 Scanner scanner = new Scanner(System.in);
                 String line;
-                
-                
-                //System.err.println(scanner.nextLine());
-                
+                                
                 // Futás
                 
                 phoebe.Main.main(new String[] {entry});
@@ -93,10 +91,12 @@ public class Paladiff {
                 
                 if (expectedString.equals(actualString)) {
                     success++;
-                    System.out.print(".");
+                    System.out.println(" SUCCESS");
                 } else {
                     failure++;
-                    System.out.print("F");
+                    System.out.println(" FAILURE");
+                    
+                    System.out.println(String.format("\nExpected: %s\n----------\nActual:   %s\n", expectedString.toString(), actualString.toString()));
                 }
                 
             } catch (IOException e) {
@@ -108,6 +108,8 @@ public class Paladiff {
                 }
             }
         }
+        
+        System.out.println(String.format("TEST SUMMARY: %d tests, %d successful, %d failures.", total, success, failure));
         
     }
     

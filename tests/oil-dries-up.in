@@ -1,4 +1,4 @@
-reset
+start map.txt
 end-turn
 end-turn
 end-turn
@@ -7,3 +7,4 @@ end-turn
 end-turn
 end-turn
 end-turn
+quit

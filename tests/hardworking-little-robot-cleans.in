@@ -1,3 +1,4 @@
-reset
+start map.txt
 hardworking-little-robot-random off
 robot-move 0 20 10
+quit

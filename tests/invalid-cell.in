@@ -1,2 +1,3 @@
-reset
+start map.txt
 move S
+quit

@@ -1,4 +1,5 @@
-reset
+start map.txt
 move N
 end-turn
 end-turn
+quit
