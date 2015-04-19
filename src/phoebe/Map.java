@@ -78,6 +78,26 @@ public class Map {
 	}
 	
 	/**
+	 * Pályán található olyan cellák visszaadása egy listában, amelyeken folt van
+	 * 
+	 * @return: Egy lista a foltot tartalmazó cellákról
+	 */
+	public List<Cell> getCellsWithStain() {
+		
+		List<Cell> result = new ArrayList<Cell>();
+		for (int i = 0; i < cells.length; i++) {
+			
+			for (int j = 0; j < cells[i].length; j++) {
+				
+				if (!cells[i][j].getGameObject().toString().equals(null) || !cells[i][j].getGameObject().toString().equals("Robot")) {
+					result.add(cells[i][j]);
+				}
+			}
+		}
+		return result;
+	}
+	
+	/**
 	 * Visszaadja a megadott koordinátákkal rendelkező cellát
 	 * @param i Sorkoordináta
 	 * @param j Oszlopkoordináta
