@@ -89,20 +89,24 @@ public class Paladiff {
                 
                 while (!failed) {                    
                     if ((expectedLine = expectedReader.readLine()) != null) {
+                        expectedLine.trim();
                         outputString.append("+ " + expectedLine + "\n");
                     }
                     
                     if ((actualLine = actualReader.readLine()) != null) {
+                        actualLine.trim();
                         outputString.append("- " + actualLine + "\n");
                     } else {
                         if (null != expectedLine) {
+                            System.out.println("- ");
                             failed = true;
                         }
                         
                         break;
                     }
                     
-                    if (actualLine.equals(expectedLine)) {
+                    
+                    if (!actualLine.equals(expectedLine)) {
                         failed = true;
                     }
                 }
@@ -113,8 +117,11 @@ public class Paladiff {
                     System.out.println(outputString.toString());
                 } else {
                     success++;
-                    System.out.println(" SUCCESS");                    
+                    System.out.println(" SUCCESS");      
+                    System.out.println(outputString.toString());              
                 }
+                
+                System.out.println();
                 
                 /*
                 while ((line = actualReader.readLine()) != null) {
