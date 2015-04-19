@@ -1,0 +1,4 @@
+Player 0: Cell(22,8) Speed: 2 CanChangeDirection: true
+Hardworking-little-robot 0: New Position: Cell(20, 10)
+Cell(2,2) GameObject: null
+Player 1: Cell(22,10) Speed: 2 CanChangeDirection: true

@@ -1,0 +1,24 @@
+start map.txt
+hardworking-little-robot-random off
+move N
+end-turn
+end-turn
+move E
+end-turn
+end-turn
+move W
+end-turn
+end-turn
+move E
+end-turn
+end-turn
+move W
+end-turn
+end-turn
+move E
+end-turn
+end-turn
+move W
+end-turn
+end-turn
+quit

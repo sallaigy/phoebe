@@ -1,0 +1,7 @@
+start map.txt
+hardworking-little-robot-random off
+set-clock 99
+end-turn
+move N
+end-turn
+quit

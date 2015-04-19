@@ -1,0 +1,5 @@
+start map.txt
+hardworking-little-robot-random off
+robot-move 0 22 8
+end-turn
+quit

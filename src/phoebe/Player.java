@@ -46,11 +46,7 @@ public class Player {
      * @param init A játékos kezdőcellája.
      */
     public void setInitialPosition(Cell init) {
-    	Logger.methodEntry(this, init.toString());
-    	
-    	this.initialPosition = init;
-    	
-    	Logger.methodExit(this);
+    	this.initialPosition = init;    	
     }
     
     /**
@@ -66,9 +62,7 @@ public class Player {
      * @param idx A játékos azonosítója.
      */
     public Player(int idx) {
-        Logger.methodEntry(this, Integer.toString(idx));
         this.idx = idx;        
-        Logger.methodExit(this);
     }
     
     /**
@@ -76,14 +70,13 @@ public class Player {
      * @param cell Ezen a cellán fog tartózkodni a játékos.
      */
     public void move(Cell cell) {
-        Logger.methodEntry(this, cell.toString());
         
         this.currentCell.setPlayer(null);
         
         this.currentCell = cell;
+      
         this.currentCell.setPlayer(this);
-                
-        Logger.methodExit(this);
+               
     }
     
     /**
@@ -92,34 +85,32 @@ public class Player {
      * (Természetesen a cella nem lehet invalid.)
      * @param stainType A lerakandó folt típusa. Lehet "glue" vagy "stain".
      */
-    public void putStain(String stainType) {
-        Logger.methodEntry(this, stainType);        
+    public void putStain(String stainType) { 
         
         if(stainType.equals(GlueStain.class.getName())) {
         	GlueStain glueStain = new GlueStain();
         	
         	getCurrentCell().setGameObject(glueStain);
+        	glueStain.setCell(currentCell);
         }
         
         if(stainType.equals(OilStain.class.getName())) {
         	OilStain oilStain = new OilStain();
         	
         	getCurrentCell().setGameObject(oilStain);
-        }                 
-       
-        Logger.methodExit(this);        
+        	oilStain.setCell(currentCell);
+        }      
+        System.out.println(currentCell.toString());
     }
     
     /**
      * A player foltkészletének alapértelmezettre állítása. 
      */
     public void resetStainCount() {
-        Logger.methodEntry(this);
 
         storedStains.put(OilStain.class.getName(), 3);      
         storedStains.put(GlueStain.class.getName(), 3);
-        
-        Logger.methodExit(this);        
+             
     }
     
     /**
@@ -127,11 +118,8 @@ public class Player {
      * Meghívja annak a cellának az interact() metódusát, amelyiken tartózkodik.
      */
     public void onTurnStart() {
-        Logger.methodEntry(this);
-        
         this.getCurrentCell().interact();
-                
-        Logger.methodExit(this);        
+                        
     }
     
     /**
@@ -139,15 +127,13 @@ public class Player {
      * A player megfelelő attribútumait alaphelyzetbe állítja (például: sebesség).
      */
     public void onTurnEnd() {
-        Logger.methodEntry(this);
         
         //alaphelyzetbe állítja a sebességét
         this.setSpeed(2);
         
         //alaphelyzetbe állítja a mozgathatóságágt
         this.setCanChangeDirection(true);
-                
-        Logger.methodExit(this);        
+                        
     }
     
     /**
@@ -167,20 +153,20 @@ public class Player {
      * Itt állítjuk vissza a sebességét, a foltkészletét illetve hogy tud-e irányt váltani.
      */
     public void reset() {
-        Logger.methodEntry(this);
         
         this.resetStainCount();
         
         this.setCanChangeDirection(true);
         
         this.setSpeed(2);
-                
-        Logger.methodExit(this);        
+                        
     }
     
-    @Override
+   
     public String toString() {
-        return "[" + this.getClass().getName() + "](id=" + this.idx + ")";
+        return String.format("%s %d: %s(%d,%d) Speed: %d CanChangeDirection: %b", 
+        		this.getClass().getSimpleName(), this.idx, this.getCurrentCell().getClass().getSimpleName(),
+        		this .currentCell.getX(), this.currentCell.getY(), this.speed, this.canChangeDirection);
     }
 
     /**
@@ -196,11 +182,9 @@ public class Player {
      * @param canChangeDirection Tudjon-e irányt váltani vagy nem.
      */
     public void setCanChangeDirection(boolean canChangeDirection) {
-    	Logger.methodEntry(this, Boolean.toString(canChangeDirection));
     	
     	this.canChangeDirection = canChangeDirection;
         
-        Logger.methodExit(this);
     }
 
     /**
@@ -216,11 +200,9 @@ public class Player {
      * @param speed A játékos következő sebessége.
      */
     public void setSpeed(int speed) {
-       Logger.methodEntry(this, Integer.toString(speed));
        
        this.speed = speed;
        
-       Logger.methodExit(this);    	
     }
 
     /**

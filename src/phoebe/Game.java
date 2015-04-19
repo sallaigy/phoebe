@@ -4,99 +4,108 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 /**
- * A játék logikáját tartalmazó osztály.
- * Itt tartjuk számon a játékosokat, a térképet, itt kezeljük a kapott bemeneteket.
+ * A játék logikáját tartalmazó osztály. Itt tartjuk számon a játékosokat, a
+ * térképet, itt kezeljük a kapott bemeneteket.
  */
 public class Game {
 
+	public BufferedReader reader;
+
 	private int turnCount = 0;
-	
-	private int maxTurns = 10;
-	
+
+	private int maxTurns = 100;
+
 	private List<Player> players = new ArrayList<Player>();
-	
+
+	private List<GameObject> stains = new ArrayList<GameObject>();
+
+	private List<Robot> robots = new ArrayList<Robot>();
+
 	private Map map;
 
 	private int currentPlayerIdx;
-	
+
 	private boolean shouldQuit = false;
-	
+
 	private Random rand = new Random();
-	
+
+	private String mapFile;
+
+	private boolean oilRandom = true;
+
 	/**
 	 * Jelzi a játék indulását, hatására felépül a pálya és megkezdődik az első kör.
 	 * A játék ebben az állapotban marad újraindításig és kilépésig.
 	 */
 
-	public void start() {
-		Logger.methodEntry(this);
-		
+	public void start(String map) throws GameException {
+		this.mapFile = map;
+
 		// initialize the players
 		Player player0 = new Player(0);
 		Player player1 = new Player(1);
 
 		this.players.add(player0);
 		this.players.add(player1);
-		
-        // load the map
+
+		// load the map
 		try {
-		    this.loadMap();
+			this.loadMap();
 		} catch (IOException e) {
-		    e.printStackTrace();
+			throw new GameException();
 		}
-        
+		Robot robot0 = new Robot(this.map, this.map.getCell(0 + 2, 0 + 2), 0);
+		Robot robot1 = new Robot(this.map, this.map.getCell(1 + 2, 1 + 2), 1);
+		
+		this.robots.add(robot0);
+		this.robots.add(robot1);
+		
 		this.currentPlayerIdx = 0;
-		
+
 		while (!this.shouldQuit) {
-		    this.beginTurn();
-		    this.handleInput();
-		    this.endTurn();
-		    
-		    if (this.currentPlayerIdx == this.players.size() - 1) {
-		        this.currentPlayerIdx = 0;
-		    } else {
-		        this.currentPlayerIdx++;
-		    }
+			this.beginTurn();
+			this.handleInput();
+			this.endTurn();
+			
+			if (this.currentPlayerIdx == this.players.size() - 1) {
+				this.currentPlayerIdx = 0;
+			} else {
+				this.currentPlayerIdx++;
+			}
 		}
-		
-		Logger.methodExit(this);
 	}
 	/**
 	 * Újraindítja az aktuális játékot.
 	 * Minden játékos visszakerül a kezdőpozícióba, foltkészleteik feltöltődnek.
 	 * A turnCount nulla értéket kap.
 	 */
-	public void reset() {
-		Logger.methodEntry(this);
-		
+	public void reset() {		
 		setTurnCount(0);
+		
 		try {
 			this.loadMap();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 		for (Player player : players) {
 			player.reset();
 		}
 		
-		Logger.methodExit(this);		
+		this.currentPlayerIdx = 0;
 	}
 
 	/**
 	 * Befejezi a játékot és kilép a programból.
 	 */
 	public void quit() {
-		Logger.methodEntry(this);
-		Logger.methodExit(this);
-		System.exit(0);
-	}
+        this.shouldQuit = true;
+    }
 
 	/**
 	 * Ez a metódus tölti be a térképet.
@@ -105,57 +114,53 @@ public class Game {
 	 * @throws IOException
 	 */
 	protected void loadMap() throws IOException {
-		Logger.methodEntry(this);
-
 		Map tempMap = new Map(25, 19);
 
-		FileReader fileReader = new FileReader(new File("phoebe/map.txt"));
+		FileReader fileReader = new FileReader(new File(this.mapFile));
 		BufferedReader buffReader = new BufferedReader(fileReader);
 
 		String line = new String();
 		int i = 0;
 		while ((line = buffReader.readLine()) != null) {
-		    String[] splitLine = line.split("\t");
-            
-            for (int j = 0; j < splitLine.length; j++) {                
-                int cellProperty = Integer.parseInt(splitLine[j]);
-                            
-                switch(cellProperty) {
-                    case 0:
-                        tempMap.setCell(new Cell(i, j, CellType.CELL_INVALID, null, null));
-                        break;
-                    case 1:
-                        tempMap.setCell(new Cell(i, j, CellType.CELL_VALID, null, null));
-                        break;
-                    case 2:
-                        tempMap.setCell(new Cell(i, j, CellType.CELL_VALID, null, new OilStain()));
-                        break;
-                    case 3:
-                        tempMap.setCell(new Cell(i, j, CellType.CELL_VALID, null, new GlueStain()));
-                        break;
-                    case 4:
-                        Cell cell = new Cell(i, j, CellType.CELL_VALID, players.get(0), null);
-                        tempMap.setCell(cell);
-                        players.get(0).setInitialPosition(cell);
-                        players.get(0).setCurrentCell(cell);
-                        break;
-                    case 5: cell = new Cell(i, j, CellType.CELL_VALID, players.get(1), null);
-                        tempMap.setCell(cell);
-                        players.get(1).setInitialPosition(cell);
-                        players.get(1).setCurrentCell(cell);
-                        break;
-                    default:
-                        tempMap.setCell(new Cell(i, j, CellType.CELL_VALID, null, null));
-                        break;
-                }
-            }
-            
-            i++;
-		}
+			String[] splitLine = line.split("\t");
 
+			for (int j = 0; j < splitLine.length; j++) {                
+				int cellProperty = Integer.parseInt(splitLine[j]);
+
+				switch(cellProperty) {
+				case 0:
+					tempMap.setCell(new Cell(i, j, CellType.CELL_INVALID, null, null));
+					break;
+				case 1:
+					tempMap.setCell(new Cell(i, j, CellType.CELL_VALID, null, null));
+					break;
+				case 2:
+					tempMap.setCell(new Cell(i, j, CellType.CELL_VALID, null, new OilStain()));
+					break;
+				case 3:
+					tempMap.setCell(new Cell(i, j, CellType.CELL_VALID, null, new GlueStain()));
+					break;
+				case 4:
+					Cell cell = new Cell(i, j, CellType.CELL_VALID, players.get(0), null);
+					tempMap.setCell(cell);
+					players.get(0).setInitialPosition(cell);
+					players.get(0).setCurrentCell(cell);
+					break;
+				case 5: cell = new Cell(i, j, CellType.CELL_VALID, players.get(1), null);
+				tempMap.setCell(cell);
+				players.get(1).setInitialPosition(cell);
+				players.get(1).setCurrentCell(cell);
+				break;
+				default:
+					tempMap.setCell(new Cell(i, j, CellType.CELL_VALID, null, null));
+					break;
+				}
+			}
+
+			i++;
+		}
 		buffReader.close();
 		map = tempMap;
-		Logger.methodExit(this);
 	}
 
 	/**
@@ -163,39 +168,31 @@ public class Game {
 	 * Tehát meghívja a játékosok onTurnEnd() metódusát.
 	 */
 	public void endTurn() {
-		Logger.methodEntry(this);
-
 		for (Player player : players) {
 			player.onTurnEnd();
-			
+
 			Cell currCell = player.getCurrentCell();
 			if (currCell.getCellType() == CellType.CELL_INVALID || currCell.getX() < 0 || currCell.getY() < 0) {
-				System.out.println(player + " lost the game.");
-				System.exit(0);
+				if (player == players.get(0)) 
+					printOutcome(players.get(1).getClass().getSimpleName() + " " + players.get(1).getIdx());
+				else printOutcome(players.get(0).getClass().getSimpleName() + " " + players.get(0).getIdx());
+				this.quit();
 			}
 		}
-		
+
 		if (turnCount == maxTurns) {
+			Player winner = null;
 			if (players.get(0).getDistance() > players.get(1).getDistance()) {
-				System.out.println("Player1 won the game.");
+				winner = players.get(0);
 			} else {
-			    System.out.println("Player2 won the game.");
+				winner = players.get(1);  
+			} 
+			if(winner == null)
+				printOutcome("Draw");
+			else {
+				printOutcome(winner.getClass().getSimpleName() + " "+ winner.getIdx());
 			}
 		}
-		
-		System.out.println("Újraindítja a játékot?(Y/N)");
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		try {
-            String s = br.readLine();
-            if (s.equals("Y")) {
-                reset();
-            }
-        } catch (IOException e) {
-            
-            e.printStackTrace();
-        }
-		
-		Logger.methodExit(this);        
 	}
 
 	/**
@@ -203,132 +200,224 @@ public class Game {
 	 * Tehát meghívja a játékosok onTurnStart() metódusát.
 	 */
 	public void beginTurn() {
-		Logger.methodEntry(this);
-
+	    this.turnCount++;
+	    
 		for (Player player : players) {
 			player.onTurnStart();
+			
 		}
-		
-		turnCount++;
-		
-		Logger.methodExit(this);
-	}
-	
-	/**
-	 * Kezeli a konzolról kapott bemenetet.
-	 */
-	public void handleInput() {
-
-        Logger.methodEntry(this);
-        
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-       
-        boolean next = false;
-        String res;        
-
-        Player current = this.players.get(this.currentPlayerIdx);
-        List<Cell> neighbours = this.map.getNeighbours(current.getCurrentCell(), current.getSpeed());
-        
-        Cell nextCell = new Cell();
-        int y = 0, x = 0, distance = 0;
-        
-        if (!current.isCanChangeDirection()) { // Nem léphet
-            int index = this.rand.nextInt(neighbours.size());
-            Cell cell = neighbours.get(index);
-            
-            System.out.println(String.format("Olajfolt, az új pozíciód: (%d, %d)", cell.getX(), cell.getY()));
-            
-            current.move(cell);
-            
-            return;
-        }
-       
-        y = current.getCurrentCell().getY();
-        x = current.getCurrentCell().getX();
-        distance = current.getSpeed();
-        
-        while (!next) {
-            try {
-                System.out.println(String.format("%d: Jelenleg a (%d, %d) cellán állsz. Sebességed: %d", current.getIdx(), x, y, current.getSpeed()));
-                System.out.println("Hova lép? (W/NW/N/NE/E/SE/S/SW)");
-                res = reader.readLine();
-                
-                if (res.equals("W")) {
-                    y -= distance;
-                } else if (res.equals("NW")) {
-                    y += distance;
-                    x -= distance;
-                } else if (res.equals("N")) {
-                    x -= distance;
-                } else if (res.equals("NE")) {
-                    y -= distance;
-                    x -= distance;
-                } else if (res.equals("E")) {
-                    y += distance;
-                } else if (res.equals("SE")) {
-                    y -= distance;
-                    x += distance;
-                } else if (res.equals("S")) {
-                    x += distance;
-                } else if (res.equals("SW")) {
-                    y += distance;
-                    x += distance;
-                } else {
-                    System.out.println("Érvénytelen irány");
-                }                
-            } catch (IOException e) {
-                e.printStackTrace();
-                System.exit(1);
-            }
-            
-            for (Cell cell : neighbours) {
-                if (cell.getX() == x && cell.getY() == y && cell.getPlayer() == null) {
-                    next = true;
-                    nextCell = cell;
-                }
-            }
-       }
-        
-        System.out.println(String.format("Az új pozíció: (%d, %d) lesz.", nextCell.getX(), nextCell.getY()));
-        
-        next = false;
-        
-        while (!next) {
-            try {
-                System.out.println("Mit rak le? (O/G/N)");
-                res = reader.readLine();
-                
-                next = true;
-                if (res.equals("O")) {
-                    this.players.get(this.currentPlayerIdx).putStain(OilStain.class.getName());
-                } else if (res.equals("G")) {
-                    this.players.get(this.currentPlayerIdx).putStain(GlueStain.class.getName());                    
-                } else if (res.equals("N")) {
-                    // nope
-                } else {
-                    System.out.println("Érvénytelen folt");
-                    next = false;
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-                next = false;
-            }
-        }
-        
-        current.move(nextCell);
-        
-        Logger.methodExit(this);
+		for (Robot robot : robots) {
+			robot.onTurnStart();
+		}
+		proccessGameObjectsFromMap();
+		for (GameObject gameObject : stains) {
+			gameObject.onTurnStart();
+		}
 	}
 
+	 public void handleInput() {
+	        Player current = this.players.get(currentPlayerIdx);
+	        
+	        System.out.println(current.toString());
+
+	        String line;
+
+	        Cell nextCell = null;
+
+	        boolean next = false;
+
+	        while (!next) {
+	            try {
+	                if (null != (line = this.reader.readLine())) {
+	                    String[] input = line.split(" ");
+	                    String cmd = input[0];
+
+	                    if (cmd.equals("reset")) {
+	                        this.reset();
+	                        next = true;
+	                    } else if (cmd.equals("quit")) {
+	                        this.quit();
+	                        next = true;
+	                    } else if (cmd.equals("showmap")) {
+	                        map.printMap();
+	                    } else if (cmd.equals("move")) {
+	                        if (nextCell == null) {
+	                            // Ha még nem léptünk
+	                            List<Cell> neighbours = this.map.getNeighbours(
+	                                    current.getCurrentCell(),
+	                                    current.getSpeed());
+	                            int x = current.getCurrentCell().getX(), y = current
+	                                    .getCurrentCell().getY(), distance = current.getSpeed();
+
+	                            if (input.length >= 2) {
+	                                String res = input[1];
+	                                if (res.equals("W")) {
+	                                    y -= distance;
+	                                } else if (res.equals("NW")) {
+	                                    y -= distance;
+	                                    x -= distance;
+	                                } else if (res.equals("N")) {
+	                                    x -= distance;
+	                                } else if (res.equals("NE")) {
+	                                    y += distance;
+	                                    x -= distance;
+	                                } else if (res.equals("E")) {
+	                                    y += distance;
+	                                } else if (res.equals("SE")) {
+	                                    y += distance;
+	                                    x += distance;
+	                                } else if (res.equals("S")) {
+	                                    x += distance;
+	                                } else if (res.equals("SW")) {
+	                                    y -= distance;
+	                                    x += distance;
+	                                } else {
+	                                    System.out.println("Invalid direction");
+	                                }
+
+	                                for (Cell cell : neighbours) {
+	                                    if (cell.getX() == x && cell.getY() == y) {
+	                                        nextCell = cell;
+	                                        System.out
+	                                                .println(String
+	                                                        .format("%s %d: New Position: Cell(%d, %d)",
+	                                                                current.getClass()
+	                                                                        .getSimpleName(),
+	                                                                current.getIdx(),
+	                                                                nextCell.getX(),
+	                                                                nextCell.getY()));
+
+	                                        break;
+	                                    }
+	                                }
+	                            }
+	                        } else {
+	                            System.out
+	                                    .println("Only one move is allowed per turn.");
+	                        }
+
+	                    } else if (cmd.equals("put-stain")) {
+
+	                        if (input[1].equals("G")) {
+	                            current.putStain(GlueStain.class.getName());
+	                        } else if (input[1].equals("O")) {
+	                            current.putStain(OilStain.class.getName());
+	                        } else {
+	                            System.out.println("Invalid stain");
+	                        }
+
+	                    } else if (cmd.equals("end-turn")) {
+	                        if (nextCell != null) {
+	                            if (nextCell.getPlayer() != null) {
+	                                this.printOutcome(current.getClass().getSimpleName() + " " + current.getIdx());
+	                                this.quit();
+	                            }
+	                            current.move(nextCell);
+	                            
+	                        }
+	                        next = true;
+
+	                    } else if (cmd.equals("oil-random")) {
+	                        if (input.length >= 2) {
+	                            String setting = input[1];
+
+	                            if (setting.equals("on")) {
+	                                this.oilRandom = true;
+	                            } else if (setting.equals("off")) {
+	                                this.oilRandom = false;
+	                            } else {
+	                                System.out.println("Invalid setting.");
+	                            }
+	                        } else {
+	                            System.out
+	                                    .println("USAGE: hardworking-little-robot-random <setting>");
+	                        }
+	                    } else if (cmd.equals("hardworking-little-robot-random")) {
+	                        if (input.length >= 2) {
+	                            String setting = input[1];
+
+	                            if (setting.equals("on")) {
+	                                Robot.randomStatus = true;
+	                            } else if (setting.equals("off")) {
+	                                Robot.randomStatus = false;
+	                            } else {
+	                                System.out.println("Invalid setting.");
+	                            }
+	                        } else {
+	                            System.out
+	                                    .println("USAGE: hardworking-little-robot-random <setting>");
+	                        }
+	                    } else if (cmd.equals("robot-move")) {
+
+	                    	if (input.length < 4) {
+	    						System.out.println("Invalid command, not enough arguments.");
+	    					} else {
+	    						int id = Integer.parseInt(input[1]);
+	    						int row = Integer.parseInt(input[2]);
+	    						int col = Integer.parseInt(input[3]);
+
+	    						if (row > map.getSize()[0] || row < 0) {
+	    							System.out.println("Invalid <row> parameter");
+	    						} else if (col > map.getSize()[1] || col < 0) {
+	    							System.out.println("Invalid <col> parameter");
+	    						} else {
+	    							for (Robot robot: robots) {
+	    								if (robot.idx == id) {
+	    									//robot.setCell(map.getCell(row, col));
+                                            System.out.println(String.format("Hardworking-little-robot %d: New Position: Cell(%d, %d)", 
+                                                    robot.idx, row, col));
+	    								    robot.move(map.getCell(row, col));
+	    								}
+	    							}
+	    						}
+	                        }
+	                    } else if (cmd.equals("set-clock")) {
+	                        if (input.length >= 2) {
+	                            try {
+	                                int tc = Integer.parseInt(input[1]);
+	                                this.turnCount = tc;
+	                            } catch (NumberFormatException e) {
+	                                System.out.println(e.getMessage());
+	                            }
+	                        } else {
+	                            System.out.println("USAGE: set-clock <T>");
+	                        }
+	                    } else {
+	                        System.out.println("Unknown command.");
+	                    }
+
+	                }
+	            } catch (Exception e) {
+	                e.printStackTrace();
+	                next = false;
+	            }
+	        }
+	    }
 	/**
 	 * Beállítja az eltelt körök számát.
 	 * @param turnCount Az érték, amelyre be szeretnénk állítani az eltelt körök számát.
 	 */
 	public void setTurnCount(int turnCount) {
-		Logger.methodEntry(this);
 		this.turnCount = turnCount;
-		Logger.methodExit(this);
 	}
 
+	public void printOutcome(String outcome) {
+		String output = String.format("%s %d: Distance - %d; %s %d: Distance - %d; Winner: %s",
+				players.get(0).getClass().getSimpleName(), players.get(0).getIdx(),
+				players.get(0).getDistance(),
+				players.get(1).getClass().getSimpleName(), players.get(1).getIdx(),
+				players.get(1).getDistance(),
+				outcome);
+		System.out.println(output);
+	}
+	
+	public void proccessGameObjectsFromMap() {
+		List<GameObject> temp = new ArrayList<GameObject>();
+		List<Cell> cells = map.getCellsWithStain();
+		for (Cell cell : cells) {
+			temp.add(cell.getGameObject());
+		}
+		stains = temp;
+	}
 
 }
