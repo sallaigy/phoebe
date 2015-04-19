@@ -1,4 +1,4 @@
+Player 0: Cell(22,8) Speed: 2 CanChangeDirection: true
 Hardworking-little-robot 0: New Position: Cell(10, 10)
 Hardworking-little-robot 1: New Position: Cell(10, 10)
-Hardworking-little-robot 0: Collision; New Position: Cell(8, 10)
-Hardworking-little-robot 1: Collision; New Position: Cell(12, 10)
+Hardworking-little-robot 1: Collision; New Position: Cell(3, 3)

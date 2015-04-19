@@ -98,7 +98,7 @@ public class Paladiff {
                         outputString.append("- " + actualLine + "\n");
                     } else {
                         if (null != expectedLine) {
-                            System.out.println("- ");
+                            outputString.append("- ");
                             failed = true;
                         }
                         
@@ -118,7 +118,7 @@ public class Paladiff {
                 } else {
                     success++;
                     System.out.println(" SUCCESS");      
-                    System.out.println(outputString.toString());              
+                    //System.out.println(outputString.toString());              
                 }
                 
                 System.out.println();
