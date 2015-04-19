@@ -12,10 +12,7 @@ public class OilStain extends Stain {
 	*/
 	@Override
 	public void interact(Player player) {
-
         player.setCanChangeDirection(false);
-
-        Logger.methodExit(this);
 	}
 
 	@Override
@@ -28,12 +25,11 @@ public class OilStain extends Stain {
 		eventCount--;
 		if (eventCount == 0) {
 			currentCell.setGameObject(null);
+			System.out.println(currentCell.toString());
 		}
 	}
 
 	@Override
-	public void onTurnEnd() {
-		
-	}
+	public void onTurnEnd() {}
 
 }

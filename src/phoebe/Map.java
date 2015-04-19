@@ -84,7 +84,7 @@ public class Map {
 			for (int j = 0; j < cells[i].length; j++) {
 
 				if (cells[i][j].getGameObject() !=  null) {
-					if (!cells[i][j].getGameObject().toString().equals("Robot")) {
+					if (!cells[i][j].getGameObject().toString().equals("Hardworking-little-robot")) {
 						result.add(cells[i][j]);
 					}
 				}

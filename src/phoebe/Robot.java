@@ -24,7 +24,7 @@ public class Robot implements GameObject {
 		OilStain oilStain = new OilStain();
 		oilStain.setCell(cell);
 		cell.setGameObject(oilStain);
-
+		System.out.println(cell.toString());
 		int newPosX = (new Random()).nextInt(map.getSize()[0]);
 		int newPosY = (new Random()).nextInt(map.getSize()[1]);
 
@@ -55,8 +55,9 @@ public class Robot implements GameObject {
 
 			if (destinationCell.equals(currentCell)) {
 				destinationCell = null;
+				System.out.println(currentCell.toString());
 				return;
-			}
+			} else
 
 			if (destinationCell.getX() != currentCell.getX()) {
 
@@ -77,7 +78,8 @@ public class Robot implements GameObject {
 				cell = map.getCell(currentCell.getX(), nextPosY);
 			}
 			
-			if (cell.getGameObject()!=null && cell.getGameObject().toString().equals("Robot")) {
+			if ((cell.getGameObject()!=null && cell.getGameObject().toString().equals("Hardworking-little-robot"))
+				|| 	(cell.getPlayer()!=null)) {
 				List<Cell> neighbours = map.getNeighbours(currentCell, 1);
 				currentCell.setGameObject(null);
 				currentCell = neighbours.get((new Random()).nextInt(neighbours.size()));
@@ -102,7 +104,7 @@ public class Robot implements GameObject {
 
 	@Override
 	public String toString() {
-		return "Robot";
+		return "Hardworking-little-robot";
 	}
 
 	@Override

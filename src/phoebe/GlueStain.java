@@ -14,6 +14,7 @@ public class GlueStain extends Stain {
         eventCount--;
         if (eventCount == 0) {
         	currentCell.setGameObject(null);
+        	System.out.println(currentCell.toString());
         }
 	}
 	

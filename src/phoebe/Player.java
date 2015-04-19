@@ -74,10 +74,9 @@ public class Player {
         this.currentCell.setPlayer(null);
         
         this.currentCell = cell;
-       // System.out.println(String.format("%s %d: New Position: Cell(%d, %d)", this.getClass().getSimpleName(), idx
-		//		,currentCell.getX(), currentCell.getY()));
+      
         this.currentCell.setPlayer(this);
-                
+               
     }
     
     /**
@@ -100,8 +99,8 @@ public class Player {
         	
         	getCurrentCell().setGameObject(oilStain);
         	oilStain.setCell(currentCell);
-        }                 
-           
+        }      
+        System.out.println(currentCell.toString());
     }
     
     /**
@@ -166,7 +165,7 @@ public class Player {
    
     public String toString() {
         return String.format("%s %d: %s (%d, %d) Speed: %d CanChangeDirection: %b", 
-        		this.getClass().getSimpleName(), this.idx, this.getCurrentCell().getClass().getName(),
+        		this.getClass().getSimpleName(), this.idx, this.getCurrentCell().getClass().getSimpleName(),
         		this .currentCell.getX(), this.currentCell.getY(), this.speed, this.canChangeDirection);
     }
 

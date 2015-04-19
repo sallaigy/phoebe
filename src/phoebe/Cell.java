@@ -99,7 +99,7 @@ public class Cell {
 				return "2";
 			} else if (gameObject.toString().equals("GlueStain")) {
 				return "3";
-			} else if (gameObject.toString().equals("Robot")) {
+			} else if (gameObject.toString().equals("Hardworking-little-robot")) {
 				return "6";
 			}
 		} else if (this.cellType == CellType.CELL_INVALID) {
