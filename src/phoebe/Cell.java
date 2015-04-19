@@ -115,9 +115,9 @@ public class Cell {
 	@Override
 	public String toString() { 
 		String gameObjectString = new String();
-		gameObjectString = gameObject == null ? "NULL": gameObject.toString();
+		gameObjectString = gameObject == null ? "null": gameObject.toString();
 
-		return String.format("%s(%d,%d) GameObject: %s", this.getClass().getSimpleName(), this.x, this.y, gameObjectString);
+		return String.format("%s(%d,%d): GameObject: %s", this.getClass().getSimpleName(), this.x, this.y, gameObjectString);
 	}
 
 }

@@ -218,6 +218,7 @@ public class Game {
 	 */
 	 public void handleInput() {
 	        Player current = this.players.get(currentPlayerIdx);
+	        
 	        System.out.println(current.toString());
 
 	        String line;
