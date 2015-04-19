@@ -132,8 +132,7 @@ public class Player {
         this.setSpeed(2);
         
         //alaphelyzetbe állítja a mozgathatóságágt
-        this.setCanChangeDirection(true);
-                        
+        this.setCanChangeDirection(true);                        
     }
     
     /**
@@ -162,7 +161,9 @@ public class Player {
                         
     }
     
-   
+   /**
+    * A játékost kiíró metódus visszaadja a játékos állapotát.
+    */
     public String toString() {
         return String.format("%s %d: %s(%d,%d) Speed: %d CanChangeDirection: %b", 
         		this.getClass().getSimpleName(), this.idx, this.getCurrentCell().getClass().getSimpleName(),

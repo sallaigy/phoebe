@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Itt tárolunk minden olyan információt, amely a térképpel kapcsolatos, azaz itt tároljuk a Cellekből álló kétdimenziós tömbünket is, illetve az adott pályára vonatkozó maximális játékidőt.
+ * Itt tárolunk minden olyan információt, amely a térképpel kapcsolatos:
+ * Itt tároljuk a Cellekből álló kétdimenziós tömbünket is, illetve az adott pályára vonatkozó maximális játékidőt.
  *
  */
 public class Map {
@@ -74,7 +75,7 @@ public class Map {
 	/**
 	 * Pályán található olyan cellák visszaadása egy listában, amelyeken folt van
 	 * 
-	 * @return: Egy lista a foltot tartalmazó cellákról
+	 * @return Egy lista a foltot tartalmazó cellákról
 	 */
 	public List<Cell> getCellsWithStain() {
 
@@ -111,6 +112,10 @@ public class Map {
 		cells[cell.getX()][cell.getY()] = cell;
 	}
 
+	/**
+	 * Visszaadja, hogy a térkép egy hányszor hányas mátrix.
+	 * @return A térkép mérete ((n * m)-es)
+	 */
 	public int[] getSize() {
 		int[] result = {cells.length, cells[0].length};
 		return result;

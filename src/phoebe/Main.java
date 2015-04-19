@@ -4,7 +4,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-
+/**
+ * A programunk belépési pontját definiáló osztály. 
+ * Létrehoz egy Game-t és egy Game.readert.
+ */
 public class Main {
 
 	public static void main(String[] args)  {
@@ -16,11 +19,13 @@ public class Main {
 	    while (!next) {
 	        try {
 	            String line;
-	   
+	            
+	            // Beolvassuk a parancsot
 	            if (null != (line = game.reader.readLine())) {
 	                String[] input = line.split(" ");
 	                String cmd = input[0];
 	                
+	                // Ha parancs egy indító parancs, akkor elindít egy játékot a beolvasott térképpel
 	                if (cmd.equals("start")) {
 	                    if (input.length >= 2) {
 	                        String map = input[1];

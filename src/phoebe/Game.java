@@ -215,9 +215,6 @@ public class Game {
 		}
 	}
 
-	/**
-	 * Kezeli a konzolról kapott bemenetet.
-	 */
 	 public void handleInput() {
 	        Player current = this.players.get(currentPlayerIdx);
 	        
