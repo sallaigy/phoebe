@@ -15,5 +15,6 @@ public interface GameObject {
 	public void onTurnStart();
 	public void onTurnEnd();
 	public String toString();
+	public void setCell(Cell cell);
 	
 }

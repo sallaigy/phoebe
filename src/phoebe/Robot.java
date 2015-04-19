@@ -1,6 +1,7 @@
 package phoebe;
 
 import java.util.List;
+import java.util.Random;
 
 public class Robot implements GameObject {
 
@@ -15,7 +16,16 @@ public class Robot implements GameObject {
 
 	@Override
 	public void interact(Player player) {
-		
+		Cell cell = currentCell;
+
+		OilStain oilStain = new OilStain();
+		oilStain.setCell(cell);
+		cell.setGameObject(oilStain);
+
+		int newPosX = (new Random()).nextInt(map.getSize()[0]);
+		int newPosY = (new Random()).nextInt(map.getSize()[1]);
+
+		currentCell = map.getCell(newPosX, newPosY);
 	}
 
 	@Override
@@ -29,43 +39,48 @@ public class Robot implements GameObject {
 				destinationCell = destinationCells.get(0);
 
 				for (Cell cell : destinationCells) {
-						if (getDistance(cell) < getDistance(destinationCell)) {
-							destinationCell = cell;
-						}
+					if (getDistance(cell) < getDistance(destinationCell)) {
+						destinationCell = cell;
+					}
 				}
 			}
 
 		} else {
 			int nextPosX = 0;
 			int nextPosY = 0;
-			
+			Cell cell = new Cell();
+
 			if (destinationCell.equals(currentCell)) {
 				destinationCell = null;
 				return;
 			}
-			
+
 			if (destinationCell.getX() != currentCell.getX()) {
-				
+
 				if (destinationCell.getX() > currentCell.getX()) {
 					nextPosX = currentCell.getX() + 1;
 				} else {
 					nextPosX = currentCell.getX() - 1;
-				} 
-				currentCell = map.getCell(nextPosX, currentCell.getY());
-				currentCell.setGameObject(this);
+				}
+				cell = map.getCell(nextPosX, currentCell.getY());
 				
 			} else if (destinationCell.getY() != currentCell.getY()) {
-				
+
 				if (destinationCell.getY() > currentCell.getY()) {
 					nextPosY = currentCell.getY() + 1;
 				} else {
 					nextPosY = currentCell.getY() - 1;
 				}
-				currentCell = map.getCell(currentCell.getX(), nextPosY);
+				cell = map.getCell(currentCell.getX(), nextPosY);
+			}
+			
+			if (cell.getGameObject().toString().equals("Robot")) {
+				List<Cell> neighbours = map.getNeighbours(currentCell, 1);
+				currentCell = neighbours.get((new Random()).nextInt(neighbours.size()));
+			} else {
+				currentCell = cell;
 				currentCell.setGameObject(this);
 			}
-				
-			
 		}
 
 	}
@@ -78,13 +93,15 @@ public class Robot implements GameObject {
 	}
 
 	@Override
-	public void onTurnEnd() {
-		// TODO Auto-generated method stub
-
-	}
+	public void onTurnEnd() { }
 
 	@Override
 	public String toString() {
 		return "Robot";
+	}
+
+	@Override
+	public void setCell(Cell cell) {
+		this.currentCell = cell;
 	}
 }

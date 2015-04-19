@@ -17,9 +17,7 @@ public class Map {
      * @param n A mátrix oszlopainak a száma
      */
     public Map(int k, int n) {
-        Logger.methodEntry(this, Integer.toString(k), Integer.toString(n));
     	cells = new Cell[k][n];    	
-    	Logger.methodExit(this);
     }
     
 	/**
@@ -30,7 +28,6 @@ public class Map {
 	 * @return Egy lista az adott távolságban lévő cellákkal
 	 */
 	public List<Cell> getNeighbours(int i, int j, int distance) {
-        Logger.methodEntry(this, Integer.toString(i), Integer.toString(j), Integer.toString(distance));
 	    if (distance < 0 || distance > 2) {
 	    	throw new IllegalArgumentException();
 	    }
@@ -44,7 +41,6 @@ public class Map {
 	    }		
 	    results.remove(cells[i][j]);
 	    
-        Logger.methodExit(this);
 		return results;
 	}
 	
@@ -55,12 +51,10 @@ public class Map {
 	 * @return Egy lista az adott távolságban lévő cellákkal
 	 */
 	public List<Cell> getNeighbours(Cell cell, int distance) {
-	    Logger.methodEntry(this, cell.toString(), Integer.toString(distance));
 
 		List<Cell> results = new ArrayList<Cell>();
 		results = getNeighbours(cell.getX(), cell.getY(), distance);
 		
-		Logger.methodExit(this);
 		return results;
 	}
 	
@@ -89,7 +83,7 @@ public class Map {
 			
 			for (int j = 0; j < cells[i].length; j++) {
 				
-				if (!cells[i][j].getGameObject().toString().equals(null) || !cells[i][j].getGameObject().toString().equals("Robot")) {
+				if (!cells[i][j].getGameObject().equals(null) || !cells[i][j].getGameObject().toString().equals("Robot")) {
 					result.add(cells[i][j]);
 				}
 			}
@@ -113,6 +107,11 @@ public class Map {
 	 */
 	public void setCell(Cell cell) {
 		cells[cell.getX()][cell.getY()] = cell;
+	}
+	
+	public int[] getSize() {
+		int[] result = {cells.length, cells[0].length};
+		return result;
 	}
 	
 }

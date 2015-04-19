@@ -28,6 +28,7 @@ public class Cell {
 		this.cellType = cellType;
 		this.player = player;
 		this.gameObject = gameObject;
+		this.gameObject.setCell(this);
 	}
 	
 	/**

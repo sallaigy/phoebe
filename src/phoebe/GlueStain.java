@@ -2,6 +2,7 @@ package phoebe;
 
 public class GlueStain extends Stain {
 
+	
 	/**
 	 * A GlueStain interakcióját megvalósító metódus. 
 	 * A paraméterként átadott Player sebességét beállítja 1-re.
@@ -9,30 +10,28 @@ public class GlueStain extends Stain {
 	 */
 	@Override
 	public void interact(Player player) {
-        Logger.methodEntry(this);
         player.setSpeed(1);
         eventCount--;
         if (eventCount == 0) {
-        	//Leszedjük
+        	currentCell.setGameObject(null);
         }
-        Logger.methodExit(this);
 	}
 	
 	@Override
 	public String toString() {
 		return "GlueStain";
 	}
-
+	
+	/**
+	 * GlueStain nem csinál semmit kör elején
+	 */
 	@Override
-	public void onTurnStart() {
-		// TODO Auto-generated method stub
-		
-	}
-
+	public void onTurnStart() {}
+	
+	/**
+	 * GlueStain nem csinál semmit kör végén
+	 */
 	@Override
-	public void onTurnEnd() {
-		// TODO Auto-generated method stub
-		
-	}
+	public void onTurnEnd() {}
 
 }

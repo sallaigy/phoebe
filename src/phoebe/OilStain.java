@@ -2,13 +2,16 @@ package phoebe;
 
 public class OilStain extends Stain {
 
+	public OilStain() {
+		this.eventCount = 4;
+	}
+	
 	/**
 	* Az OilStain interakcióját megvalósító metódus. 
 	* A paraméterként átadott Playernek letiltja a cellaválasztó-képességét.
 	*/
 	@Override
 	public void interact(Player player) {
-        Logger.methodEntry(this, player.toString());
 
         player.setCanChangeDirection(false);
 
@@ -22,13 +25,14 @@ public class OilStain extends Stain {
 
 	@Override
 	public void onTurnStart() {
-		// TODO Auto-generated method stub
-		
+		eventCount--;
+		if (eventCount == 0) {
+			currentCell.setGameObject(null);
+		}
 	}
 
 	@Override
 	public void onTurnEnd() {
-		// TODO Auto-generated method stub
 		
 	}
 

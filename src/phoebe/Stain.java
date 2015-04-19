@@ -8,6 +8,9 @@ public abstract class Stain implements GameObject {
 
 	private boolean visible = false;
 	protected int eventCount;
+	protected Cell currentCell;
+	
+	
 		
 	/**
 	 * Absztrakt metódus az egyes Stain-ek interakcióira.
@@ -17,5 +20,8 @@ public abstract class Stain implements GameObject {
 	public abstract void onTurnStart();
 	public abstract void onTurnEnd();
 	public abstract String toString();
+	public void setCell(Cell cell) {
+		this.currentCell = cell;
+	}
 
 }

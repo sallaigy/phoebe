@@ -99,12 +99,14 @@ public class Player {
         	GlueStain glueStain = new GlueStain();
         	
         	getCurrentCell().setGameObject(glueStain);
+        	glueStain.setCell(currentCell);
         }
         
         if(stainType.equals(OilStain.class.getName())) {
         	OilStain oilStain = new OilStain();
         	
         	getCurrentCell().setGameObject(oilStain);
+        	oilStain.setCell(currentCell);
         }                 
        
         Logger.methodExit(this);        
