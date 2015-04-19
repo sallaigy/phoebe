@@ -1,4 +1,5 @@
 Player 0: Cell(22,8) Speed: 2 CanChangeDirection: true
 Hardworking-little-robot 0: New Position: Cell(22, 6)
 Player 0: New Position: Cell(22, 6)
-Cell(22, 6): GameObject: OilStain
+Cell(22,6) GameObject: OilStain
+Player 1: Cell(22,10) Speed: 2 CanChangeDirection: true

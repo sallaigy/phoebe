@@ -1,4 +1,5 @@
 start map.txt
+hardworking-little-robot-random off
 move N
 end-turn
 end-turn

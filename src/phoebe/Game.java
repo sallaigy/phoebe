@@ -18,7 +18,7 @@ public class Game {
 
 	private int turnCount = 0;
 
-	private int maxTurns = 10;
+	private int maxTurns = 100;
 
 	private List<Player> players = new ArrayList<Player>();
 
@@ -37,8 +37,6 @@ public class Game {
 	private String mapFile;
 
 	private boolean oilRandom = true;
-
-	private boolean robotRandom = true;
 
 	/**
 	 * Jelzi a játék indulását, hatására felépül a pálya és megkezdődik az első kör.
@@ -61,10 +59,8 @@ public class Game {
 		} catch (IOException e) {
 			throw new GameException();
 		}
-		Cell randomCell = this.map.getCell(rand.nextInt(this.map.getSize()[0]), rand.nextInt(this.map.getSize()[1]));
-		Robot robot0 = new Robot(this.map, randomCell, 0);
-		randomCell = this.map.getCell(rand.nextInt(this.map.getSize()[0]), rand.nextInt(this.map.getSize()[1]));
-		Robot robot1 = new Robot(this.map, randomCell, 1);
+		Robot robot0 = new Robot(this.map, this.map.getCell(0 + 2, 0 + 2), 0);
+		Robot robot1 = new Robot(this.map, this.map.getCell(1 + 2, 1 + 2), 1);
 		
 		this.robots.add(robot0);
 		this.robots.add(robot1);
@@ -75,7 +71,7 @@ public class Game {
 			this.beginTurn();
 			this.handleInput();
 			this.endTurn();
-
+			
 			if (this.currentPlayerIdx == this.players.size() - 1) {
 				this.currentPlayerIdx = 0;
 			} else {
@@ -90,6 +86,7 @@ public class Game {
 	 */
 	public void reset() {		
 		setTurnCount(0);
+		
 		try {
 			this.loadMap();
 		} catch (IOException e) {
@@ -98,7 +95,9 @@ public class Game {
 
 		for (Player player : players) {
 			player.reset();
-		}			
+		}
+		
+		this.currentPlayerIdx = 0;
 	}
 
 	/**
@@ -177,7 +176,7 @@ public class Game {
 				if (player == players.get(0)) 
 					printOutcome(players.get(1).getClass().getSimpleName() + " " + players.get(1).getIdx());
 				else printOutcome(players.get(0).getClass().getSimpleName() + " " + players.get(0).getIdx());
-				System.exit(0);
+				this.quit();
 			}
 		}
 
@@ -201,6 +200,8 @@ public class Game {
 	 * Tehát meghívja a játékosok onTurnStart() metódusát.
 	 */
 	public void beginTurn() {
+	    this.turnCount++;
+	    
 		for (Player player : players) {
 			player.onTurnStart();
 			
@@ -212,7 +213,6 @@ public class Game {
 		for (GameObject gameObject : stains) {
 			gameObject.onTurnStart();
 		}
-		turnCount++;		
 	}
 
 	/**
@@ -250,7 +250,7 @@ public class Game {
 	                                    current.getCurrentCell(),
 	                                    current.getSpeed());
 	                            int x = current.getCurrentCell().getX(), y = current
-	                                    .getCurrentCell().getY(), distance = 2;
+	                                    .getCurrentCell().getY(), distance = current.getSpeed();
 
 	                            if (input.length >= 2) {
 	                                String res = input[1];
@@ -279,8 +279,7 @@ public class Game {
 	                                }
 
 	                                for (Cell cell : neighbours) {
-	                                    if (cell.getX() == x && cell.getY() == y
-	                                            && cell.getPlayer() == null) {
+	                                    if (cell.getX() == x && cell.getY() == y) {
 	                                        nextCell = cell;
 	                                        System.out
 	                                                .println(String
@@ -312,7 +311,12 @@ public class Game {
 
 	                    } else if (cmd.equals("end-turn")) {
 	                        if (nextCell != null) {
+	                            if (nextCell.getPlayer() != null) {
+	                                this.printOutcome(current.getClass().getSimpleName() + " " + current.getIdx());
+	                                this.quit();
+	                            }
 	                            current.move(nextCell);
+	                            
 	                        }
 	                        next = true;
 
@@ -336,9 +340,9 @@ public class Game {
 	                            String setting = input[1];
 
 	                            if (setting.equals("on")) {
-	                                this.robotRandom = true;
+	                                Robot.randomStatus = true;
 	                            } else if (setting.equals("off")) {
-	                                this.robotRandom = false;
+	                                Robot.randomStatus = false;
 	                            } else {
 	                                System.out.println("Invalid setting.");
 	                            }
@@ -361,10 +365,11 @@ public class Game {
 	    							System.out.println("Invalid <col> parameter");
 	    						} else {
 	    							for (Robot robot: robots) {
-	    								if(robot.idx == id) {
-	    									robot.setCell(map.getCell(row, col));
-	    									System.out.println(String.format("Hardworking-little-robot %d: New Position: Cell(%d, %d)", 
-	    											robot.idx, row, col));
+	    								if (robot.idx == id) {
+	    									//robot.setCell(map.getCell(row, col));
+                                            System.out.println(String.format("Hardworking-little-robot %d: New Position: Cell(%d, %d)", 
+                                                    robot.idx, row, col));
+	    								    robot.move(map.getCell(row, col));
 	    								}
 	    							}
 	    						}

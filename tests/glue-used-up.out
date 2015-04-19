@@ -3,6 +3,7 @@ Player 0: New Position: Cell(20, 8)
 Player 1: Cell(22,10) Speed: 2 CanChangeDirection: true
 Player 0: Cell(20,8) Speed: 1 CanChangeDirection: true
 Player 0: New Position: Cell(20, 9)
+Cell(20,10) GameObject: null
 Player 1: Cell(22,10) Speed: 2 CanChangeDirection: true
 Player 0: Cell(20,9) Speed: 1 CanChangeDirection: true
 Player 0: New Position: Cell(20, 8)
@@ -19,4 +20,4 @@ Player 1: Cell(22,10) Speed: 2 CanChangeDirection: true
 Player 0: Cell(20,9) Speed: 1 CanChangeDirection: true
 Player 0: New Position: Cell(20, 8)
 Player 1: Cell(22,10) Speed: 2 CanChangeDirection: true
-Cell(20, 10): GameObject: null
+Player 0: Cell(20,8) Speed: 1 CanChangeDirection: true
