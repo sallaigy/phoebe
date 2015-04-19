@@ -5,10 +5,17 @@ import java.util.Random;
 
 public class Robot implements GameObject {
 
+    public static boolean randomStatus;
+    
+    public int idx;
+
 	private Cell currentCell = new Cell();
+	
 	private Cell destinationCell = null;
+	
 	private Map map;
-	public int idx;
+	
+	private Random rand = new Random();
 
 	public Robot(Map map, Cell initialPosition, int id) {
 		this.idx = id;
@@ -25,8 +32,8 @@ public class Robot implements GameObject {
 		oilStain.setCell(cell);
 		cell.setGameObject(oilStain);
 		System.out.println(cell.toString());
-		int newPosX = (new Random()).nextInt(map.getSize()[0]);
-		int newPosY = (new Random()).nextInt(map.getSize()[1]);
+		int newPosX = this.randomStatus ? this.rand.nextInt(map.getSize()[0]) : this.idx;
+		int newPosY = this.randomStatus ? this.rand.nextInt(map.getSize()[1]) : this.idx;
 
 		currentCell = map.getCell(newPosX, newPosY);
 	}
@@ -82,7 +89,12 @@ public class Robot implements GameObject {
 				|| 	(cell.getPlayer()!=null)) {
 				List<Cell> neighbours = map.getNeighbours(currentCell, 1);
 				currentCell.setGameObject(null);
-				currentCell = neighbours.get((new Random()).nextInt(neighbours.size()));
+				
+				if (this.randomStatus) {
+				    currentCell = neighbours.get(this.rand.nextInt(neighbours.size()));
+				} else {
+				    currentCell = this.map.getCell(this.idx, this.idx);
+				}
 			} else {
 				currentCell.setGameObject(null);
 				currentCell = cell;

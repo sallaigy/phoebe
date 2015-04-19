@@ -38,8 +38,6 @@ public class Game {
 
 	private boolean oilRandom = true;
 
-	private boolean robotRandom = true;
-
 	/**
 	 * Jelzi a játék indulását, hatására felépül a pálya és megkezdődik az első kör.
 	 * A játék ebben az állapotban marad újraindításig és kilépésig.
@@ -335,9 +333,9 @@ public class Game {
 	                            String setting = input[1];
 
 	                            if (setting.equals("on")) {
-	                                this.robotRandom = true;
+	                                Robot.randomStatus = true;
 	                            } else if (setting.equals("off")) {
-	                                this.robotRandom = false;
+	                                Robot.randomStatus = false;
 	                            } else {
 	                                System.out.println("Invalid setting.");
 	                            }
