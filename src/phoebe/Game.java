@@ -254,7 +254,7 @@ public class Game {
                 res = reader.readLine();
                 
                 if (res.equals("W")) {
-                    y += distance;
+                    y -= distance;
                 } else if (res.equals("NW")) {
                     y += distance;
                     x -= distance;
@@ -264,7 +264,7 @@ public class Game {
                     y -= distance;
                     x -= distance;
                 } else if (res.equals("E")) {
-                    y -= distance;
+                    y += distance;
                 } else if (res.equals("SE")) {
                     y -= distance;
                     x += distance;
