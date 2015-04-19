@@ -8,10 +8,13 @@ public class Robot implements GameObject {
 	private Cell currentCell = new Cell();
 	private Cell destinationCell = null;
 	private Map map;
+	public int idx;
 
-	public Robot(Map map, Cell initialPosition) {
+	public Robot(Map map, Cell initialPosition, int id) {
+		this.idx = id;
 		this.map = map;
 		this.currentCell = initialPosition;
+		this.currentCell.setGameObject(this);
 	}
 
 	@Override
@@ -74,10 +77,12 @@ public class Robot implements GameObject {
 				cell = map.getCell(currentCell.getX(), nextPosY);
 			}
 			
-			if (cell.getGameObject().toString().equals("Robot")) {
+			if (cell.getGameObject()!=null && cell.getGameObject().toString().equals("Robot")) {
 				List<Cell> neighbours = map.getNeighbours(currentCell, 1);
+				currentCell.setGameObject(null);
 				currentCell = neighbours.get((new Random()).nextInt(neighbours.size()));
 			} else {
+				currentCell.setGameObject(null);
 				currentCell = cell;
 				currentCell.setGameObject(this);
 			}
