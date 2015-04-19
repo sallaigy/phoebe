@@ -83,6 +83,7 @@ public class Robot implements GameObject {
 				List<Cell> neighbours = map.getNeighbours(currentCell, 1);
 				currentCell.setGameObject(null);
 				currentCell = neighbours.get((new Random()).nextInt(neighbours.size()));
+				
 			} else {
 				currentCell.setGameObject(null);
 				currentCell = cell;
