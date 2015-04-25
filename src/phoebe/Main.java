@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import javax.swing.JFrame;
+
 /**
  * A programunk belépési pontját definiáló osztály. 
  * Létrehoz egy Game-t és egy Game.readert.
@@ -11,7 +13,17 @@ import java.io.InputStreamReader;
 public class Main {
 
 	public static void main(String[] args)  {
+		
+		JFrame frame = new JFrame();
+		frame.setSize(700, 700);
 	    Game game = new Game();
+	    
+	    frame.add(game);
+	    
+	    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	    
+	    frame.setVisible(true);
+	    
 	    game.reader = new BufferedReader(new InputStreamReader(System.in));
 	    
 	    boolean next = false;
