@@ -529,16 +529,18 @@ public class Game extends JPanel{
 				players.get(1).getDistance(),
 				outcome);
 		System.out.println(output);
+		
 		Icon icon = null;
 		try {
 			icon = new ImageIcon(ImageIO.read(new File("balage.jpg")));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
 		Object [] stringArray = {"Restart", "Quit"};
 		
 		int result = JOptionPane.showOptionDialog(this, output, "Game Over",
-				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, icon, stringArray, stringArray[0]);
+				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, stringArray, stringArray[0]);
 		
 		switch (result) {
 		case JOptionPane.YES_OPTION: this.reset(); break;
@@ -562,6 +564,7 @@ public class Game extends JPanel{
 
 	@Override
 	public void paint(Graphics g) {
+		super.paint(g);
 		int size = 20;
 		if (map != null) {
 			for (int i = 0; i < map.getSize()[0]; i++) {
@@ -589,9 +592,20 @@ public class Game extends JPanel{
 				}
 			}
 		}
+		
 		if (players.size() > 0) {
 		g.setColor(Color.red);
-		g.drawString("Player 0:" + players.get(0).getSpeed(), 400,  400);
+		g.drawString("Player 0: ",400,  350);
+		g.drawString("----------------",400,  360);
+		g.drawString("Speed: " + players.get(0).getSpeed(), 400,  375);
+		g.drawString("CanChangeDirection: " + players.get(0).isCanChangeDirection(),400,  400);
+		g.drawString("Distance: " + players.get(0).getDistance(), 400,  425);
+		g.setColor(Color.blue);
+		g.drawString("Player 1: ", 400,  450);
+		g.drawString("----------------",400,  460);
+		g.drawString("Speed: " + players.get(1).getSpeed(), 400,  475);
+		g.drawString("CanChangeDirection: " + players.get(1).isCanChangeDirection(), 400,  500);
+		g.drawString("Distance: " + players.get(1).getDistance(), 400,  525);
 		}
 	}
 
