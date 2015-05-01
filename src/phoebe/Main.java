@@ -13,16 +13,8 @@ import javax.swing.JFrame;
 public class Main {
 
 	public static void main(String[] args)  {
-		
-		JFrame frame = new JFrame();
-		frame.setSize(700, 700);
+
 	    Game game = new Game();
-	    
-	    frame.add(game);
-	    
-	    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	    
-	    frame.setVisible(true);
 	    
 	    game.reader = new BufferedReader(new InputStreamReader(System.in));
 	    
@@ -42,7 +34,6 @@ public class Main {
 	                    if (input.length >= 2) {
 	                        String map = input[1];
 	                        game.start(map);
-	    
 	                        next = true;
 	                    } else {
 	                        System.out.println("USAGE: start <mapFileName>");

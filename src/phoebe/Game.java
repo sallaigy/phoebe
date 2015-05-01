@@ -1,8 +1,5 @@
 package phoebe;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -11,11 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import javax.imageio.ImageIO;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 
 /**
  * A rendszer központi osztálya. Nyilvántartja a játékosokat, 
@@ -24,7 +17,7 @@ import javax.swing.JPanel;
  * Továbbá felelős a játék mechanikájáért, tehát vezérli a körök 
  * lejátszását (kör indítása, befejezése, input kezelése).
  */
-public class Game extends JPanel{
+public class Game {
 
 	public BufferedReader reader;
 
@@ -49,6 +42,8 @@ public class Game extends JPanel{
 	private String mapFile;
 
 	private boolean oilRandom = true;
+	
+	public Paladrawin pDraw;
 
 	/**
 	 * Jelzi a játék indulását, hatására felépül a pálya és megkezdődik az első kör.
@@ -71,6 +66,8 @@ public class Game extends JPanel{
 		} catch (IOException e) {
 			throw new GameException();
 		}
+		
+		pDraw = new Paladrawin(this.map);
 
 		//Robotok létrehozása
 		Robot robot0 = new Robot(this.map, this.map.getCell(0 + 2, 0 + 2), 0);
@@ -289,7 +286,7 @@ public class Game extends JPanel{
 					//Pálya mutatása
 					else if (cmd.equals("showmap")) {
 						map.printMap();
-						this.repaint();
+						pDraw.repaint();
 					} 
 					//Mozgás
 					else if (cmd.equals("move")) {
@@ -396,7 +393,7 @@ public class Game extends JPanel{
 
 						}
 						next = true;
-						this.repaint();
+						pDraw.repaint();
 					} 
 					//Olajfolt hatás
 					else if (cmd.equals("oil-random")) {
@@ -529,27 +526,14 @@ public class Game extends JPanel{
 				players.get(1).getDistance(),
 				outcome);
 		System.out.println(output);
+
 		
-		Icon icon = null;
-		try {
-			icon = new ImageIcon(ImageIO.read(new File("balage.jpg")));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		Object [] stringArray = {"Restart", "Quit"};
-		
-		int result = JOptionPane.showOptionDialog(this, output, "Game Over",
-				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, stringArray, stringArray[0]);
-		
-		switch (result) {
-		case JOptionPane.YES_OPTION: this.reset(); break;
-		case JOptionPane.NO_OPTION: System.exit(0);
-		default: 
+		if (JOptionPane.YES_OPTION == pDraw.showDialog(output)) {
+			this.reset();
 		}
 		
 	}
-
+	
 	/**
 	 * Kimenti, hogy milyen GameObjectek vannak a cellákon.
 	 */
@@ -560,53 +544,6 @@ public class Game extends JPanel{
 			temp.add(cell.getGameObject());
 		}
 		stains = temp;
-	}
-
-	@Override
-	public void paint(Graphics g) {
-		super.paint(g);
-		int size = 20;
-		if (map != null) {
-			for (int i = 0; i < map.getSize()[0]; i++) {
-				for (int j = 0; j < map.getSize()[1]; j++) {
-
-					Cell c = map.getCell(i, j);
-					String type = c.printCell();
-
-					if (type.equals("0")) {
-						g.setColor(Color.black);
-					} else if (type.equals("1")) {
-						g.setColor(Color.white);
-					} else if (type.equals("2")) {
-						g.setColor(Color.yellow);
-					} else if (type.equals("3")) {
-						g.setColor(Color.green);
-					} else if (type.equals("4")) {
-						g.setColor(Color.red);
-					} else if (type.equals("5")) {
-						g.setColor(Color.blue);
-					} else if (type.equals("6")) {
-						g.setColor(Color.pink);
-					}
-					g.fillRect(j + j * size, i + i * size, size, size);
-				}
-			}
-		}
-		
-		if (players.size() > 0) {
-		g.setColor(Color.red);
-		g.drawString("Player 0: ",400,  350);
-		g.drawString("----------------",400,  360);
-		g.drawString("Speed: " + players.get(0).getSpeed(), 400,  375);
-		g.drawString("CanChangeDirection: " + players.get(0).isCanChangeDirection(),400,  400);
-		g.drawString("Distance: " + players.get(0).getDistance(), 400,  425);
-		g.setColor(Color.blue);
-		g.drawString("Player 1: ", 400,  450);
-		g.drawString("----------------",400,  460);
-		g.drawString("Speed: " + players.get(1).getSpeed(), 400,  475);
-		g.drawString("CanChangeDirection: " + players.get(1).isCanChangeDirection(), 400,  500);
-		g.drawString("Distance: " + players.get(1).getDistance(), 400,  525);
-		}
 	}
 
 }
