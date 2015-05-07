@@ -1,5 +1,7 @@
 package phoebe;
 
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -68,6 +70,29 @@ public class Game {
 		}
 		
 		pDraw = new Paladrawin(this.map);
+		
+		pDraw.addKeyListener(new KeyListener() {
+			
+			@Override
+			public void keyTyped(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void keyReleased(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_R) {
+					pDraw.repaint();
+					System.out.println("R pressed");
+				}	
+			}
+		});
 
 		//Robotok létrehozása
 		Robot robot0 = new Robot(this.map, this.map.getCell(0 + 2, 0 + 2), 0);

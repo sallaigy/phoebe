@@ -2,6 +2,8 @@ package phoebe;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.File;
 import java.io.IOException;
 
@@ -13,12 +15,13 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class Paladrawin extends JPanel {
-	Map map = null;
+	private Map map = null;
+	private JFrame frame;
 	
 	
 	public Paladrawin(Map map) {
 		super();
-		JFrame frame = new JFrame("Phoebe");
+		frame = new JFrame("Phoebe");
 		frame.setSize(700, 700);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.add(this);
@@ -103,5 +106,11 @@ public class Paladrawin extends JPanel {
 		}
 		
 		return 0;
+	}
+	
+	@Override
+	public synchronized void addKeyListener(KeyListener l) {
+		super.addKeyListener(l);
+		frame.addKeyListener(l);
 	}
 }
