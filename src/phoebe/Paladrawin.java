@@ -17,9 +17,10 @@ import javax.swing.JPanel;
 public class Paladrawin extends JPanel {
 	private Map map = null;
 	private JFrame frame;
+	private Player player0;
+	private Player player1;
 	
-	
-	public Paladrawin(Map map) {
+	public Paladrawin(Map map, Player player0, Player player1) {
 		super();
 		frame = new JFrame("Phoebe");
 		frame.setSize(700, 700);
@@ -27,6 +28,8 @@ public class Paladrawin extends JPanel {
 		frame.add(this);
 		frame.setVisible(true);
 		this.map = map;
+		this.player0 = player0;
+		this.player1 = player1;
 	}
 
 	public Paladrawin() {
@@ -40,9 +43,8 @@ public class Paladrawin extends JPanel {
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		//System.err.println("Fuck this fucking bullshit");
 		int size = 20;
-		if (map != null) {
+		if (map != null) {			
 			for (int i = 0; i < map.getSize()[0]; i++) {
 				for (int j = 0; j < map.getSize()[1]; j++) {
 
@@ -67,6 +69,8 @@ public class Paladrawin extends JPanel {
 					g.fillRect(j + j * size, i + i * size, size, size);
 				}
 			}
+			g.drawString(player0.toString(), 20 * size + 20, 20 + 20 * size);
+			g.drawString(player1.toString(), 20 * size + 20, 40 + 20 * size);
 		}
 		
 		/*if (players.size() > 0) {
@@ -106,6 +110,10 @@ public class Paladrawin extends JPanel {
 		}
 		
 		return 0;
+	}
+	
+	public void setMap(Map map) {
+		this.map = map;
 	}
 	
 	@Override

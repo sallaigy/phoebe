@@ -22,29 +22,32 @@ public class Main {
 	    	    
 	    while (!next) {
 	        try {
-	            String line;
-	            
-	            // Beolvassuk a parancsot
-	            if (null != (line = game.reader.readLine())) {
-	                String[] input = line.split(" ");
-	                String cmd = input[0];
-	                
-	                // Ha parancs egy indító parancs, akkor elindít egy játékot a beolvasott térképpel
-	                if (cmd.equals("start")) {
-	                    if (input.length >= 2) {
-	                        String map = input[1];
-	                        game.start(map);
-	                        next = true;
-	                    } else {
-	                        System.out.println("USAGE: start <mapFileName>");
-	                    }
-	                }
-	            }
+//	            String line;
+//	            
+//	            // Beolvassuk a parancsot
+//	            if (null != (line = game.reader.readLine())) {
+//	                String[] input = line.split(" ");
+//	                String cmd = input[0];
+//	             
+//	                // Ha parancs egy indító parancs, akkor elindít egy játékot a beolvasott térképpel
+//	                if (cmd.equals("start")) {
+//	                    if (input.length >= 2) {
+//	                        String map = input[1];
+//	                        game.start(map);
+//	                        next = true;
+//	                    } else {
+//	                        System.out.println("USAGE: start <mapFileName>");
+//	                    }
+//	                }
+//	                
+//	            }
+	            game.start("map.txt");
+                next = true;
 	        } catch (GameException e) {
 	            System.out.println("Game error. Are you sure the map file is correct?");
-	        } catch (IOException e) {
+	        } /*catch (IOException e) {
                 e.printStackTrace();
-            }
+            }*/
 	    }
 	}
 
