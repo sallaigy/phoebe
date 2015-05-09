@@ -94,42 +94,42 @@ public class Game {
 			public void keyPressed(KeyEvent e) {
 				int keyCode = e.getKeyCode();
 				switch (keyCode) {
-					case KeyEvent.VK_R:
+					case KeyEvent.VK_Q:
 						pDraw.repaint();
 						System.out.println("R pressed");
 					break;
-					case KeyEvent.VK_NUMPAD4:
+					case KeyEvent.VK_S:
 						executeCommand("move W");
 						break;
 					//Balra-fel
-					case KeyEvent.VK_NUMPAD7:
+					case KeyEvent.VK_W:
 						executeCommand("move NW");
 						break;
 					//Fel
-					case KeyEvent.VK_NUMPAD8:
+					case KeyEvent.VK_E:
 						executeCommand("move N");
 						break;
 					//Jobbra-fel
-					case KeyEvent.VK_NUMPAD9:
+					case KeyEvent.VK_R:
 						executeCommand("move NE");
 						break;
 					//Jobbra
-					case KeyEvent.VK_NUMPAD6:
+					case KeyEvent.VK_F:
 						executeCommand("move E");
 						break;
 					//Jobbra-le
-					case KeyEvent.VK_NUMPAD3:
+					case KeyEvent.VK_V:
 						executeCommand("move SE");
 						break; 
 					//Le
-					case KeyEvent.VK_NUMPAD2:
+					case KeyEvent.VK_C:
 						executeCommand("move S");
 						break; 
 					//Balra-le
-					case KeyEvent.VK_NUMPAD1:
+					case KeyEvent.VK_X:
 						executeCommand("move SW");
 						break;
-					case KeyEvent.VK_E:
+					case KeyEvent.VK_ENTER:
 						executeCommand("end-turn");
 						break;
 					//Érvénytelen irány
@@ -149,25 +149,28 @@ public class Game {
 		this.robots.add(robot1);
 
 		this.currentPlayerIdx = 0;
+		this.current = this.players.get(this.currentPlayerIdx);
 
+		this.beginTurn();
+		
 		//Ameddig nem kéne kilépni
 		while (!this.shouldQuit) {
 			//Kör kezdés
-			this.beginTurn();
+			//this.beginTurn();
 			//Input kezelés
 			this.handleInput();
-			//Kör vége
-			this.endTurn();
+			//Kör végeV
+			//this.endTurn();
 
 			//Kiválasztja a következő játékost
 			//Legelső játékos
-			if (this.currentPlayerIdx == this.players.size() - 1) {
-				this.currentPlayerIdx = 0;
-			} 
-			//Következő játékos
-			else {
-				this.currentPlayerIdx++;
-			}
+//			if (this.currentPlayerIdx == this.players.size() - 1) {
+//				this.currentPlayerIdx = 0;
+//			} 
+//			//Következő játékos
+//			else {
+//				this.currentPlayerIdx++;
+//			}
 		}
 	}
 	/**
@@ -305,6 +308,19 @@ public class Game {
 				printOutcome(winner.getClass().getSimpleName() + " "+ winner.getIdx());
 			}
 		}
+
+        if (this.currentPlayerIdx == this.players.size() - 1) {
+            System.out.println("YOLO");
+            this.currentPlayerIdx = 0;
+        } 
+        //Következő játékos
+        else {
+            this.currentPlayerIdx++;
+        }
+        
+        this.current = this.players.get(currentPlayerIdx);
+        
+        this.beginTurn();
 	}
 
 	/**
@@ -327,9 +343,7 @@ public class Game {
 		}
 	}
 
-	public void handleInput() {
-		current = this.players.get(currentPlayerIdx);
-		
+	public void handleInput() {		
 		System.out.println(current.toString());
 
 		next = false;
@@ -517,6 +531,8 @@ public class Game {
 			next = true;
 			nextCell = null;
 			pDraw.repaint();
+			
+			this.endTurn();
 			
 		} 
 		//Olajfolt hatás
