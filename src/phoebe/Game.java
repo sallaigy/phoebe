@@ -46,6 +46,11 @@ public class Game {
 	private boolean oilRandom = true;
 	
 	public Paladrawin pDraw;
+	
+	Player current = null;
+	String line = null;
+	Cell nextCell = null;
+	boolean next = false;
 
 	/**
 	 * Jelzi a játék indulását, hatására felépül a pálya és megkezdődik az első kör.
@@ -87,11 +92,53 @@ public class Game {
 			
 			@Override
 			public void keyPressed(KeyEvent e) {
-				if (e.getKeyCode() == KeyEvent.VK_R) {
-					pDraw.repaint();
-					System.out.println("R pressed");
+				int keyCode = e.getKeyCode();
+				switch (keyCode) {
+					case KeyEvent.VK_R:
+						pDraw.repaint();
+						System.out.println("R pressed");
+					break;
+					case KeyEvent.VK_NUMPAD4:
+						executeCommand("move W");
+						break;
+					//Balra-fel
+					case KeyEvent.VK_NUMPAD7:
+						executeCommand("move NW");
+						break;
+					//Fel
+					case KeyEvent.VK_NUMPAD8:
+						executeCommand("move N");
+						break;
+					//Jobbra-fel
+					case KeyEvent.VK_NUMPAD9:
+						executeCommand("move NE");
+						break;
+					//Jobbra
+					case KeyEvent.VK_NUMPAD6:
+						executeCommand("move E");
+						break;
+					//Jobbra-le
+					case KeyEvent.VK_NUMPAD3:
+						executeCommand("move SE");
+						break; 
+					//Le
+					case KeyEvent.VK_NUMPAD2:
+						executeCommand("move S");
+						break; 
+					//Balra-le
+					case KeyEvent.VK_NUMPAD1:
+						executeCommand("move SW");
+						break;
+					case KeyEvent.VK_E:
+						executeCommand("end-turn");
+						break;
+					//Érvénytelen irány
+					default:
+						System.out.println("Invalid direction");
+						break;
+					}
 				}	
-			}
+			
 		});
 
 		//Robotok létrehozása
@@ -281,248 +328,22 @@ public class Game {
 	}
 
 	public void handleInput() {
-		Player current = this.players.get(currentPlayerIdx);
-
+		current = this.players.get(currentPlayerIdx);
+		
 		System.out.println(current.toString());
 
-		String line;
-
-		Cell nextCell = null;
-
-		boolean next = false;
+		next = false;
 
 		while (!next) {
 			try {
 				//Tesztben kapott parancsok kezelése
 				if (null != (line = this.reader.readLine())) {
-					String[] input = line.split(" ");
-					String cmd = input[0];
-
-					//Újraindítás
-					if (cmd.equals("reset")) {
-						this.reset();
-						next = true;
-					} 
-					//Kilépés
-					else if (cmd.equals("quit")) {
-						this.quit();
-						next = true;
-					} 
-					//Pálya mutatása
-					else if (cmd.equals("showmap")) {
-						map.printMap();
-						pDraw.repaint();
-					} 
-					//Mozgás
-					else if (cmd.equals("move")) {
-						if (nextCell == null) {
-							// Ha még nem léptünk
-							List<Cell> neighbours = this.map.getNeighbours(
-									current.getCurrentCell(),
-									current.getSpeed());
-							int x = current.getCurrentCell().getX(), y = current
-									.getCurrentCell().getY(), distance = current.getSpeed();
-
-							if (input.length >= 2) {
-								String res = input[1];
-								//Balra
-								if (res.equals("W")) {
-									y -= distance;
-								}
-								//Balra-fel
-								else if (res.equals("NW")) {
-									y -= distance;
-									x -= distance;
-								} 
-								//Fel
-								else if (res.equals("N")) {
-									x -= distance;
-								} 
-								//Jobbra-fel
-								else if (res.equals("NE")) {
-									y += distance;
-									x -= distance;
-								} 
-								//Jobbra
-								else if (res.equals("E")) {
-									y += distance;
-								} 
-								//Jobbra-le
-								else if (res.equals("SE")) {
-									y += distance;
-									x += distance;
-								} 
-								//Le
-								else if (res.equals("S")) {
-									x += distance;
-								} 
-								//Balra-le
-								else if (res.equals("SW")) {
-									y -= distance;
-									x += distance;
-								} 
-								//Érvénytelen irány
-								else {
-									System.out.println("Invalid direction");
-								}
-
-								for (Cell cell : neighbours) {
-									if (cell.getX() == x && cell.getY() == y) {
-										nextCell = cell;
-										System.out
-										.println(String
-												.format("%s %d: New Position: Cell(%d, %d)",
-														current.getClass()
-														.getSimpleName(),
-														current.getIdx(),
-														nextCell.getX(),
-														nextCell.getY()));
-
-										break;
-									}
-								}
-							}
-						} 
-						//Ha többször akarna mozogni egy körben
-						else {
-							System.out
-							.println("Only one move is allowed per turn.");
-						}
-
-					} 
-					//Folt lerakása
-					else if (cmd.equals("put-stain")) {
-
-						//Ragacs
-						if (input[1].equals("G")) {
-							current.putStain(GlueStain.class.getName());
-						} 
-						//Olaj
-						else if (input[1].equals("O")) {
-							current.putStain(OilStain.class.getName());
-						} 
-						//Érvénytelen folt
-						else {
-							System.out.println("Invalid stain");
-						}
-
-					} 
-					//Kör vége
-					else if (cmd.equals("end-turn")) {
-						if (nextCell != null) {
-							if (nextCell.getPlayer() != null) {
-								this.printOutcome(current.getClass().getSimpleName() + " " + current.getIdx());
-								this.quit();
-							}
-							current.move(nextCell);
-
-						}
-						next = true;
-						pDraw.repaint();
-					} 
-					//Olajfolt hatás
-					else if (cmd.equals("oil-random")) {
-						if (input.length >= 2) {
-							String setting = input[1];
-
-							//Random engedélyezése
-							if (setting.equals("on")) {
-								this.oilRandom = true;
-							} 
-							//Random tiltása
-							else if (setting.equals("off")) {
-								this.oilRandom = false;
-							} 
-							//Érvénytelen beállítás
-							else {
-								System.out.println("Invalid setting.");
-							}
-						} 	                        
-						//Kisrobot használata
-						else {
-							System.out
-							.println("USAGE: hardworking-little-robot-random <setting>");
-						}
-					} 
-					//Kisrobot
-					else if (cmd.equals("hardworking-little-robot-random")) {
-						if (input.length >= 2) {
-							String setting = input[1];
-
-							//Random engedélyezése
-							if (setting.equals("on")) {
-								Robot.randomStatus = true;
-							} 
-							//Random tiltása
-							else if (setting.equals("off")) {
-								Robot.randomStatus = false;
-							} 
-							//Érvénytelen beállítás
-							else {
-								System.out.println("Invalid setting.");
-							}
-						} 
-						//Kisrobot használata
-						else {
-							System.out
-							.println("USAGE: hardworking-little-robot-random <setting>");
-						}
-					} 
-					//Robot mozgatása
-					else if (cmd.equals("robot-move")) {
-
-						//Nem megfelelő bemenet
-						if (input.length < 4) {
-							System.out.println("Invalid command, not enough arguments.");
-						} else {
-							int id = Integer.parseInt(input[1]);
-							int row = Integer.parseInt(input[2]);
-							int col = Integer.parseInt(input[3]);
-
-							//Nem megfelelő sor paraméter
-							if (row > map.getSize()[0] || row < 0) {
-								System.out.println("Invalid <row> parameter");
-							} 
-							//Nem megfelelő oszlop paraméter
-							else if (col > map.getSize()[1] || col < 0) {
-								System.out.println("Invalid <col> parameter");
-							} else {
-								for (Robot robot: robots) {
-									if (robot.idx == id) {
-										//robot.setCell(map.getCell(row, col));
-										System.out.println(String.format("Hardworking-little-robot %d: New Position: Cell(%d, %d)", 
-												robot.idx, row, col));
-										robot.move(map.getCell(row, col));
-									}
-								}
-							}
-						}
-					} 
-					//Megadható ezzel, hogy hányadik körnél tartunk
-					else if (cmd.equals("set-clock")) {
-						if (input.length >= 2) {
-							try {
-								int tc = Integer.parseInt(input[1]);
-								this.turnCount = tc;
-							} catch (NumberFormatException e) {
-								System.out.println(e.getMessage());
-							}
-						} 
-						//Set-clock használata
-						else {
-							System.out.println("USAGE: set-clock <T>");
-						}
-					} 
-					//Ismeretlen parancs
-					else {
-						System.out.println("Unknown command.");
-					}
-
+					executeCommand(line);
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
 				next = false;
-			}
+			} 
 		}
 	}
 	/**
@@ -569,6 +390,234 @@ public class Game {
 			temp.add(cell.getGameObject());
 		}
 		stains = temp;
+	}
+	
+	private void executeCommand(String line) {
+		String[] input = line.split(" ");
+		String cmd = input[0];
+
+		//Újraindítás
+		if (cmd.equals("reset")) {
+			this.reset();
+			next = true;
+		} 
+		//Kilépés
+		else if (cmd.equals("quit")) {
+			this.quit();
+			next = true;
+		} 
+		//Pálya mutatása
+		else if (cmd.equals("showmap")) {
+			map.printMap();
+			pDraw.repaint();
+		} 
+		//Mozgás
+		else if (cmd.equals("move")) {
+			if (nextCell == null) {
+				// Ha még nem léptünk
+				List<Cell> neighbours = this.map.getNeighbours(
+						current.getCurrentCell(),
+						current.getSpeed());
+				int x = current.getCurrentCell().getX(), y = current
+						.getCurrentCell().getY(), distance = current.getSpeed();
+
+				if (input.length >= 2) {
+					String res = input[1];
+					//Balra
+					if (res.equals("W")) {
+						y -= distance;
+					}
+					//Balra-fel
+					else if (res.equals("NW")) {
+						y -= distance;
+						x -= distance;
+					} 
+					//Fel
+					else if (res.equals("N")) {
+						x -= distance;
+					} 
+					//Jobbra-fel
+					else if (res.equals("NE")) {
+						y += distance;
+						x -= distance;
+					} 
+					//Jobbra
+					else if (res.equals("E")) {
+						y += distance;
+					} 
+					//Jobbra-le
+					else if (res.equals("SE")) {
+						y += distance;
+						x += distance;
+					} 
+					//Le
+					else if (res.equals("S")) {
+						x += distance;
+					} 
+					//Balra-le
+					else if (res.equals("SW")) {
+						y -= distance;
+						x += distance;
+					} 
+					//Érvénytelen irány
+					else {
+						System.out.println("Invalid direction");
+					}
+
+					for (Cell cell : neighbours) {
+						if (cell.getX() == x && cell.getY() == y) {
+							nextCell = cell;
+							System.out
+							.println(String
+									.format("%s %d: New Position: Cell(%d, %d)",
+											current.getClass()
+											.getSimpleName(),
+											current.getIdx(),
+											nextCell.getX(),
+											nextCell.getY()));
+
+							break;
+						}
+					}
+				}
+			} 
+			//Ha többször akarna mozogni egy körben
+			else {
+				System.out
+				.println("Only one move is allowed per turn.");
+			}
+
+		} 
+		//Folt lerakása
+		else if (cmd.equals("put-stain")) {
+
+			//Ragacs
+			if (input[1].equals("G")) {
+				current.putStain(GlueStain.class.getName());
+			} 
+			//Olaj
+			else if (input[1].equals("O")) {
+				current.putStain(OilStain.class.getName());
+			} 
+			//Érvénytelen folt
+			else {
+				System.out.println("Invalid stain");
+			}
+
+		} 
+		//Kör vége
+		else if (cmd.equals("end-turn")) {
+			if (nextCell != null) {
+				if (nextCell.getPlayer() != null) {
+					this.printOutcome(current.getClass().getSimpleName() + " " + current.getIdx());
+					this.quit();
+				}
+				current.move(nextCell);
+			}
+			next = true;
+			nextCell = null;
+			pDraw.repaint();
+			
+		} 
+		//Olajfolt hatás
+		else if (cmd.equals("oil-random")) {
+			if (input.length >= 2) {
+				String setting = input[1];
+
+				//Random engedélyezése
+				if (setting.equals("on")) {
+					this.oilRandom = true;
+				} 
+				//Random tiltása
+				else if (setting.equals("off")) {
+					this.oilRandom = false;
+				} 
+				//Érvénytelen beállítás
+				else {
+					System.out.println("Invalid setting.");
+				}
+			} 	                        
+			//Kisrobot használata
+			else {
+				System.out
+				.println("USAGE: hardworking-little-robot-random <setting>");
+			}
+		} 
+		//Kisrobot
+		else if (cmd.equals("hardworking-little-robot-random")) {
+			if (input.length >= 2) {
+				String setting = input[1];
+
+				//Random engedélyezése
+				if (setting.equals("on")) {
+					Robot.randomStatus = true;
+				} 
+				//Random tiltása
+				else if (setting.equals("off")) {
+					Robot.randomStatus = false;
+				} 
+				//Érvénytelen beállítás
+				else {
+					System.out.println("Invalid setting.");
+				}
+			} 
+			//Kisrobot használata
+			else {
+				System.out
+				.println("USAGE: hardworking-little-robot-random <setting>");
+			}
+		} 
+		//Robot mozgatása
+		else if (cmd.equals("robot-move")) {
+
+			//Nem megfelelő bemenet
+			if (input.length < 4) {
+				System.out.println("Invalid command, not enough arguments.");
+			} else {
+				int id = Integer.parseInt(input[1]);
+				int row = Integer.parseInt(input[2]);
+				int col = Integer.parseInt(input[3]);
+
+				//Nem megfelelő sor paraméter
+				if (row > map.getSize()[0] || row < 0) {
+					System.out.println("Invalid <row> parameter");
+				} 
+				//Nem megfelelő oszlop paraméter
+				else if (col > map.getSize()[1] || col < 0) {
+					System.out.println("Invalid <col> parameter");
+				} else {
+					for (Robot robot: robots) {
+						if (robot.idx == id) {
+							//robot.setCell(map.getCell(row, col));
+							System.out.println(String.format("Hardworking-little-robot %d: New Position: Cell(%d, %d)", 
+									robot.idx, row, col));
+							robot.move(map.getCell(row, col));
+						}
+					}
+				}
+			}
+		} 
+		//Megadható ezzel, hogy hányadik körnél tartunk
+		else if (cmd.equals("set-clock")) {
+			if (input.length >= 2) {
+				try {
+					int tc = Integer.parseInt(input[1]);
+					this.turnCount = tc;
+				} catch (NumberFormatException e) {
+					System.out.println(e.getMessage());
+				}
+			} 
+			//Set-clock használata
+			else {
+				System.out.println("USAGE: set-clock <T>");
+			}
+		} 
+		//Ismeretlen parancs
+		else {
+			System.out.println("Unknown command.");
+		}
+
+	
 	}
 
 }
