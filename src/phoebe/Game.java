@@ -92,6 +92,9 @@ public class Game {
 
 			}
 
+			/**
+			 * A nyomógombok kezeléséért felelős metódus
+			 */
 			@Override
 			public void keyPressed(KeyEvent e) {
 				int keyCode = e.getKeyCode();
@@ -134,12 +137,15 @@ public class Game {
 				case KeyEvent.VK_X:
 					executeCommand("move SW");
 					break;
+				// Kör vége
 				case KeyEvent.VK_ENTER:
 					executeCommand("end-turn");
 					break;
+				// Ragacs lerakása
 				case KeyEvent.VK_G:
 					executeCommand("put-stain G");
 					break;
+				// Olaj lerakása
 				case KeyEvent.VK_O:
 					executeCommand("put-stain O");
 					break;
@@ -371,6 +377,9 @@ public class Game {
 		}
 	}
 
+	/**
+	 * A parancsok kezeléséért felelős metódus.
+	 */
 	public void handleInput() {
 		System.out.println(current.toString());
 
@@ -434,7 +443,11 @@ public class Game {
 		}
 		stains = temp;
 	}
-
+	
+	/**
+	 * A parancsok feldolgozásáért felelős metódus.
+	 * @param line A bejövő parancs
+	 */
 	private void executeCommand(String line) {
 		String[] input = line.split(" ");
 		String cmd = input[0];

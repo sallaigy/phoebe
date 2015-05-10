@@ -24,14 +24,10 @@ public class Robot implements GameObject {
 	private Cell initialPosition;
 
 	/**
-	 * A keményen dolgozó kisrobot konstruktora.
-	 * 
-	 * @param map
-	 *            A térkép, amelyre lehelyezzük.
-	 * @param initialPosition
-	 *            A kisrobot kezdőpoziciója.
-	 * @param id
-	 *            A kisrobot azonosítója.
+	 * A keményen dolgozó kisrobot konstruktora.	 * 
+	 * @param map A térkép, amelyre lehelyezzük.
+	 * @param initialPosition A kisrobot kezdőpoziciója.
+	 * @param id A kisrobot azonosítója.
 	 */
 	public Robot(Map map, Cell initialPosition, int id) {
 		this.idx = id;
@@ -43,10 +39,8 @@ public class Robot implements GameObject {
 
 	/**
 	 * A kisrobot játékossal történő interakcióját megvalósító metódus. Ekkor a
-	 * kisrobot megsemmisül, és olajfoltot hagy maga mögött.
-	 * 
-	 * @param Player
-	 *            A játékos, amellyel a kisrobot ütközik.
+	 * kisrobot megsemmisül, és olajfoltot hagy maga mögött.	 * 
+	 * @param Player A játékos, amellyel a kisrobot ütközik.
 	 */
 	@Override
 	public void interact(Player player) {
@@ -132,10 +126,8 @@ public class Robot implements GameObject {
 
 	/**
 	 * A kisrobot mozgását megvalósító metódus. Ebben a metódusban történik a
-	 * kisrobotok ütközésének, és a foltok feltakarításának az implementációja.
-	 * 
-	 * @param cell
-	 *            A cella, amelyre a kisrobot rálép.
+	 * kisrobotok ütközésének, és a foltok feltakarításának az implementációja.	 * 
+	 * @param cell A cella, amelyre a kisrobot rálép.
 	 */
 	public void move(Cell cell) {
 		GameObject currentObj = cell.getGameObject();
@@ -172,8 +164,7 @@ public class Robot implements GameObject {
 	/**
 	 * Ez a metódus megadja a kisrobot távolságát a megadott cellától.
 	 * 
-	 * @param cell
-	 *            A cella, amelytől a kisrobot távolságát vizsgáljuk.
+	 * @param cell A cella, amelytől a kisrobot távolságát vizsgáljuk.
 	 * @return A kisrobot távolsága a cellától.
 	 */
 	public int getDistance(Cell cell) {

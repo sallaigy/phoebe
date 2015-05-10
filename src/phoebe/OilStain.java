@@ -10,7 +10,7 @@ public class OilStain extends Stain {
 	 * Az olajfolt köreinek a száma, mielőtt elhasználódik: 4.
 	 */
 	public OilStain() {
-		this.eventCount = 4;
+		this.eventCount = 6;
 	}
 	
 	/**
