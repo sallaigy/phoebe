@@ -143,7 +143,14 @@ public class Robot implements GameObject {
 		if ((cell.containsRobot() && !currentObj.equals(this))
 				|| cell.getPlayer() != null) {
 			// Ütközés!
-			cell = this.initialPosition;
+			
+			Cell nextCell = null;
+			while((nextCell = map.getCell(currentCell.getX()
+					+ (int) (Math.random() * 3) - 1, currentCell.getY()
+					+ (int) (Math.random() * 3) - 1)).containsRobot()){
+				
+			}
+			cell = nextCell;
 			System.out
 					.println(String
 							.format("Hardworking-little-robot %d: Collision; New Position: Cell(%d, %d)",

@@ -2,7 +2,6 @@ package phoebe;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.File;
 import java.io.IOException;
@@ -23,9 +22,10 @@ public class Paladrawin extends JPanel {
 	public Paladrawin(Map map, Player player0, Player player1) {
 		super();
 		frame = new JFrame("Phoebe");
-		frame.setSize(700, 700);
+		frame.setSize(400, 610);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.add(this);
+		frame.setResizable(false);
 		frame.setVisible(true);
 		this.map = map;
 		this.player0 = player0;
@@ -69,24 +69,11 @@ public class Paladrawin extends JPanel {
 					g.fillRect(j + j * size, i + i * size, size, size);
 				}
 			}
-			g.drawString(player0.toString(), 20 * size + 20, 20 + 20 * size);
-			g.drawString(player1.toString(), 20 * size + 20, 40 + 20 * size);
+			g.setColor(Color.RED);
+			g.drawString(player0.toString(), 20, 20 + map.getSize()[1] * (size+8));
+			g.setColor(Color.BLUE);
+			g.drawString(player1.toString(), 20, 40 + map.getSize()[1] * (size+8));
 		}
-		
-		/*if (players.size() > 0) {
-		g.setColor(Color.red);
-		g.drawString("Player 0: ",400,  350);
-		g.drawString("----------------",400,  360);
-		g.drawString("Speed: " + players.get(0).getSpeed(), 400,  375);
-		g.drawString("CanChangeDirection: " + players.get(0).isCanChangeDirection(),400,  400);
-		g.drawString("Distance: " + players.get(0).getDistance(), 400,  425);
-		g.setColor(Color.blue);
-		g.drawString("Player 1: ", 400,  450);
-		g.drawString("----------------",400,  460);
-		g.drawString("Speed: " + players.get(1).getSpeed(), 400,  475);
-		g.drawString("CanChangeDirection: " + players.get(1).isCanChangeDirection(), 400,  500);
-		g.drawString("Distance: " + players.get(1).getDistance(), 400,  525);
-		}*/
 	}
 	
 	public int showDialog(String output) {

@@ -97,7 +97,10 @@ public class Game {
 				int keyCode = e.getKeyCode();
 				switch (keyCode) {
 				case KeyEvent.VK_Q:
-					executeCommand("reset");
+					int response = JOptionPane.showConfirmDialog(pDraw, "Are you sure you want to reset the game?");
+					if (response == JOptionPane.YES_OPTION) {
+						executeCommand("reset");
+					}
 					System.out.println("R pressed");
 					break;
 				case KeyEvent.VK_S:
@@ -150,8 +153,8 @@ public class Game {
 		});
 
 		// Robotok létrehozása
-		Robot robot0 = new Robot(this.map, this.map.getCell(0 + 2, 0 + 2), 0);
-		Robot robot1 = new Robot(this.map, this.map.getCell(1 + 2, 1 + 2), 1);
+		Robot robot0 = new Robot(this.map, this.map.getCell(rand.nextInt(this.map.getSize()[0]), rand.nextInt(this.map.getSize()[1])), 0);
+		Robot robot1 = new Robot(this.map, this.map.getCell(rand.nextInt(this.map.getSize()[0]), rand.nextInt(this.map.getSize()[1])), 1);
 
 		this.robots.add(robot0);
 		this.robots.add(robot1);
@@ -192,8 +195,8 @@ public class Game {
 		setTurnCount(0);
 		try {
 			this.loadMap();
-			Robot robot0 = new Robot(this.map, this.map.getCell(0 + 2, 0 + 2), 0);
-			Robot robot1 = new Robot(this.map, this.map.getCell(1 + 2, 1 + 2), 1);
+			Robot robot0 = new Robot(this.map, this.map.getCell(rand.nextInt(this.map.getSize()[0]), rand.nextInt(this.map.getSize()[1])), 0);
+			Robot robot1 = new Robot(this.map, this.map.getCell(rand.nextInt(this.map.getSize()[0]), rand.nextInt(this.map.getSize()[1])), 1);
 			this.robots.add(robot0);
 			this.robots.add(robot1);
 		} catch (IOException e) {

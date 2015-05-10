@@ -162,7 +162,7 @@ public class Player {
         this.setCanChangeDirection(true);
         
         this.setSpeed(2);
-                        
+           
     }
     
    /**
